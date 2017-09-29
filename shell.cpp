@@ -3,10 +3,11 @@
 #include "filesystem.h"
 
 const int MAXCOMMANDS = 8;
-const int NUMAVAILABLECOMMANDS = 15;
+const int NUMAVAILABLECOMMANDS = 16;
 
 std::string availableCommands[NUMAVAILABLECOMMANDS] = {
-    "quit","format","ls","create","cat","createImage","restoreImage",
+
+    "q","quit","format","ls","create","cat","createImage","restoreImage",
     "rm","cp","append","mv","mkdir","cd","pwd","help"
 };
 
@@ -20,9 +21,14 @@ std::string help();
 
 int main(void) {
 
+	FileSystem fileSys;
+
 	std::string userCommand, commandArr[MAXCOMMANDS];
 	std::string user = "user@DV1492";    // Change this if you want another user to be displayed
 	std::string currentDir = "/";    // current directory, used for output
+
+	int printInt;
+	std::string printString;
 
     bool bRun = true;
 
@@ -36,37 +42,42 @@ int main(void) {
             int cIndex = findCommand(commandArr[0]);
             switch(cIndex) {
 
-			case 0: //quit
+			case 0:
+			case 1: //quit
 				bRun = quit();                
                 break;
-            case 1: // format
+            case 2: // format
                 break;
-            case 2: // ls
+            case 3: // ls
                 std::cout << "Listing directory" << std::endl;
                 break;
-            case 3: // create
+            case 4: // create
+				printInt = fileSys.createFileOn();
+				std::cout << std::to_string(printInt) + "\n";
                 break;
-            case 4: // cat
+            case 5: // cat
                 break;
-            case 5: // createImage
+            case 6: // createImage
                 break;
-            case 6: // restoreImage
+            case 7: // restoreImage
                 break;
-            case 7: // rm
+            case 8: // rm
+				printString = fileSys.viewFileOn();
+				std::cout << printString + "\n";
                 break;
-            case 8: // cp
+            case 9: // cp
                 break;
-            case 9: // append
+            case 10: // append
                 break;
-            case 10: // mv
+            case 11: // mv
                 break;
-            case 11: // mkdir
+            case 12: // mkdir
                 break;
-            case 12: // cd
+            case 13: // cd
                 break;
-            case 13: // pwd
+            case 14: // pwd
                 break;
-            case 14: // help
+            case 15: // help
                 std::cout << help() << std::endl;
                 break;
             default:

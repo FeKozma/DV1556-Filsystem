@@ -34,6 +34,10 @@ public:
 	   You are free to specify parameter lists and return values
     */
 
+	// detta är en testfunktion VARNING testfunktion
+	int createFileOn(int blocknr = 1);
+	std::string viewFileOn(int blocknr = 1);
+
     /* This function creates a file in the filesystem */
     // createFile(...)
 
