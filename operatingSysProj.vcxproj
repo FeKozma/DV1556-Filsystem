@@ -29,7 +29,12 @@
     <ClCompile Include="blockdevice.cpp" />
     <ClCompile Include="filesystem.cpp" />
     <ClCompile Include="memblockdevice.cpp" />
-    <ClCompile Include="shell.cpp" />
+    <ClCompile Include="shell.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="skissBlock.txt" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{CBA4A680-2EC1-4389-9629-54CBCF46906B}</ProjectGuid>

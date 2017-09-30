@@ -1,0 +1,7 @@
+vi skulle kunna göra att man med ett komando kan ändra på en array 
+med karaktärer (512 st för att vara exakt). och att denna sedan skickas
+ in när en ny fil ska skapas. 
+
+ eller så frågar vi på tis. 
+ /Felix kozma 2017-09-29 13:46 
+ Svergie, karlskrona, Blekinge tekniska högskola, tyst avdelning.
