@@ -26,6 +26,8 @@ private:
 		~inode() {};
 		bool addFolder(std::string name = "")
 		{
+			bool folderAdded = false;
+
 			//om mappnamn ej angivet. nemge mappen "namnlös mapp"
 			if (name == "")
 			{
@@ -39,16 +41,16 @@ private:
 					name += "(" + std::to_string(i) + ")";
 				}
 				//create folder
-
-			}
-
-			if (!findFolder(name))
+				folderAdded = true;
+			} 
+			else if (!findFolder(name))
 			{
 				//create folder
+				folderAdded = true;
 			}
 			
 
-			return false;
+			return folderAdded;
 		}
 		bool findFolder(std::string name)
 		{
