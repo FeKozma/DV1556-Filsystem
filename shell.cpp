@@ -72,6 +72,7 @@ int main(void) {
             case 11: // mv
                 break;
             case 12: // mkdir
+				std::cout << " create folder given or not named\n";
                 break;
             case 13: // cd
                 break;

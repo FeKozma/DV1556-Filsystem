@@ -1,6 +1,5 @@
 #include "filesystem.h"
-//för testning
-#include <iostream>
+
 
 FileSystem::FileSystem() {
 	
@@ -14,17 +13,17 @@ FileSystem::~FileSystem() {
 // detta är en testfunktion VARNING testfunktion
 int FileSystem::createFileOn(int blocknr)
 {
-	int nrChar = 62;
-	
 
+	int lengthOfBlock = 512;
 	std::string repString = "Det var en gang en pirat som borjade beratta en saga som lod: ";
 	std::string storeString;
-	for (int i = 0; (i + repString.length()) < 512; i += repString.length())
+
+	for (int i = 0; (i + repString.length()) < lengthOfBlock; i += repString.length())
 	{
 		storeString += repString;
 	}
 
-	for (int i = storeString.length(); i < 512; i++)
+	for (int i = storeString.length(); i < lengthOfBlock; i++)
 	{
 		storeString += "0";
 	}
