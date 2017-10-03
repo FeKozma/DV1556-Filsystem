@@ -10,14 +10,9 @@ FileSystem::~FileSystem() {
 }
 
 // detta är en testfunktion VARNING testfunktion
-int FileSystem::createFileOn(std::string textString, int blocknr)
+int FileSystem::createFileOn(std::string storeString, int blocknr)
 {
 	int lengthOfBlock = 512;
-	std::string headerText = "xxxxxxxxxx";
-	std::string storeString;
-
-	storeString = headerText;
-	storeString += textString;
 
 	for (int i = storeString.length(); i < lengthOfBlock; i++)
 	{
