@@ -27,6 +27,9 @@
     <ClInclude Include="memblockdevice.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="inode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="memblockdevice.cpp">
@@ -42,6 +45,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="filesystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="inode.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

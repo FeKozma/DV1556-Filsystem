@@ -3,11 +3,11 @@
 #include "filesystem.h"
 
 const int MAXCOMMANDS = 8;
-const int NUMAVAILABLECOMMANDS = 16;
+const int NUMAVAILABLECOMMANDS = 17;
 
 std::string availableCommands[NUMAVAILABLECOMMANDS] = {
 
-    "q","quit","format","ls","create","cat","createImage","restoreImage",
+    "q","quit","exit","format","ls","create","cat","createImage","restoreImage",
     "rm","cp","append","mv","mkdir","cd","pwd","help"
 };
 
@@ -42,43 +42,44 @@ int main(void) {
             int cIndex = findCommand(commandArr[0]);
             switch(cIndex) {
 
-			case 0:
-			case 1: //quit
+			case 0: // q
+			case 1: // quit
+			case 2: // exit
 				bRun = quit();                
                 break;
-            case 2: // format
+            case 3: // format
                 break;
-            case 3: // ls
+            case 4: // ls
                 std::cout << "Listing directory" << std::endl;
                 break;
-            case 4: // create
+            case 5: // create
 				printInt = fileSys.createFileOn("Det var en gang en pirat som borjade beratta en saga som lod: ");
 				std::cout << std::to_string(printInt) + "\n";
                 break;
-            case 5: // cat
+            case 6: // cat
                 break;
-            case 6: // createImage
+            case 7: // createImage
                 break;
-            case 7: // restoreImage
+            case 8: // restoreImage
                 break;
-            case 8: // rm
+            case 9: // rm
 				printString = fileSys.viewFileOn();
 				std::cout << printString + "\n";
                 break;
-            case 9: // cp
+            case 10: // cp
                 break;
-            case 10: // append
+            case 11: // append
                 break;
-            case 11: // mv
+            case 12: // mv
                 break;
-            case 12: // mkdir
+            case 13: // mkdir
 				std::cout << " create folder given or not named\n";
                 break;
-            case 13: // cd
+            case 14: // cd
                 break;
-            case 14: // pwd
+            case 15: // pwd
                 break;
-            case 15: // help
+            case 16: // help
                 std::cout << help() << std::endl;
                 break;
             default:
