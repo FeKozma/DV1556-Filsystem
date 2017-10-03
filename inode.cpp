@@ -1,62 +1,55 @@
 #include "inode.h"
 
-class inode
+const std::string NAMELESS_FOLDER = "no-name";
+
+inode::inode(inode* &parent) {
+	this->parent = parent;
+}
+
+bool inode::addFolder(std::string name)
 {
-public:
-	const std::string NAMELESS_FOLDER = "no-name";
+	bool folderAdded = false;
 
-	std::vector<int> files; //vilket block är upptgaget av filen
-	std::vector<inode> folder;
-	inode* parent;
-	inode(inode* &parent) {
-		this->parent = parent;
-	}
-	~inode() {};
-	bool addFolder(std::string name = "")
+	//om mappnamn ej angivet. nemge mappen "namnlös mapp"
+	if (name == "")
 	{
-		bool folderAdded = false;
-
-		//om mappnamn ej angivet. nemge mappen "namnlös mapp"
-		if (name == "")
+		int i = 0;
+		name = NAMELESS_FOLDER;
+		int sizeName = name.size();
+		while (findFolder(name))
 		{
-			int i = 0;
-			name = NAMELESS_FOLDER;
-			int sizeName = name.size();
-			while (findFolder(name))
-			{
-				i++;
-				name.resize(7);
-				name += "(" + std::to_string(i) + ")";
-			}
-			//create folder
-			folderAdded = true;
+			i++;
+			name.resize(7);
+			name += "(" + std::to_string(i) + ")";
 		}
-		else if (!findFolder(name))
-		{
-			//TODO: create folder
-			folderAdded = true;
-		}
-
-
-		return folderAdded;
+		//create folder
+		folderAdded = true;
 	}
-	bool findFolder(std::string name)
+	else if (!findFolder(name))
 	{
-		bool retVal = false;
-		for (std::vector<inode>::size_type i = 0; i != folder.size(); i++)
-		{
-			if (this->folder[i].getFolderName() == name)
-			{
-				retVal = true;
-			}
-
-		}
-		return retVal;
+		//TODO: create folder
+		folderAdded = true;
 	}
-	std::string getFolderName()
+
+
+	return folderAdded;
+}
+
+bool inode::findFolder(std::string name)
+{
+	bool retVal = false;
+	for (std::vector<inode>::size_type i = 0; i != folder.size(); i++)
 	{
-		return "undefined";
+		if (this->folder[i].getFolderName() == name)
+		{
+			retVal = true;
+		}
+
 	}
+	return retVal;
+}
 
-
-};
+std::string inode::getFolderName()
+{
+	return "undefined";
+}
