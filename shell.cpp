@@ -52,7 +52,7 @@ int main(void) {
                 std::cout << "Listing directory" << std::endl;
                 break;
             case 4: // create
-				printInt = fileSys.createFileOn();
+				printInt = fileSys.createFileOn("Det var en gang en pirat som borjade beratta en saga som lod: ");
 				std::cout << std::to_string(printInt) + "\n";
                 break;
             case 5: // cat

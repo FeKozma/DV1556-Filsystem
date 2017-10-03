@@ -11,17 +11,15 @@ FileSystem::~FileSystem() {
 
 
 // detta är en testfunktion VARNING testfunktion
-int FileSystem::createFileOn(int blocknr)
+int FileSystem::createFileOn(std::string textString, int blocknr)
 {
 
 	int lengthOfBlock = 512;
-	std::string repString = "Det var en gang en pirat som borjade beratta en saga som lod: ";
+	std::string headerText = "xxxxxxxxxx";
 	std::string storeString;
 
-	for (int i = 0; (i + repString.length()) < lengthOfBlock; i += repString.length())
-	{
-		storeString += repString;
-	}
+	storeString = headerText;
+	storeString += textString;
 
 	for (int i = storeString.length(); i < lengthOfBlock; i++)
 	{

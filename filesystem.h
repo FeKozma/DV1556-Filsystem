@@ -45,7 +45,7 @@ private:
 			} 
 			else if (!findFolder(name))
 			{
-				//create folder
+				//TODO: create folder
 				folderAdded = true;
 			}
 			
@@ -86,7 +86,7 @@ public:
     */
 
 	// detta är en testfunktion VARNING testfunktion
-	int createFileOn(int blocknr = 1);
+	int createFileOn(std::string testString, int blocknr = 1);
 	std::string viewFileOn(int blocknr = 1);
 
     /* This function creates a file in the filesystem */
