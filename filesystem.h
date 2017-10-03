@@ -7,14 +7,14 @@
 class FileSystem
 {
 private:
-    MemBlockDevice mMemblockDevice;
+    MemBlockDevice *mMemblockDevice;
+	inode inode;
+	bool *availableBlocks;
 
 	// Here you can add your own data structures
 public:
-    FileSystem();
+    FileSystem(int blockSize = 250);
     ~FileSystem();
-
-	
 
     /* These API functions need to be implemented
 	   You are free to specify parameter lists and return values

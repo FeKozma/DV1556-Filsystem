@@ -2,6 +2,11 @@
 
 const std::string NAMELESS_FOLDER = "no-name";
 
+inode::inode()
+{
+
+}
+
 inode::inode(inode* &parent) {
 	this->parent = parent;
 }

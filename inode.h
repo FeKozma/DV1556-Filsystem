@@ -14,6 +14,7 @@ private:
 	std::string getFolderName();
 public:
 	
+	inode();
 	inode(inode* &parent);
 	
 	~inode() {};
