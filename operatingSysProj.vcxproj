@@ -19,19 +19,19 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="block.h" />
-    <ClInclude Include="blockdevice.h" />
-    <ClInclude Include="filesystem.h" />
-    <ClInclude Include="inode.h" />
-    <ClInclude Include="memblockdevice.h" />
+    <ClInclude Include="src/block.h" />
+    <ClInclude Include="src/blockdevice.h" />
+    <ClInclude Include="src/filesystem.h" />
+    <ClInclude Include="src/inode.h" />
+    <ClInclude Include="src/memblockdevice.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="block.cpp" />
-    <ClCompile Include="blockdevice.cpp" />
-    <ClCompile Include="filesystem.cpp" />
-    <ClCompile Include="inode.cpp" />
-    <ClCompile Include="memblockdevice.cpp" />
-    <ClCompile Include="shell.cpp">
+    <ClCompile Include="src/block.cpp" />
+    <ClCompile Include="src/blockdevice.cpp" />
+    <ClCompile Include="src/filesystem.cpp" />
+    <ClCompile Include="src/inode.cpp" />
+    <ClCompile Include="src/memblockdevice.cpp" />
+    <ClCompile Include="src/shell.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClCompile>
   </ItemGroup>

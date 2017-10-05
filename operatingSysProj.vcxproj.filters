@@ -15,39 +15,39 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="block.h">
+    <ClInclude Include="src/block.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="blockdevice.h">
+    <ClInclude Include="src/blockdevice.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="filesystem.h">
+    <ClInclude Include="src/filesystem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="memblockdevice.h">
+    <ClInclude Include="src/memblockdevice.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="inode.h">
+    <ClInclude Include="src/inode.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="memblockdevice.cpp">
+    <ClCompile Include="src/memblockdevice.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="shell.cpp">
+    <ClCompile Include="src/shell.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="block.cpp">
+    <ClCompile Include="src/block.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="blockdevice.cpp">
+    <ClCompile Include="src/blockdevice.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="filesystem.cpp">
+    <ClCompile Include="src/filesystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="inode.cpp">
+    <ClCompile Include="src/inode.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
