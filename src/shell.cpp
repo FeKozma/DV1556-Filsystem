@@ -1,4 +1,3 @@
-#include <iostream>
 #include <sstream>
 #include "filesystem.h"
 
@@ -6,7 +5,6 @@ const int MAXCOMMANDS = 8;
 const int NUMAVAILABLECOMMANDS = 17;
 
 std::string availableCommands[NUMAVAILABLECOMMANDS] = {
-
     "q","quit","exit","format","ls","create","cat","createImage","restoreImage",
     "rm","cp","append","mv","mkdir","cd","pwd","help"
 };
@@ -123,21 +121,21 @@ std::string help() {
     std::string helpStr;
     helpStr += "OSD Disk Tool .oO Help Screen Oo.\n";
     helpStr += "-----------------------------------------------------------------------------------\n" ;
-    helpStr += "* quit:                             Quit OSD Disk Tool\n";
-    helpStr += "* format;                           Formats disk\n";
-    helpStr += "* ls     <path>:                    Lists contents of <path>.\n";
-    helpStr += "* create <path>:                    Creates a file and stores contents in <path>\n";
-    helpStr += "* cat    <path>:                    Dumps contents of <file>.\n";
-    helpStr += "* createImage  <real-file>:         Saves disk to <real-file>\n";
-    helpStr += "* restoreImage <real-file>:         Reads <real-file> onto disk\n";
-    helpStr += "* rm     <file>:                    Removes <file>\n";
-    helpStr += "* cp     <source> <destination>:    Copy <source> to <destination>\n";
-    helpStr += "* append <source> <destination>:    Appends contents of <source> to <destination>\n";
-    helpStr += "* mv     <old-file> <new-file>:     Renames <old-file> to <new-file>\n";
-    helpStr += "* mkdir  <directory>:               Creates a new directory called <directory>\n";
-    helpStr += "* cd     <directory>:               Changes current working directory to <directory>\n";
-    helpStr += "* pwd:                              Get current working directory\n";
-    helpStr += "* help:                             Prints this help screen\n";
+    helpStr += "* quit, q, exit                     Quit OSD Disk Tool\n";
+    helpStr += "* format                            Formats disk\n";
+    helpStr += "* ls     <path>                     Lists contents of <path>.\n";
+    helpStr += "* create <path>                     Creates a file and stores contents in <path>\n";
+    helpStr += "* cat    <path>                     Dumps contents of <file>.\n";
+    helpStr += "* createImage  <real-file>          Saves disk to <real-file>\n";
+    helpStr += "* restoreImage <real-file>          Reads <real-file> onto disk\n";
+    helpStr += "* rm     <file>                     Removes <file>\n";
+    helpStr += "* cp     <source> <destination>     Copy <source> to <destination>\n";
+    helpStr += "* append <source> <destination>     Appends contents of <source> to <destination>\n";
+    helpStr += "* mv     <old-file> <new-file>      Renames <old-file> to <new-file>\n";
+    helpStr += "* mkdir  <directory>                Creates a new directory called <directory>\n";
+    helpStr += "* cd     <directory>                Changes current working directory to <directory>\n";
+    helpStr += "* pwd                               Get current working directory\n";
+    helpStr += "* help                              Prints this help screen\n";
     return helpStr;
 }
 
