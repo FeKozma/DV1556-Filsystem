@@ -2,6 +2,7 @@
 
 FileSystem::FileSystem(int fileSize) {
 	mMemblockDevice = new MemBlockDevice(fileSize);
+	curFolder = new inode(this->curFolder, "");
 }
 
 FileSystem::~FileSystem() {
@@ -30,6 +31,17 @@ std::string FileSystem::viewFileOn(int blocknr)
 	Block retBlock = mMemblockDevice->readBlock(blocknr);
 	
 	return retBlock.toString();
+}
+
+bool FileSystem::createFile(std::string name, std::string path)
+{
+	int x = 1;
+	return curFolder->addFile(name, x, path);
+}
+
+bool FileSystem::createFolderi(std::string name, std::string path)
+{
+	return curFolder->addFolder(name, path);
 }
 
 

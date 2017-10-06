@@ -8,7 +8,7 @@ class FileSystem
 {
 private:
     MemBlockDevice *mMemblockDevice;
-	inode inode;
+	inode *curFolder;
 	bool *availableBlocks;
 
 	// Here you can add your own data structures
@@ -25,10 +25,10 @@ public:
 	std::string viewFileOn(int blocknr = 1);
 
     /* This function creates a file in the filesystem */
-    // createFile(...)
+    bool createFile(std::string name, std::string path = "");
 
     /* Creates a folder in the filesystem */
-    // createFolderi(...);
+	bool createFolderi(std::string name = "", std::string path = "");
 
     /* Removes a file in the filesystem */
     // removeFile(...);

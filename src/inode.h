@@ -12,14 +12,14 @@ private:
 
 	bool findFolder(std::string name = "");
 	std::string getFolderName();
+	std::vector<std::string> pathSpliter(std::string path);
 public:
 	
-	inode();
-	inode(inode* &parent);
+	inode(inode* &parent, std::string folderName);
 	
 	~inode() {};
-
-	bool addFolder(std::string name = "");
+	int addFile(std::string name, int freeBlock, std::string path = "");
+	bool addFolder(std::string name = "" , std::string path = "");
 	
 };
 
