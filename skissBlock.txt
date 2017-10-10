@@ -3,3 +3,5 @@ med karaktärer (512 st för att vara exakt); och att denna sedan skickas
  in när en ny fil ska skapas. 
  
 Svergie, Karlskrona, Blekinge Tekniska Högskola, tyst avdelning.
+
+DU filnamn!! de ska finnas!! 

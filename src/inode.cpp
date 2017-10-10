@@ -47,23 +47,32 @@ bool inode::addFolder(std::string name, std::string path)
 	return folderAdded;
 }
 
-bool inode::findFolder(std::string name)
+inode * inode::goToFolder(std::string path)
 {
-	bool retVal = false;
+	//TODO: splita path
+	//TODO: calla på findFolderRecusive
+	//TODO: return findFolderRecusive resultat
+	return nullptr;
+}
+
+int inode::findFolder(std::string name)
+{
+	int folderPos = -1;
 	for (std::vector<inode>::size_type i = 0; i != folder.size(); i++)
 	{
 		if (this->folder[i].getFolderName() == name)
 		{
-			retVal = true;
+			folderPos = i;
+			i == folder.size();
 		}
 
 	}
-	return retVal;
+	return folderPos;
 }
 
 std::string inode::getFolderName()
 {
-	return "undefined";
+	return this->name;
 }
 
 std::vector<std::string> inode::pathSpliter(std::string path)
@@ -86,4 +95,25 @@ std::vector<std::string> inode::pathSpliter(std::string path)
 	}
 
 	return retPath;
+}
+
+inode * inode::findFolderRecusive(std::vector<std::string> path, int pos, int cap)
+{ //TODO: test function
+	if (cap > pos)   //size -> correkt?   path.length()?
+	{
+		std::string findFoldername = path.at(pos);
+		int folderPos = findFolder(findFoldername);
+		if (folderPos != -1)
+		{
+			return folder.at(folderPos).findFolderRecusive(path, ++pos, cap);
+		}
+		else
+		{
+			return nullptr;
+		}
+	}
+	else
+	{
+		return this;
+	}
 }
