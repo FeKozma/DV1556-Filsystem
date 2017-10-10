@@ -45,7 +45,9 @@ bool inode::addFolder(std::string name, std::string path)
 
 	// Add folder
 	if (folderAdded) {
-		folder.push_back(inode(name, goToFolder(path)->parent));
+		inode iNode = inode(name);
+		iNode.parent = goToFolder(path);
+		folder.push_back(iNode);
 	}
 
 	return folderAdded;
@@ -54,7 +56,7 @@ bool inode::addFolder(std::string name, std::string path)
 inode* inode::goToFolder(std::string path)
 {
 	std::vector<std::string> pathList = pathSplitter(path);
-	return findFolderRecusive(pathList, 0, pathList.size());
+	return findFolderRecursive(pathList, 0, pathList.size());
 }
 
 int inode::findFolder(std::string name)
@@ -65,7 +67,6 @@ int inode::findFolder(std::string name)
 		if (this->folder[i].getFolderName() == name)
 		{
 			folderPos = i;
-			i == folder.size();
 		}
 	}
 	return folderPos;
@@ -97,29 +98,26 @@ std::vector<std::string> inode::pathSplitter(std::string path)
 	return retPath;
 }
 
-inode* inode::findFolderRecusive(std::vector<std::string> path, int pos, int cap)
+inode* inode::findFolderRecursive(std::vector<std::string> path, int pos, int cap)
 { //TODO: test funktion och möjligtvis reducera antalet "return"
 	if (cap > pos)   //size -> correkt?   path.length()?
 	{
 		std::string findFoldername = path.at(pos);
-		inode* next;
+		inode* next = this;
 		// Om det är ett specialfall ex ..
 		if (findFoldername == "..") {
-			next = (*parent).findFolderRecusive(path, ++pos, cap);
+			next = (*parent).findFolderRecursive(path, ++pos, cap);
 			//TODO: osäker på om åvanstående rad kod fungerar korrekt
 		}
 		// Om det är ett specialfall /
 		else if (findFoldername == "") {
-			next = (*getRoot(*this)).findFolderRecusive(path, ++pos, cap); //TODO: work?
+			next = (*getRoot(*this)).findFolderRecursive(path, ++pos, cap); //TODO: work?
 		}
 
 		// Om findFolder är ett mappnamn
 		int folderPos = findFolder(findFoldername);
 		if (folderPos != -1) {
-			next = folder.at(folderPos).findFolderRecusive(path, ++pos, cap);
-		}
-		else {
-			return this;
+			next = folder.at(folderPos).findFolderRecursive(path, ++pos, cap);
 		}
 
 		return next;

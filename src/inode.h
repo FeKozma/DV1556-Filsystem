@@ -9,24 +9,27 @@ private:
 	inode* parent;
 	std::string name;
 	std::vector<int> files; // Vilket block är upptgaget av filen
-	std::vector<std::string> filesName;  // filesName överstämmer med files. fileName 1 sparas på files.at(1)
+	std::vector<std::string> filesName;  // filesName överstämmer med files. filesName 1 sparas på files.at(1)
 	std::vector<inode> folder;
 
 	int findFolder(std::string name = "");
-	std::string getFolderName();
+	
 	std::vector<std::string> pathSplitter(std::string path);
-	inode* findFolderRecusive(std::vector<std::string> path, int pos, int cap /*cap -> sluta vid cap ex kan finnas filnamn i slutet av path*/);
+	inode* findFolderRecursive(std::vector<std::string> path, int pos, int cap /*cap -> sluta vid cap ex kan finnas filnamn i slutet av path*/);
 	inode* getRoot(inode& curent);
 
 	
 public:
-
+	
 	inode(std::string folderName);
 	inode(std::string folderName, inode* &parent);
 	
 	~inode() {};
+	
+	std::string getFolderName();
+
 	int addFile(std::string name, int freeBlock, std::string path = "");
-	bool addFolder(std::string name = "" , std::string path = "");
+	bool addFolder(std::string name = "", std::string path = "");
 	inode* goToFolder(std::string path);
 };
 
