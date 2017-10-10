@@ -8,7 +8,7 @@ class inode {
 private:
 	inode* parent;
 	std::string name;
-	std::vector<int> files; // Vilket block är upptgaget av filen
+	std::vector<int> files; // Which block is busy by the file
 	std::vector<std::string> filesName;  // filesName överstämmer med files. filesName 1 sparas på files.at(1)
 	std::vector<inode> folder;
 
@@ -36,4 +36,4 @@ public:
 	inode* goToFolder(std::string path);
 };
 
-#endif
+#endif // INODE_H

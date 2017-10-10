@@ -25,7 +25,7 @@ int main(void) {
 
 	std::string userCommand, commandArr[MAXCOMMANDS];
 	std::string user = "user@DV1492";    // Change this if you want another user to be displayed
-	std::string currentDir = "/";    // current directory, used for output
+	std::string currentDir = "/";    // Current directory, used for output
 
 	int printInt;
 	std::string printString;

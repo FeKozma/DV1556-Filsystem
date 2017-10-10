@@ -82,8 +82,10 @@ namespace UnitTests
 			iNode.addFolder("folder3", "/");
 			iNode = *iNode.goToFolder("/folder2");
 			Assert::AreNotEqual(iNode.getFolderName(), (std::string)"folder2");
+
 			iNode = *iNode.goToFolder("folder3");
 			Assert::AreEqual(iNode.getFolderName(), (std::string)"folder3");
+			
 			iNode = *iNode.goToFolder("/folder1/../folder1/folder2");
 			Assert::AreEqual(iNode.getFolderName(), (std::string)"folder3");
 		}

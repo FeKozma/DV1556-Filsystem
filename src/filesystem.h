@@ -11,16 +11,11 @@ private:
 	inode *curFolder;
 	bool *availableBlocks;
 
-	// Here you can add your own data structures
 public:
     FileSystem(int blockSize = 250);
     ~FileSystem();
 
-    /* These API functions need to be implemented
-	   You are free to specify parameter lists and return values
-    */
-
-	// detta är en testfunktion VARNING testfunktion
+	// These are test functions, WARNING, TODO
 	int createFileOn(std::string testString, int blocknr = 1);
 	std::string viewFileOn(int blocknr = 1);
 
@@ -40,9 +35,7 @@ public:
     std::string goToFolder(std::string path);
 
     /* This function will get all the files and folders in the specified folder */
-    std::string listDir(std::string path);
-
-    /* Add your own member-functions if needed */
+	std::string listDir(std::string path);
 };
 
 #endif // FILESYSTEM_H

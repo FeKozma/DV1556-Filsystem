@@ -26,8 +26,8 @@ bool inode::addFolder(std::string name, std::string path)
 {
 	bool folderAdded = false;
 
-	// Om mappnamn ej angivet. namge mappen NAMELESS_FOLDER
-	if (name == "") {
+	// If no name is entered, name the folder to what the variable NAMELESS_FOLDER is
+	if (name == "") { //TODO: Should we still have this?
 		int i = 0;
 		name = NAMELESS_FOLDER;
 		int sizeName = name.size();
@@ -121,34 +121,31 @@ std::vector<std::string> inode::pathSplitter(std::string path)
 	return retPath;
 }
 
-inode* inode::findFolderRecursive(std::vector<std::string> path, int pos, int cap)
-{ //TODO: test funktion och möjligtvis reducera antalet "return"
-	if (cap > pos)   //size -> correkt?   path.length()?
-	{
+//TODO: memory leak somewhere in this method.
+inode* inode::findFolderRecursive(std::vector<std::string> path, int pos, int cap) {
+	inode* retINode = this;
+
+	if (cap > pos) {
 		std::string findFoldername = path.at(pos);
-		inode* next = this;
-		// Om det är ett specialfall ex ..
+
+		// If it's a special case (..)
 		if (findFoldername == "..") {
-			next = (*parent).findFolderRecursive(path, ++pos, cap);
-			//TODO: osäker på om åvanstående rad kod fungerar korrekt
-		}
-		// Om det är ett specialfall /
-		else if (findFoldername == "") {
-			next = (*getRoot(*this)).findFolderRecursive(path, ++pos, cap); //TODO: work?
+			retINode = (*parent).findFolderRecursive(path, ++pos, cap);
 		}
 
-		// Om findFolder är ett mappnamn
+		// If it's a special case (/)
+		else if (findFoldername == "") {
+			retINode = (*getRoot(*this)).findFolderRecursive(path, ++pos, cap);
+		}
+
+		// If findFolder is a folder name
 		int folderPos = findFolder(findFoldername);
 		if (folderPos != -1) {
-			next = folder.at(folderPos).findFolderRecursive(path, ++pos, cap);
+			retINode = folder.at(folderPos).findFolderRecursive(path, ++pos, cap);
 		}
+	}
 
-		return next;
-	}
-	else
-	{
-		return this;
-	}
+	return retINode;
 }
 
 inode* inode::getRoot(inode &current)

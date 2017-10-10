@@ -9,11 +9,9 @@ FileSystem::~FileSystem() {
 	delete mMemblockDevice;
 	delete curFolder;
 	delete[] availableBlocks;
-
-	//TODO: free the memory of all folders and files in the variable curFolder.
 }
 
-// Detta är en testfunktion VARNING testfunktion
+// This is a test function, WARNING, TODO
 int FileSystem::createFileOn(std::string storeString, int blocknr) {
 	int lengthOfBlock = 512;
 
@@ -26,7 +24,7 @@ int FileSystem::createFileOn(std::string storeString, int blocknr) {
 	return retVal;
 }
 
-// Detta är en testfunktion VARNING testfunktion
+// This is a test function, WARNING, TODO
 std::string FileSystem::viewFileOn(int blocknr) {
 	Block retBlock = mMemblockDevice->readBlock(blocknr);
 	
@@ -60,6 +58,7 @@ std::string FileSystem::listDir(std::string path) {
 	std::string retString = "";
 	std::vector<std::string> folders = curFolder->getFolders();
 	std::vector<std::string> files = curFolder->getFiles();
+
 	for (int i = 0; i < folders.size(); ++i) {
 		retString += folders[i] + "/" + "\n";
 	}
