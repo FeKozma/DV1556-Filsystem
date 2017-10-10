@@ -7,10 +7,11 @@ FileSystem::FileSystem(int fileSize) {
 
 FileSystem::~FileSystem() {
 	delete mMemblockDevice;
+	delete curFolder;
 	delete[] availableBlocks;
 }
 
-// detta är en testfunktion VARNING testfunktion
+// Detta är en testfunktion VARNING testfunktion
 int FileSystem::createFileOn(std::string storeString, int blocknr)
 {
 	int lengthOfBlock = 512;
@@ -24,8 +25,7 @@ int FileSystem::createFileOn(std::string storeString, int blocknr)
 	return retVal;
 }
 
-
-// detta är en testfunktion VARNING testfunktion
+// Detta är en testfunktion VARNING testfunktion
 std::string FileSystem::viewFileOn(int blocknr)
 {
 	Block retBlock = mMemblockDevice->readBlock(blocknr);
@@ -35,14 +35,11 @@ std::string FileSystem::viewFileOn(int blocknr)
 
 bool FileSystem::createFile(std::string name, std::string path)
 {
-	int x = 1;
-	return curFolder->addFile(name, x, path);
+	int block = 1;
+	return curFolder->addFile(name, block, path);
 }
 
 bool FileSystem::createFolderi(std::string name, std::string path)
 {
 	return curFolder->addFolder(name, path);
 }
-
-
-/* Please insert your code */
