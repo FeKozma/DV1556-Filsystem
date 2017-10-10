@@ -9,6 +9,8 @@ FileSystem::~FileSystem() {
 	delete mMemblockDevice;
 	delete curFolder;
 	delete[] availableBlocks;
+
+	//TODO: free the memory of all folders and files in the variable curFolder.
 }
 
 // Detta är en testfunktion VARNING testfunktion
@@ -31,18 +33,39 @@ std::string FileSystem::viewFileOn(int blocknr) {
 	return retBlock.toString();
 }
 
-// Detta är en testfunktion VARNING testfunktion
-bool FileSystem::createFolderOn(std::string name, std::string path) {
-	return curFolder->addFolder(name, path);
-}
-
 bool FileSystem::createFile(std::string name, std::string path)
 {
 	int block = 1;
 	return curFolder->addFile(name, block, path);
 }
 
-bool FileSystem::createFolderi(std::string name, std::string path)
+std::string FileSystem::createFolderi(std::string name, std::string path)
 {
-	return curFolder->addFolder(name, path);
+	if (name == "") return "Error: No name entered.";
+
+	if (path == "")
+		path = curFolder->getFolderPath();
+	curFolder->addFolder(name, path);
+	return path + name;
+}
+
+std::string FileSystem::goToFolder(std::string path) {
+	//TODO: return an error message saying the folder doesn't exist.
+	if (path != "")
+		curFolder = curFolder->goToFolder(path);
+	return curFolder->getFolderPath();
+}
+
+std::string FileSystem::listDir(std::string path) {
+	std::string retString = "";
+	std::vector<std::string> folders = curFolder->getFolders();
+	std::vector<std::string> files = curFolder->getFiles();
+	for (int i = 0; i < folders.size(); ++i) {
+		retString += folders[i] + "/" + "\n";
+	}
+	for (int i = 0; i < files.size(); ++i) {
+		retString += files[i] + "\n";
+	}
+
+	return retString;
 }

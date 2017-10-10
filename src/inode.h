@@ -27,6 +27,9 @@ public:
 	~inode() {};
 	
 	std::string getFolderName();
+	std::string getFolderPath();
+	std::vector<std::string> getFolders();
+	std::vector<std::string> getFiles();
 
 	int addFile(std::string name, int freeBlock, std::string path = "");
 	bool addFolder(std::string name = "", std::string path = "");

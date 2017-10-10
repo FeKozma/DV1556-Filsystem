@@ -77,6 +77,29 @@ std::string inode::getFolderName()
 	return this->name;
 }
 
+std::string inode::getFolderPath() {
+	std::string path = "/";
+	inode *current = this;
+	while (current->getFolderName() != "") {
+		path = "/" + current->getFolderName() + path;
+		current = current->parent;
+	}
+
+	return path;
+}
+
+std::vector<std::string> inode::getFolders() {
+	std::vector<std::string> folders;
+	for (int i = 0; i < folder.size(); ++i) {
+		folders.push_back(folder[i].getFolderName());
+	}
+	return folders;
+}
+
+std::vector<std::string> inode::getFiles() {
+	return filesName;
+}
+
 std::vector<std::string> inode::pathSplitter(std::string path)
 {
 	std::vector<std::string> retPath;

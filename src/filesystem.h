@@ -23,13 +23,12 @@ public:
 	// detta är en testfunktion VARNING testfunktion
 	int createFileOn(std::string testString, int blocknr = 1);
 	std::string viewFileOn(int blocknr = 1);
-	bool createFolderOn(std::string name, std::string path);
 
     /* This function creates a file in the filesystem */
     bool createFile(std::string name, std::string path = "");
 
     /* Creates a folder in the filesystem */
-	bool createFolderi(std::string name = "", std::string path = "");
+	std::string createFolderi(std::string name = "", std::string path = "");
 
     /* Removes a file in the filesystem */
     // removeFile(...);
@@ -38,10 +37,10 @@ public:
     // removeFolder(...);
 
     /* Function will move the current location to a specified location in the filesystem */
-    // goToFolder(...);
+    std::string goToFolder(std::string path);
 
     /* This function will get all the files and folders in the specified folder */
-    // listDir(...);
+    std::string listDir(std::string path);
 
     /* Add your own member-functions if needed */
 };
