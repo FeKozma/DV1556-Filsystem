@@ -107,11 +107,12 @@ inode * inode::findFolderRecusive(std::vector<std::string> path, int pos, int ca
 		//om det är ett specialfall ex ../ eller /
 		if (findFoldername == "..")
 		{
-			next = this->parent;
+			next = (*parent).findFolderRecusive(path, ++pos, cap);
+			//osäker på om åvanstående rad kod fungerar korrekt
 		}
 		else if (findFoldername == "")
 		{
-			next = getRoot(*this);   //work?
+			next = (*getRoot(*this)).findFolderRecusive(path, ++pos, cap);   //work?
 		}
 
 		//om findFolder är ett mapp namn
