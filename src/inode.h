@@ -16,6 +16,7 @@ private:
 	std::string getFolderName();
 	std::vector<std::string> pathSpliter(std::string path);
 	inode* findFolderRecusive(std::vector<std::string> path, int pos, int cap /*cap -> sluta vid cap ex kan finnas filnamn i slutet av path*/);
+	inode* getRoot(inode& curent);
 public:
 	
 	inode(inode* &parent, std::string folderName);

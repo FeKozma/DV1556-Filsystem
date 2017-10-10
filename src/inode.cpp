@@ -98,22 +98,50 @@ std::vector<std::string> inode::pathSpliter(std::string path)
 }
 
 inode * inode::findFolderRecusive(std::vector<std::string> path, int pos, int cap)
-{ //TODO: test function
+{ //TODO: test function och möjligtvis reducera antalet "return"
 	if (cap > pos)   //size -> correkt?   path.length()?
 	{
+		
 		std::string findFoldername = path.at(pos);
+		inode* next;
+		//om det är ett specialfall ex ../ eller /
+		if (findFoldername == "..")
+		{
+			next = this->parent;
+		}
+		else if (findFoldername == "")
+		{
+			next = getRoot(*this);   //work?
+		}
+
+		//om findFolder är ett mapp namn
 		int folderPos = findFolder(findFoldername);
 		if (folderPos != -1)
 		{
-			return folder.at(folderPos).findFolderRecusive(path, ++pos, cap);
+			next = folder.at(folderPos).findFolderRecusive(path, ++pos, cap);
+				
 		}
 		else
 		{
 			return nullptr;
 		}
+
+		return next;
 	}
 	else
 	{
 		return this;
 	}
 }
+
+inode * inode::getRoot( inode& curent)
+{
+
+	if (curent.parent != &curent) {
+		return getRoot(*curent.parent);
+	}
+	return &curent;
+	
+	
+}
+
