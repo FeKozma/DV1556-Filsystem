@@ -2,7 +2,7 @@
 
 FileSystem::FileSystem(int fileSize) {
 	mMemblockDevice = new MemBlockDevice(fileSize);
-	curFolder = new inode(this->curFolder, "");
+	curFolder = new inode("");
 }
 
 FileSystem::~FileSystem() {
@@ -12,8 +12,7 @@ FileSystem::~FileSystem() {
 }
 
 // Detta är en testfunktion VARNING testfunktion
-int FileSystem::createFileOn(std::string storeString, int blocknr)
-{
+int FileSystem::createFileOn(std::string storeString, int blocknr) {
 	int lengthOfBlock = 512;
 
 	for (int i = storeString.length(); i < lengthOfBlock; i++)
@@ -26,11 +25,15 @@ int FileSystem::createFileOn(std::string storeString, int blocknr)
 }
 
 // Detta är en testfunktion VARNING testfunktion
-std::string FileSystem::viewFileOn(int blocknr)
-{
+std::string FileSystem::viewFileOn(int blocknr) {
 	Block retBlock = mMemblockDevice->readBlock(blocknr);
 	
 	return retBlock.toString();
+}
+
+// Detta är en testfunktion VARNING testfunktion
+bool FileSystem::createFolderOn(std::string name, std::string path) {
+	return curFolder->addFolder(name, path);
 }
 
 bool FileSystem::createFile(std::string name, std::string path)

@@ -14,12 +14,15 @@ private:
 
 	int findFolder(std::string name = "");
 	std::string getFolderName();
-	std::vector<std::string> pathSpliter(std::string path);
+	std::vector<std::string> pathSplitter(std::string path);
 	inode* findFolderRecusive(std::vector<std::string> path, int pos, int cap /*cap -> sluta vid cap ex kan finnas filnamn i slutet av path*/);
 	inode* getRoot(inode& curent);
-public:
+
 	
-	inode(inode* &parent, std::string folderName);
+public:
+
+	inode(std::string folderName);
+	inode(std::string folderName, inode* &parent);
 	
 	~inode() {};
 	int addFile(std::string name, int freeBlock, std::string path = "");

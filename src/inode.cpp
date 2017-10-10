@@ -2,15 +2,21 @@
 
 const std::string NAMELESS_FOLDER = "no-name";
 
-inode::inode(inode* &parent, std::string folderName) {
+inode::inode(std::string folderName) {
+	this->parent = this;
+	this->name = folderName;
+}
+
+inode::inode(std::string folderName, inode* &parent) {
 	this->parent = parent;
+	this->name = folderName;
 }
 
 int inode::addFile(std::string name, int freeBlock, std::string path)
 {
 	//TODO: find path
 	
-	std::vector<std::string> pathList = pathSpliter(path);
+	std::vector<std::string> pathList = pathSplitter(path);
 	//TODO: ta första mapp namn -> kolla om du har denna map -> gå in i dennna mapp
 
 	return 0;
@@ -25,29 +31,30 @@ bool inode::addFolder(std::string name, std::string path)
 		int i = 0;
 		name = NAMELESS_FOLDER;
 		int sizeName = name.size();
-		while (findFolder(name))
+		while (findFolder(name) >= 0)
 		{
 			i++;
 			name.resize(7);
 			name += "(" + std::to_string(i) + ")";
 		}
-		//TODO: create folder
 		folderAdded = true;
 	}
-	else if (!findFolder(name)) {
-		//TODO: create folder
+	else if (findFolder(name) == -1) {
 		folderAdded = true;
+	}
+
+	// Add folder
+	if (folderAdded) {
+		folder.push_back(inode(name, goToFolder(path)->parent));
 	}
 
 	return folderAdded;
 }
 
-inode * inode::goToFolder(std::string path)
+inode* inode::goToFolder(std::string path)
 {
-	//TODO: splita path
-	//TODO: calla på findFolderRecusive
-	//TODO: return findFolderRecusive resultat
-	return nullptr;
+	std::vector<std::string> pathList = pathSplitter(path);
+	return findFolderRecusive(pathList, 0, pathList.size());
 }
 
 int inode::findFolder(std::string name)
@@ -60,7 +67,6 @@ int inode::findFolder(std::string name)
 			folderPos = i;
 			i == folder.size();
 		}
-
 	}
 	return folderPos;
 }
@@ -70,7 +76,7 @@ std::string inode::getFolderName()
 	return this->name;
 }
 
-std::vector<std::string> inode::pathSpliter(std::string path)
+std::vector<std::string> inode::pathSplitter(std::string path)
 {
 	std::vector<std::string> retPath;
 
@@ -83,6 +89,7 @@ std::vector<std::string> inode::pathSpliter(std::string path)
 		}
 	}
 
+	// If the path doesn't end with /, add the last path.
 	if (start != path.length()) {
 		retPath.push_back(path.substr(start));
 	}
@@ -90,20 +97,20 @@ std::vector<std::string> inode::pathSpliter(std::string path)
 	return retPath;
 }
 
-inode * inode::findFolderRecusive(std::vector<std::string> path, int pos, int cap)
+inode* inode::findFolderRecusive(std::vector<std::string> path, int pos, int cap)
 { //TODO: test funktion och möjligtvis reducera antalet "return"
 	if (cap > pos)   //size -> correkt?   path.length()?
 	{
 		std::string findFoldername = path.at(pos);
 		inode* next;
-		// Om det är ett specialfall ex ../ eller /
+		// Om det är ett specialfall ex ..
 		if (findFoldername == "..") {
 			next = (*parent).findFolderRecusive(path, ++pos, cap);
 			//TODO: osäker på om åvanstående rad kod fungerar korrekt
 		}
-		// Om det är /
+		// Om det är ett specialfall /
 		else if (findFoldername == "") {
-			next = (*getRoot(*this)).findFolderRecusive(path, ++pos, cap);   //TODO: work?
+			next = (*getRoot(*this)).findFolderRecusive(path, ++pos, cap); //TODO: work?
 		}
 
 		// Om findFolder är ett mappnamn
@@ -112,7 +119,7 @@ inode * inode::findFolderRecusive(std::vector<std::string> path, int pos, int ca
 			next = folder.at(folderPos).findFolderRecusive(path, ++pos, cap);
 		}
 		else {
-			return nullptr;
+			return this;
 		}
 
 		return next;
@@ -123,11 +130,14 @@ inode * inode::findFolderRecusive(std::vector<std::string> path, int pos, int ca
 	}
 }
 
-inode * inode::getRoot(inode& current)
+inode* inode::getRoot(inode &current)
 {
+	inode *retInode = &current;
+
 	if (current.parent != &current) {
-		return getRoot(*current.parent);
+		retInode = getRoot(*current.parent);
 	}
-	return &current;
+
+	return retInode;
 }
 

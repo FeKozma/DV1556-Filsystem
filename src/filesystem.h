@@ -23,6 +23,7 @@ public:
 	// detta är en testfunktion VARNING testfunktion
 	int createFileOn(std::string testString, int blocknr = 1);
 	std::string viewFileOn(int blocknr = 1);
+	bool createFolderOn(std::string name, std::string path);
 
     /* This function creates a file in the filesystem */
     bool createFile(std::string name, std::string path = "");

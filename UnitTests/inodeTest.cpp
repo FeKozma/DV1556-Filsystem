@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "CppUnitTest.h"
 
-#include "../src/inode.h"
+#include "../src/inode.cpp"
 
 #include <vector>
 #include <string>
@@ -13,7 +13,7 @@ namespace UnitTests
 	TEST_CLASS(inodeTest)
 	{
 	private:
-		std::vector<std::string> pathSpliter(std::string path)
+		std::vector<std::string> pathSplitter(std::string path)
 		{
 			std::vector<std::string> retPath;
 
@@ -39,7 +39,7 @@ namespace UnitTests
 		{
 			std::string correctPath[] = { "", "home", "user1", "..", "user2", "some", "folder" };
 			std::string path = "/home/user1/../user2/some/folder/";
-			std::vector<std::string> pathList = pathSpliter(path);
+			std::vector<std::string> pathList = pathSplitter(path);
 			
 			Assert::AreEqual(7, (int)pathList.size());
 
@@ -52,13 +52,23 @@ namespace UnitTests
 		{
 			std::string correctPath[] = { "home", "user1", "..", "user2", "some", "folder" };
 			std::string path = "home/user1/../user2/some/folder/";
-			std::vector<std::string> pathList = pathSpliter(path);
+			std::vector<std::string> pathList = pathSplitter(path);
 
 			Assert::AreEqual(6, (int)pathList.size());
 
 			for (int i = 0; i < pathList.size(); ++i) {
 				Assert::AreEqual(correctPath[i], pathList.at(i));
 			}
+		}
+
+		TEST_METHOD(TestAddFolder)
+		{
+			inode iNode("");
+			Assert::AreEqual(iNode.addFolder("folder1", "/"), true);
+			Assert::AreEqual(iNode.addFolder("folder2", "/"), true);
+			Assert::AreEqual(iNode.addFolder("folder1", "/"), false);
+			Assert::AreEqual(iNode.addFolder("folder2", "/"), false);
+			Assert::AreEqual(iNode.addFolder("folder3", "/"), true);
 		}
 	};
 }
