@@ -1,5 +1,6 @@
-D:\operatingSysProj\DV1556-Filsystem\Debug
-D:\operatingSysProj\DV1556-Filsystem\x64*
+/Debug/
+x64/
+x32/
 *.obj
 *.exe
 *.ilk
@@ -13,3 +14,4 @@ D:\operatingSysProj\DV1556-Filsystem\x64*
 *.db
 *.filters
 /.vs/operatingSysProj/v14/.suo
+/ipch/
