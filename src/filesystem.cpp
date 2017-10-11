@@ -15,8 +15,7 @@ FileSystem::~FileSystem() {
 int FileSystem::createFileOn(std::string storeString, int blocknr) {
 	int lengthOfBlock = 512;
 
-	for (int i = storeString.length(); i < lengthOfBlock; i++)
-	{
+	for (int i = storeString.length(); i < lengthOfBlock; i++) {
 		storeString += "0";
 	}
 	std::cout << std::to_string(storeString.length()) + "\n";
@@ -31,26 +30,23 @@ std::string FileSystem::viewFileOn(int blocknr) {
 	return retBlock.toString();
 }
 
-bool FileSystem::createFile(std::string name, std::string path)
-{
+bool FileSystem::createFile(std::string name, std::string path) {
 	int block = 1;
 	return curFolder->addFile(name, block, path);
 }
 
-std::string FileSystem::createFolderi(std::string name, std::string path)
-{
+std::string FileSystem::createFolderi(std::string name, std::string path) {
 	if (name == "") return "Error: No name entered.";
+	if (path == "")path = curFolder->getFolderPath();
 
-	if (path == "")
-		path = curFolder->getFolderPath();
 	curFolder->addFolder(name, path);
 	return path + name;
 }
 
 std::string FileSystem::goToFolder(std::string path) {
 	//TODO: return an error message saying the folder doesn't exist.
-	if (path != "")
-		curFolder = curFolder->goToFolder(path);
+	if (path != "") curFolder = curFolder->goToFolder(path);
+
 	return curFolder->getFolderPath();
 }
 

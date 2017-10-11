@@ -12,8 +12,7 @@ inode::inode(std::string folderName, inode* &parent) {
 	this->name = folderName;
 }
 
-int inode::addFile(std::string name, int freeBlock, std::string path)
-{
+int inode::addFile(std::string name, int freeBlock, std::string path) {
 	//TODO: find path
 	
 	std::vector<std::string> pathList = pathSplitter(path);
@@ -22,8 +21,7 @@ int inode::addFile(std::string name, int freeBlock, std::string path)
 	return 0;
 }
 
-bool inode::addFolder(std::string name, std::string path)
-{
+bool inode::addFolder(std::string name, std::string path) {
 	bool folderAdded = false;
 
 	// If no name is entered, name the folder to what the variable NAMELESS_FOLDER is
@@ -53,17 +51,14 @@ bool inode::addFolder(std::string name, std::string path)
 	return folderAdded;
 }
 
-inode* inode::goToFolder(std::string path)
-{
+inode* inode::goToFolder(std::string path) {
 	std::vector<std::string> pathList = pathSplitter(path);
 	return findFolderRecursive(pathList, 0, pathList.size());
 }
 
-int inode::findFolder(std::string name)
-{
+int inode::findFolder(std::string name) {
 	int folderPos = -1;
-	for (std::vector<inode>::size_type i = 0; i != folder.size(); i++)
-	{
+	for (std::vector<inode>::size_type i = 0; i != folder.size(); i++) {
 		if (this->folder[i].getFolderName() == name)
 		{
 			folderPos = i;
@@ -72,8 +67,7 @@ int inode::findFolder(std::string name)
 	return folderPos;
 }
 
-std::string inode::getFolderName()
-{
+std::string inode::getFolderName() {
 	return this->name;
 }
 
@@ -100,8 +94,7 @@ std::vector<std::string> inode::getFiles() {
 	return filesName;
 }
 
-std::vector<std::string> inode::pathSplitter(std::string path)
-{
+std::vector<std::string> inode::pathSplitter(std::string path) {
 	std::vector<std::string> retPath;
 
 	int start = 0;
@@ -148,8 +141,7 @@ inode* inode::findFolderRecursive(std::vector<std::string> path, int pos, int ca
 	return retINode;
 }
 
-inode* inode::getRoot(inode &current)
-{
+inode* inode::getRoot(inode &current) {
 	inode *retInode = &current;
 
 	if (current.parent != &current) {

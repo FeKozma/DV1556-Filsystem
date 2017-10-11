@@ -5,31 +5,31 @@
 class MemBlockDevice: public BlockDevice
 {
 public:
-    MemBlockDevice(int nrOfBlocks = 250);
-    MemBlockDevice(const MemBlockDevice &other);
+	MemBlockDevice(int nrOfBlocks = 250);
+	MemBlockDevice(const MemBlockDevice &other);
 
-    ~MemBlockDevice();
+	~MemBlockDevice();
 
-    /* Operators */
-    MemBlockDevice& operator=(const MemBlockDevice &other);
-    Block &operator[] (int index) const;
+	/* Operators */
+	MemBlockDevice& operator=(const MemBlockDevice &other);
+	Block &operator[] (int index) const;
 
-    /* Returns amount of free blocks */
-    int spaceLeft() const;
+	/* Returns amount of free blocks */
+	int spaceLeft() const;
 
-    /* Writes a block */
-    int writeBlock(int blockNr, const std::vector<char> &vec);
-    int writeBlock(int blockNr, const std::string &strBlock);
-    int writeBlock(int blockNr, const char cArr[]);     // Use with care, make sure that cArr has at least the same dimension as block
+	/* Writes a block */
+	int writeBlock(int blockNr, const std::vector<char> &vec);
+	int writeBlock(int blockNr, const std::string &strBlock);
+	int writeBlock(int blockNr, const char cArr[]);     // Use with care, make sure that cArr has at least the same dimension as block
 
-    /* Reads a block */
-    Block readBlock(int blockNr) const;
+	/* Reads a block */
+	Block readBlock(int blockNr) const;
 
-    /* Resets all the blocks */
-    void reset();
+	/* Resets all the blocks */
+	void reset();
 
-    /* Return the size */
-    int size() const;
+	/* Return the size */
+	int size() const;
 };
 
 #endif // MEMBLOCKDEVICE_H
