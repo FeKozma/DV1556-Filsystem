@@ -3,6 +3,7 @@
 FileSystem::FileSystem(int fileSize) {
 	mMemblockDevice = new MemBlockDevice(fileSize);
 	curFolder = new inode("");
+	nrBlocks = fileSize;
 }
 
 FileSystem::~FileSystem() {
@@ -30,9 +31,19 @@ std::string FileSystem::viewFileOn(int blocknr) {
 	return retBlock.toString();
 }
 
-bool FileSystem::createFile(std::string name, std::string path) {
-	int block = 1;
-	return curFolder->addFile(name, block, path);
+//TODO path!
+bool FileSystem::createFile(std::string data, std::string name, std::string path) {
+	bool fileCreated = false;
+	for (int i = 0; i < nrBlocks; ++i)
+	{
+		if (availableBlocks[i] == true)
+		{
+			int i = nrBlocks;
+			createFileOn(data, i);
+			availableBlocks[i] = false;
+		}
+	}
+	return fileCreated; //curFolder->addFile(name, block, path);
 }
 
 std::string FileSystem::createFolderi(std::string name, std::string path) {

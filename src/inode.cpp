@@ -11,14 +11,41 @@ inode::inode(std::string folderName, inode* &parent) {
 	this->parent = parent;
 	this->name = folderName;
 }
-
-int inode::addFile(std::string name, int freeBlock, std::string path) {
-	//TODO: find path
+//TODO: test ->have not acces to UnitTest files "The project file or webb cannot be found."
+bool inode::addFile(std::string name, int freeBlock, std::string path) {
 	
-	std::vector<std::string> pathList = pathSplitter(path);
-	//TODO: ta första mapp namn -> kolla om du har denna map -> gå in i dennna mapp
+	bool fileAdded = false;
+	if (name != "")
+	{
+		std::vector<std::string> pathList = pathSplitter(path);
 
-	return 0;
+		inode* folder = findFolderRecursive(pathList, 0, pathList.capacity());
+		//TODO: find path
+
+		//TODO: ta första mapp namn -> kolla om du har denna map -> gå in i dennna mapp
+
+		if (findFile(name) == -1) {
+			// Add file
+			filesName.push_back(name);
+			files.push_back(freeBlock);
+
+			fileAdded = true;
+		}
+	}
+	return fileAdded;
+}
+
+int inode::findFile(std::string name)
+{
+	int filePos = -1;
+	for (int i = 0; i <  filesName.size(); ++i) {
+		if (filesName[i] == name)
+		{
+			filePos = i;
+			i = filesName.size();
+		}
+	}
+	return filePos;
 }
 
 bool inode::addFolder(std::string name, std::string path) {
@@ -38,15 +65,15 @@ bool inode::addFolder(std::string name, std::string path) {
 		folderAdded = true;
 	}
 	else if (findFolder(name) == -1) {
-		folderAdded = true;
-	}
-
-	// Add folder
-	if (folderAdded) {
+		// Add folder
 		inode iNode = inode(name);
 		iNode.parent = goToFolder(path);
 		folder.push_back(iNode);
+
+		folderAdded = true;
 	}
+
+	
 
 	return folderAdded;
 }
@@ -130,11 +157,13 @@ inode* inode::findFolderRecursive(std::vector<std::string> path, int pos, int ca
 		else if (findFoldername == "") {
 			retINode = (*getRoot(*this)).findFolderRecursive(path, ++pos, cap);
 		}
+		else {
 
-		// If findFolder is a folder name
-		int folderPos = findFolder(findFoldername);
-		if (folderPos != -1) {
-			retINode = folder.at(folderPos).findFolderRecursive(path, ++pos, cap);
+			// If findFolder is a folder name
+			int folderPos = findFolder(findFoldername);
+			if (folderPos != -1) {
+				retINode = &(folder[folderPos]); //&*(folder.at(folderPos)).findFolderRecursive(path, ++pos, cap);
+			}
 		}
 	}
 

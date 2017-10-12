@@ -31,7 +31,8 @@ public:
 	std::vector<std::string> getFolders();
 	std::vector<std::string> getFiles();
 
-	int addFile(std::string name, int freeBlock, std::string path = "");
+	bool addFile(std::string name, int freeBlock, std::string path = "");
+	int findFile(std::string name);
 	bool addFolder(std::string name = "", std::string path = "");
 	inode* goToFolder(std::string path);
 };
