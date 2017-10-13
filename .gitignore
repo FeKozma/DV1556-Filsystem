@@ -1,6 +1,10 @@
+.vs/
 Debug/
 x64/
 x32/
+/ipch/
+/TestResults/
+
 *.obj
 *.exe
 *.ilk
@@ -13,6 +17,3 @@ x32/
 *.opendb
 *.db
 *.filters
-/.vs/operatingSysProj/v14/.suo
-/ipch/
-/TestResults/
