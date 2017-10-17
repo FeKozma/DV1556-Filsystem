@@ -2,16 +2,16 @@
 
 const std::string NAMELESS_FOLDER = "no-name";
 
-inode::inode(std::string folderName) {
+// Used when initializing root.
+inode::inode() {
 	this->parent = this;
-	this->name = folderName;
 }
 
-inode::inode(std::string folderName, inode* &parent) {
+inode::inode(inode* &parent) {
 	this->parent = parent;
-	this->name = folderName;
 }
-//TODO: test ->have not acces to UnitTest files "The project file or webb cannot be found."
+
+//TODO: test ->have no access to UnitTest files "The project file or webb cannot be found."
 bool inode::addFile(std::string name, int freeBlock, std::string path) {
 	
 	bool fileAdded = false;
@@ -51,29 +51,30 @@ int inode::findFile(std::string name)
 bool inode::addFolder(std::string name, std::string path) {
 	bool folderAdded = false;
 
-	// If no name is entered, name the folder to what the variable NAMELESS_FOLDER is
-	if (name == "") { //TODO: Should we still have this?
-		int i = 0;
+	// If no name is entered, name the folder to what the variable NAMELESS_FOLDER is plus the variable i.
+	if (name == "") {
 		name = NAMELESS_FOLDER;
 		int sizeName = name.size();
+		int i = 0;
 		while (findFolder(name) >= 0)
 		{
 			i++;
-			name.resize(7);
+			name.resize(sizeName);
 			name += "(" + std::to_string(i) + ")";
 		}
 		folderAdded = true;
 	}
 	else if (findFolder(name) == -1) {
-		// Add folder
-		inode iNode = inode(name);
-		iNode.parent = goToFolder(path);
-		folder.push_back(iNode);
-
 		folderAdded = true;
 	}
 
-	
+	if (folderAdded) {
+		// Add folder
+		inode iNode = inode();
+		iNode.name = name;
+		iNode.parent = goToFolder(path);
+		folder.push_back(iNode);
+	}
 
 	return folderAdded;
 }
@@ -179,4 +180,3 @@ inode* inode::getRoot(inode &current) {
 
 	return retInode;
 }
-

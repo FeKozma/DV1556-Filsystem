@@ -63,7 +63,7 @@ namespace UnitTests
 
 		TEST_METHOD(TestAddFolder)
 		{
-			inode iNode("");
+			inode iNode;
 			Assert::AreEqual(iNode.addFolder("folder1", "/"), true);
 			Assert::AreEqual(iNode.addFolder("folder2", "/"), true);
 			Assert::AreEqual(iNode.addFolder("folder1", "/"), false);
@@ -73,7 +73,7 @@ namespace UnitTests
 
 		TEST_METHOD(TestGoToFolder)
 		{
-			inode iNode("");
+			inode iNode;
 			iNode.addFolder("folder1", "");
 			iNode.addFolder("folder2", "folder1");
 			iNode = *iNode.goToFolder("folder1");

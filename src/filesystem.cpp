@@ -2,7 +2,7 @@
 
 FileSystem::FileSystem(int fileSize) {
 	mMemblockDevice = new MemBlockDevice(fileSize);
-	curFolder = new inode("");
+	curFolder = new inode();
 	nrBlocks = fileSize;
 }
 
@@ -48,7 +48,7 @@ bool FileSystem::createFile(std::string data, std::string name, std::string path
 
 std::string FileSystem::createFolderi(std::string name, std::string path) {
 	if (name == "") return "Error: No name entered.";
-	if (path == "")path = curFolder->getFolderPath();
+	if (path == "") path = curFolder->getFolderPath();
 
 	curFolder->addFolder(name, path);
 	return path + name;

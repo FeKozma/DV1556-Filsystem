@@ -21,8 +21,8 @@ private:
 	
 public:
 	
-	inode(std::string folderName);
-	inode(std::string folderName, inode* &parent);
+	inode();
+	inode(inode* &parent);
 	
 	~inode() {};
 	
