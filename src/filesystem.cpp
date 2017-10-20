@@ -1,6 +1,6 @@
 #include "filesystem.h"
 
-FileSystem::FileSystem(int blockSize) {
+FileSystem::FileSystem(int blockSize, int fileSize) {
 	mMemblockDevice = new MemBlockDevice(blockSize);
 	availableBlocks = new bool[blockSize];
 	for (int i = 0; i < blockSize; ++i)
@@ -17,7 +17,7 @@ FileSystem::~FileSystem() {
 
 // This is a test function, WARNING, TODO
 int FileSystem::createFileOn(std::string storeString, int blocknr) {
-	int lengthOfBlock = 512;
+	int lengthOfBlock = fileSize;
 
 	for (int i = storeString.length(); i < lengthOfBlock; i++) {
 		storeString += "0";
@@ -36,6 +36,7 @@ std::string FileSystem::viewFileOn(int blocknr) {
 
 bool FileSystem::createFile(std::string data, std::string name, std::string path) {
 	if (path == "") path = curFolder->getFolderPath();
+	if (name == "" || data == "") return false;
 
 	bool fileCreated = false;
 	int freeBlock = -1;
@@ -75,14 +76,14 @@ std::string FileSystem::getCurrentPath() {
 std::string FileSystem::listDir(std::string path) {
 	std::vector<std::string> folders = curFolder->getFolders();
 	std::vector<std::string> files = curFolder->getFiles();
-	std::string retString = "Type\tName\tPermission\tSize\n";
+	std::string retString = "Type\t\tName\t\tPermission\tSize\n";
 
 	// TODO: complete the string.
 	for (int i = 0; i < folders.size(); ++i) {
-		retString += "DIR\t" + folders[i] + "\n";
+		retString += "DIR\t\t" + folders[i] + (folders[i].length() <= 8 ? "\t" : "") + "\trw\t\t0 byte\n";
 	}
 	for (int i = 0; i < files.size(); ++i) {
-		retString += "FILE\t" + files[i] + "\n";
+		retString += "FILE\t\t" + files[i] + (files[i].length() <= 8 ? "\t" : "") + "\trw\t\t0 byte\n";
 	}
 
 	return retString;

@@ -11,9 +11,10 @@ private:
 	inode *curFolder;
 	bool *availableBlocks;
 	int nrOfBlocks;
+	int fileSize;
 
 public:
-	FileSystem(int blockSize = 250);
+	FileSystem(int blockSize = 250, int fileSize = 512);
 	~FileSystem();
 
 	// These are test functions, WARNING, TODO
