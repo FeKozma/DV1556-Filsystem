@@ -48,6 +48,7 @@ int main(void) {
 				bRun = quit();
 				break;
 			case 3: // format
+				fileSys.formatSystem();
 				break;
 			case 4: // ls
 				std::cout << fileSys.listDir(commandArr[1]);

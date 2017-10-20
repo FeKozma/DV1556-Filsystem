@@ -76,7 +76,7 @@ std::string FileSystem::getCurrentPath() {
 std::string FileSystem::listDir(std::string path) {
 	std::vector<std::string> folders = curFolder->getFolders();
 	std::vector<std::string> files = curFolder->getFiles();
-	std::string retString = "Type\t\tName\t\tPermission\tSize\n";
+	std::string retString = "Listing directory\nType\t\tName\t\tPermission\tSize\n";
 
 	// TODO: complete the string.
 	for (int i = 0; i < folders.size(); ++i) {
@@ -87,4 +87,12 @@ std::string FileSystem::listDir(std::string path) {
 	}
 
 	return retString;
+}
+
+void FileSystem::formatSystem() {
+	for (int i = 0; i < nrOfBlocks; ++i) {
+		availableBlocks[i] = true;
+	}
+	delete curFolder;
+	curFolder = new inode();
 }

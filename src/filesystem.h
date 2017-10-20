@@ -41,6 +41,9 @@ public:
 
 	/* This function will get all the files and folders in the specified folder */
 	std::string listDir(std::string path);
+
+	/* This function will format the system */
+	void formatSystem();
 };
 
 #endif // FILESYSTEM_H
