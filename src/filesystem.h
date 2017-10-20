@@ -19,7 +19,9 @@ public:
 
 	// These are test functions, WARNING, TODO
 	int createFileOn(std::string testString, int blocknr = 1);
-	std::string viewFileOn(int blocknr = 1);
+
+	/* This function will list the content of a file */
+	std::string viewFileOn(std::string fileName);
 
 	/* This function creates a file in the filesystem */
 	bool createFile(std::string data ,std::string name, std::string path = "");

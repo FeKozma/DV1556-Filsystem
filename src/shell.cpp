@@ -60,14 +60,13 @@ int main(void) {
 				fileSys.createFile(printString, commandArr[1]);
 				break;
 			case 6: // cat
+				std::cout << fileSys.viewFileOn(commandArr[1]) << std::endl;
 				break;
 			case 7: // createImage
 				break;
 			case 8: // restoreImage
 				break;
 			case 9: // rm
-				printString = fileSys.viewFileOn();
-				std::cout << printString + "\n";
 				break;
 			case 10: // cp
 				break;

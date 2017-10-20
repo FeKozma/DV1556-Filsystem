@@ -27,11 +27,17 @@ int FileSystem::createFileOn(std::string storeString, int blocknr) {
 	return retVal;
 }
 
-// This is a test function, WARNING, TODO
-std::string FileSystem::viewFileOn(int blocknr) {
-	Block retBlock = mMemblockDevice->readBlock(blocknr);
-	
-	return retBlock.toString();
+std::string FileSystem::viewFileOn(std::string fileName) {
+	std::string path = curFolder->getFolderPath();
+
+	int blockId = curFolder->findFile(fileName);
+
+	Block block = mMemblockDevice->readBlock(blockId);
+	std::string content = "";
+	for (int i = 0; i < block.size(); ++i) {
+		content += block[i];
+	}
+	return content;
 }
 
 bool FileSystem::createFile(std::string data, std::string name, std::string path) {

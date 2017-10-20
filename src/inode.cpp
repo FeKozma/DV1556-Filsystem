@@ -31,14 +31,13 @@ bool inode::addFile(std::string name, int freeBlock, std::string path) {
 	return fileAdded;
 }
 
-int inode::findFile(std::string name)
-{
+int inode::findFile(std::string name) {
 	int filePos = -1;
 	for (int i = 0; i <  filesName.size(); ++i) {
 		if (filesName[i] == name)
 		{
 			filePos = i;
-			i = filesName.size();
+			break;
 		}
 	}
 	return filePos;
