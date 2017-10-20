@@ -35,6 +35,9 @@ public:
 	/* Function will move the current location to a specified location in the filesystem */
 	std::string goToFolder(std::string path);
 
+	/* This function will return the current directly */
+	std::string getCurrentPath();
+
 	/* This function will get all the files and folders in the specified folder */
 	std::string listDir(std::string path);
 };

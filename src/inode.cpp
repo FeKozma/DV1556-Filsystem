@@ -11,7 +11,6 @@ inode::inode(inode* &parent) {
 	this->parent = parent;
 }
 
-//TODO: test ->have no access to UnitTest files "The project file or webb cannot be found."
 bool inode::addFile(std::string name, int freeBlock, std::string path) {
 	
 	bool fileAdded = false;
@@ -20,9 +19,6 @@ bool inode::addFile(std::string name, int freeBlock, std::string path) {
 		std::vector<std::string> pathList = pathSplitter(path);
 
 		inode* folder = findFolderRecursive(pathList, 0, pathList.capacity());
-		//TODO: find path
-
-		//TODO: ta första mapp namn -> kolla om du har denna map -> gå in i dennna mapp
 
 		if (findFile(name) == -1) {
 			// Add file

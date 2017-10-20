@@ -3,6 +3,8 @@
 FileSystem::FileSystem(int blockSize) {
 	mMemblockDevice = new MemBlockDevice(blockSize);
 	availableBlocks = new bool[blockSize];
+	for (int i = 0; i < blockSize; ++i)
+		availableBlocks[i] = true;
 	curFolder = new inode();
 	nrOfBlocks = blockSize;
 }
@@ -20,7 +22,7 @@ int FileSystem::createFileOn(std::string storeString, int blocknr) {
 	for (int i = storeString.length(); i < lengthOfBlock; i++) {
 		storeString += "0";
 	}
-	std::cout << std::to_string(storeString.length()) + "\n";
+	//std::cout << std::to_string(storeString.length()) + "\n";
 	int retVal = this->mMemblockDevice->writeBlock(blocknr, storeString);
 	return retVal;
 }
@@ -36,14 +38,19 @@ bool FileSystem::createFile(std::string data, std::string name, std::string path
 	if (path == "") path = curFolder->getFolderPath();
 
 	bool fileCreated = false;
+	int freeBlock = -1;
+
 	for (int i = 0; i < nrOfBlocks; ++i) {
 		if (availableBlocks[i] == true) {
-			int i = nrOfBlocks;
 			createFileOn(data, i);
 			availableBlocks[i] = false;
+			fileCreated = true;
+			freeBlock = i;
+			break;
 		}
 	}
-	return fileCreated; //curFolder->addFile(name, block, path);
+
+	return fileCreated ? curFolder->addFile(name, freeBlock, path) : false;
 }
 
 std::string FileSystem::createFolderi(std::string name, std::string path) {
@@ -58,6 +65,10 @@ std::string FileSystem::goToFolder(std::string path) {
 	//TODO: return an error message saying the folder doesn't exist.
 	if (path != "") curFolder = curFolder->goToFolder(path);
 
+	return curFolder->getFolderPath();
+}
+
+std::string FileSystem::getCurrentPath() {
 	return curFolder->getFolderPath();
 }
 

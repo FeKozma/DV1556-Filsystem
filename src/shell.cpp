@@ -56,8 +56,7 @@ int main(void) {
 				std::cout << "Enter text: ";
 				std::cin >> printString;
 				std::cin.ignore();
-				printInt = fileSys.createFile(printString, commandArr[0]);
-				std::cout << std::to_string(printInt) + "\n";
+				fileSys.createFile(printString, commandArr[1]);
 				break;
 			case 6: // cat
 				break;
@@ -77,7 +76,7 @@ int main(void) {
 				break;
 			case 13: // mkdir
 				for (int i = 1; i < nrOfCommands; ++i) {
-					std::cout << fileSys.createFolderi(commandArr[i]) << std::endl;
+					fileSys.createFolderi(commandArr[i]);
 					commandArr[i] = "";
 				}
 				break;
@@ -85,7 +84,7 @@ int main(void) {
 				fileSys.goToFolder(commandArr[1]);
 				break;
 			case 15: // pwd
-				std::cout << currentDir << std::endl;
+				std::cout << fileSys.getCurrentPath() << std::endl;
 				break;
 			case 16: // help
 				std::cout << help() << std::endl;
