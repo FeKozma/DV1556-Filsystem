@@ -12,7 +12,6 @@ inode::inode(inode* &parent) {
 }
 
 bool inode::addFile(std::string name, int freeBlock, std::string path) {
-	
 	bool fileAdded = false;
 	if (name != "")
 	{
@@ -29,6 +28,16 @@ bool inode::addFile(std::string name, int freeBlock, std::string path) {
 		}
 	}
 	return fileAdded;
+}
+
+// TODO: remove the id from the arrays correctly.
+void inode::removeFile(std::string fileName, std::string path) {
+	int id = findFile(fileName);
+
+	if (id != -1) {
+		filesName[id] = "";
+		files[id] = 0;
+	}
 }
 
 int inode::findFile(std::string name) {
@@ -174,4 +183,11 @@ inode* inode::getRoot(inode &current) {
 	}
 
 	return retInode;
+}
+
+int inode::findBlockId(std::string fileName) {
+	int id = findFile(fileName);
+	if (id != -1)
+		return files[id];
+	return -1;
 }

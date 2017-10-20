@@ -32,9 +32,12 @@ public:
 	std::vector<std::string> getFiles();
 
 	bool addFile(std::string name, int freeBlock, std::string path = "");
+	void removeFile(std::string name, std::string path = "");
 	int findFile(std::string name);
 	bool addFolder(std::string name = "", std::string path = "");
 	inode* goToFolder(std::string path);
+
+	int findBlockId(std::string fileName);
 };
 
 #endif // INODE_H

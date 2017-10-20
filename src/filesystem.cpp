@@ -30,12 +30,16 @@ int FileSystem::createFileOn(std::string storeString, int blocknr) {
 std::string FileSystem::viewFileOn(std::string fileName) {
 	std::string path = curFolder->getFolderPath();
 
-	int blockId = curFolder->findFile(fileName);
-
-	Block block = mMemblockDevice->readBlock(blockId);
+	int blockId = curFolder->findBlockId(fileName);
+	
 	std::string content = "";
-	for (int i = 0; i < block.size(); ++i) {
-		content += block[i];
+
+	if (blockId != -1) {
+		Block block = mMemblockDevice->readBlock(blockId);
+		
+		for (int i = 0; i < block.size(); ++i) {
+			content += block[i];
+		}
 	}
 	return content;
 }
@@ -66,6 +70,17 @@ std::string FileSystem::createFolderi(std::string name, std::string path) {
 
 	curFolder->addFolder(name, path);
 	return path + name;
+}
+
+void FileSystem::removeFile(std::string fileName) {
+	std::string path = curFolder->getFolderPath();
+
+	int blockId = curFolder->findBlockId(fileName);
+	
+	if (blockId != -1) {
+		availableBlocks[blockId] = true;
+		curFolder->removeFile(fileName);
+	}
 }
 
 std::string FileSystem::goToFolder(std::string path) {

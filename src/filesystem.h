@@ -30,7 +30,7 @@ public:
 	std::string createFolderi(std::string name = "", std::string path = "");
 
 	/* Removes a file in the filesystem */
-	// removeFile(...);
+	void removeFile(std::string fileName);
 
 	/* Removes a folder in the filesystem */
 	// removeFolder(...);
