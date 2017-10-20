@@ -13,8 +13,7 @@ inode::inode(inode* &parent) {
 
 bool inode::addFile(std::string name, int freeBlock, std::string path) {
 	bool fileAdded = false;
-	if (name != "")
-	{
+	if (name != "") {
 		std::vector<std::string> pathList = pathSplitter(path);
 
 		inode* folder = findFolderRecursive(pathList, 0, pathList.capacity());
@@ -30,13 +29,12 @@ bool inode::addFile(std::string name, int freeBlock, std::string path) {
 	return fileAdded;
 }
 
-// TODO: remove the id from the arrays correctly.
 void inode::removeFile(std::string fileName, std::string path) {
 	int id = findFile(fileName);
 
 	if (id != -1) {
-		filesName[id] = "";
-		files[id] = 0;
+		filesName.erase(filesName.begin() + id);
+		files.erase(files.begin() + id);
 	}
 }
 
