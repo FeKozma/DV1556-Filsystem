@@ -53,7 +53,10 @@ int main(void) {
 				std::cout << fileSys.listDir(commandArr[1]);
 				break;
 			case 5: // create
-				printInt = fileSys.createFileOn("Det var en gang en pirat som borjade beratta en saga som lod: ");
+				std::cout << "Enter text: ";
+				std::cin >> printString;
+				std::cin.ignore();
+				printInt = fileSys.createFile(printString, commandArr[0]);
 				std::cout << std::to_string(printInt) + "\n";
 				break;
 			case 6: // cat
@@ -79,7 +82,7 @@ int main(void) {
 				}
 				break;
 			case 14: // cd	
-				currentDir = fileSys.goToFolder(commandArr[1]);
+				fileSys.goToFolder(commandArr[1]);
 				break;
 			case 15: // pwd
 				std::cout << currentDir << std::endl;

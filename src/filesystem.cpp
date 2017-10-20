@@ -1,9 +1,10 @@
 #include "filesystem.h"
 
-FileSystem::FileSystem(int fileSize) {
-	mMemblockDevice = new MemBlockDevice(fileSize);
+FileSystem::FileSystem(int blockSize) {
+	mMemblockDevice = new MemBlockDevice(blockSize);
+	availableBlocks = new bool[blockSize];
 	curFolder = new inode();
-	nrBlocks = fileSize;
+	nrOfBlocks = blockSize;
 }
 
 FileSystem::~FileSystem() {
@@ -31,14 +32,13 @@ std::string FileSystem::viewFileOn(int blocknr) {
 	return retBlock.toString();
 }
 
-//TODO path!
 bool FileSystem::createFile(std::string data, std::string name, std::string path) {
+	if (path == "") path = curFolder->getFolderPath();
+
 	bool fileCreated = false;
-	for (int i = 0; i < nrBlocks; ++i)
-	{
-		if (availableBlocks[i] == true)
-		{
-			int i = nrBlocks;
+	for (int i = 0; i < nrOfBlocks; ++i) {
+		if (availableBlocks[i] == true) {
+			int i = nrOfBlocks;
 			createFileOn(data, i);
 			availableBlocks[i] = false;
 		}

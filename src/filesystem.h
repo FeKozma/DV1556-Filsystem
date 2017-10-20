@@ -10,7 +10,7 @@ private:
 	MemBlockDevice *mMemblockDevice;
 	inode *curFolder;
 	bool *availableBlocks;
-	int nrBlocks;
+	int nrOfBlocks;
 
 public:
 	FileSystem(int blockSize = 250);
