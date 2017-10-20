@@ -62,15 +62,16 @@ std::string FileSystem::goToFolder(std::string path) {
 }
 
 std::string FileSystem::listDir(std::string path) {
-	std::string retString = "";
 	std::vector<std::string> folders = curFolder->getFolders();
 	std::vector<std::string> files = curFolder->getFiles();
+	std::string retString = "Type\tName\tPermission\tSize\n";
 
+	// TODO: complete the string.
 	for (int i = 0; i < folders.size(); ++i) {
-		retString += folders[i] + "/" + "\n";
+		retString += "DIR\t" + folders[i] + "\n";
 	}
 	for (int i = 0; i < files.size(); ++i) {
-		retString += files[i] + "\n";
+		retString += "FILE\t" + files[i] + "\n";
 	}
 
 	return retString;
