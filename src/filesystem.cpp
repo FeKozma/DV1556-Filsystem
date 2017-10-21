@@ -1,5 +1,6 @@
 #include "filesystem.h"
 
+
 FileSystem::FileSystem(int blockSize, int fileSize) {
 	mMemblockDevice = new MemBlockDevice(blockSize);
 	availableBlocks = new bool[blockSize];
@@ -22,7 +23,7 @@ FileSystem::~FileSystem() {
 
 int FileSystem::createFileOn(std::string storeString, int blocknr) {
 	int lengthOfBlock = fileSize;
-
+	
 	for (int i = storeString.length(); i < lengthOfBlock; i++) {
 		storeString += "0";
 	}
@@ -50,7 +51,14 @@ std::string FileSystem::viewFileOn(std::string fileName) {
 			content += block[i];
 		}
 	}
+	stringTrim(content);
 	return content;
+}
+
+void FileSystem::stringTrim(std::string &s) {
+	s.erase(std::find_if(s.rbegin(), s.rend(), [](int ch) {
+		return !std::isspace(ch);
+	}).base(), s.end());
 }
 
 // This function will create a file to the system.

@@ -3,6 +3,10 @@
 
 #include "memblockdevice.h"
 #include "inode.h"
+#include <algorithm> 
+#include <cctype>
+#include <locale>
+
 
 class FileSystem
 {
@@ -22,6 +26,8 @@ public:
 
 	/* This function will list the content of a file */
 	std::string viewFileOn(std::string fileName);
+
+	void stringTrim(std::string &s);
 
 	/* This function creates a file in the filesystem */
 	bool createFile(std::string conntent ,std::string name, std::string path = "");
