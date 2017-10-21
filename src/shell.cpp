@@ -1,5 +1,7 @@
 #include <sstream>
 #include "filesystem.h"
+#include <signal.h>
+
 
 
 const int MAXCOMMANDS = 8;
@@ -16,12 +18,24 @@ int findCommand(std::string &command);
 bool quit();
 std::string help();
 std::string getInput(std::string Question);
+void emptyCommands(std::string* arr);
+
+
+void SignalHandler(int signal);
+
 
 
 /* More functions ... */
 
 int main(void) {
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+
+	//signal handler
+	typedef void(*SignalHandlerPointer)(int);
+
+	SignalHandlerPointer previousHandler;
+	previousHandler = signal(SIGINT, SignalHandler);
+	//end of signal handelr
 
 	FileSystem fileSys(250, 512);
 
@@ -30,11 +44,11 @@ int main(void) {
 	std::string currentDir = "/";    // Current directory, used for output
 
 	int printInt;
-	std::string readString1;
-	std::string readString2;
+//	std::string readString1;
+//	std::string readString2;
 
 	bool bRun = true;
-
+	
 	do {
 		std::cout << user << ":" << currentDir << "$ ";
 		getline(std::cin, userCommand);
@@ -58,7 +72,7 @@ int main(void) {
 				break;
 			case 5: // create
 
-				fileSys.createFile(getInput("Enter content"), getInput("Enter title"), commandArr[1]);
+				std::cout << fileSys.createFile(getInput("Enter content"), getInput("Enter title"), commandArr[1]) ? "file saved" : "file not saved";
 				break;
 			case 6: // cat
 				std::cout << fileSys.viewFileOn(commandArr[1]) << std::endl;
@@ -94,6 +108,10 @@ int main(void) {
 			default:
 				std::cout << "Unknown command: " << commandArr[0] << std::endl;
 			}
+
+			//empty comand.
+			emptyCommands(commandArr);
+			
 		}
 	} while (bRun == true);
 
@@ -104,8 +122,7 @@ std::string getInput(std::string Question)
 {
 	std::string retString;
 	std::cout << Question + ": ";
-	std::cin >> retString;
-	std::cin.ignore();
+	std::getline(std::cin, retString);
 	return retString;
 }
 
@@ -158,4 +175,23 @@ std::string help() {
 	return helpStr;
 }
 
-/* Insert code for your shell functions and call them from the switch-case */
+
+void SignalHandler(int signal)
+{
+	if (signal == SIGINT) {
+		std::cout << "\ncomand not found\n";
+		exit(signal);
+	}
+	else {
+		// ...  
+	}
+}
+
+void emptyCommands(std::string* arr)
+{
+	for (int i = 0; i < MAXCOMMANDS; ++i)
+	{
+		arr[i] = "";
+	}
+
+}
