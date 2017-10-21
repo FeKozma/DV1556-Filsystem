@@ -1,16 +1,19 @@
 #include "inode.h"
 
-const std::string NAMELESS_FOLDER = "no-name";
+const std::string NAMELESS_FOLDER = "no-name"; // Used for folders without a name.
 
 // Used when initializing root.
 inode::inode() {
 	this->parent = this;
 }
 
+// Used when initializing folders.
 inode::inode(inode* &parent) {
 	this->parent = parent;
 }
 
+// Used when adding a file to the system
+// Returns whether it could add a file not not.
 bool inode::addFile(std::string name, int freeBlock, std::string path) {
 	bool fileAdded = false;
 	if (name != "") {
@@ -19,7 +22,7 @@ bool inode::addFile(std::string name, int freeBlock, std::string path) {
 		inode* folder = findFolderRecursive(pathList, 0, pathList.capacity());
 
 		if (findFile(name) == -1) {
-			// Add file
+			// Add file.
 			filesName.push_back(name);
 			files.push_back(freeBlock);
 
@@ -29,6 +32,7 @@ bool inode::addFile(std::string name, int freeBlock, std::string path) {
 	return fileAdded;
 }
 
+// Used when removing a file from the system.
 void inode::removeFile(std::string fileName, std::string path) {
 	int id = findFile(fileName);
 
@@ -38,6 +42,8 @@ void inode::removeFile(std::string fileName, std::string path) {
 	}
 }
 
+// Used to find the ID of a file on the system.
+// Return: -1 for not existing. Otherwise returns the value it found.
 int inode::findFile(std::string name) {
 	int filePos = -1;
 	for (int i = 0; i <  filesName.size(); ++i) {
@@ -50,6 +56,8 @@ int inode::findFile(std::string name) {
 	return filePos;
 }
 
+// Used to add a folder to the system.
+// Return: A boolean whether the folder were added or not.
 bool inode::addFolder(std::string name, std::string path) {
 	bool folderAdded = false;
 
@@ -81,11 +89,15 @@ bool inode::addFolder(std::string name, std::string path) {
 	return folderAdded;
 }
 
+// Used to go to a folder with a path.
+// Return: An inode containing the path-folder.
 inode* inode::goToFolder(std::string path) {
 	std::vector<std::string> pathList = pathSplitter(path);
 	return findFolderRecursive(pathList, 0, pathList.size());
 }
 
+// Used to find a folder in the system.
+// Return: An integer containing the folder position.
 int inode::findFolder(std::string name) {
 	int folderPos = -1;
 	for (std::vector<inode>::size_type i = 0; i != folder.size(); i++) {
@@ -97,10 +109,12 @@ int inode::findFolder(std::string name) {
 	return folderPos;
 }
 
+// Returns the folder name.
 std::string inode::getFolderName() {
 	return this->name;
 }
 
+// Returns the current folder path of this inode.
 std::string inode::getFolderPath() {
 	std::string path = "/";
 	inode *current = this;
@@ -112,6 +126,7 @@ std::string inode::getFolderPath() {
 	return path;
 }
 
+// Returns an array of all folders in this inode.
 std::vector<std::string> inode::getFolders() {
 	std::vector<std::string> folders;
 	for (int i = 0; i < folder.size(); ++i) {
@@ -120,10 +135,12 @@ std::vector<std::string> inode::getFolders() {
 	return folders;
 }
 
+// Returns the files.
 std::vector<std::string> inode::getFiles() {
 	return filesName;
 }
 
+// This function will split any path and returns ? TODO... fix/change?
 std::vector<std::string> inode::pathSplitter(std::string path) {
 	std::vector<std::string> retPath;
 
@@ -144,7 +161,8 @@ std::vector<std::string> inode::pathSplitter(std::string path) {
 	return retPath;
 }
 
-//TODO: memory leak somewhere in this method.
+// TODO: memory leak somewhere in this method.
+// This method will find a path recursive to ant path, and return the path.
 inode* inode::findFolderRecursive(std::vector<std::string> path, int pos, int cap) {
 	inode* retINode = this;
 
@@ -173,6 +191,7 @@ inode* inode::findFolderRecursive(std::vector<std::string> path, int pos, int ca
 	return retINode;
 }
 
+// This method will return the root of this folder (all folders)
 inode* inode::getRoot(inode &current) {
 	inode *retInode = &current;
 
@@ -183,6 +202,7 @@ inode* inode::getRoot(inode &current) {
 	return retInode;
 }
 
+// This function will return a block id of a filename if it finds it.
 int inode::findBlockId(std::string fileName) {
 	int id = findFile(fileName);
 	if (id != -1)

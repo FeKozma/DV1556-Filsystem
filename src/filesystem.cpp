@@ -15,7 +15,11 @@ FileSystem::~FileSystem() {
 	delete[] availableBlocks;
 }
 
-// This is a test function, WARNING, TODO
+/****************************************************
+ ***************** Begin Functions ******************
+ ****************** WARNING TODO ********************
+ ***************************************************/
+
 int FileSystem::createFileOn(std::string storeString, int blocknr) {
 	int lengthOfBlock = fileSize;
 
@@ -27,6 +31,11 @@ int FileSystem::createFileOn(std::string storeString, int blocknr) {
 	return retVal;
 }
 
+/****************************************************
+ **************** END TEST FUNCTIONS ****************
+ ***************************************************/
+
+// This function will return a string with the content of the fileName.
 std::string FileSystem::viewFileOn(std::string fileName) {
 	std::string path = curFolder->getFolderPath();
 
@@ -44,6 +53,8 @@ std::string FileSystem::viewFileOn(std::string fileName) {
 	return content;
 }
 
+// This function will create a file to the system.
+// Returns: A boolean wether the folder were created or not.
 bool FileSystem::createFile(std::string data, std::string name, std::string path) {
 	if (path == "") path = curFolder->getFolderPath();
 	if (name == "" || data == "") return false;
@@ -64,6 +75,8 @@ bool FileSystem::createFile(std::string data, std::string name, std::string path
 	return fileCreated ? curFolder->addFile(name, freeBlock, path) : false;
 }
 
+// This function will create a folder.
+// Returns: current folder's path + name.
 std::string FileSystem::createFolderi(std::string name, std::string path) {
 	if (name == "") return "Error: No name entered.";
 	if (path == "") path = curFolder->getFolderPath();
@@ -72,6 +85,7 @@ std::string FileSystem::createFolderi(std::string name, std::string path) {
 	return path + name;
 }
 
+// This folder will remove a file from the system.
 void FileSystem::removeFile(std::string fileName) {
 	std::string path = curFolder->getFolderPath();
 
@@ -83,17 +97,21 @@ void FileSystem::removeFile(std::string fileName) {
 	}
 }
 
+// This function will go to a folder in the system.
+// Returns: It will return the folder it got to.
 std::string FileSystem::goToFolder(std::string path) {
-	//TODO: return an error message saying the folder doesn't exist.
+	// TODO: return an error message saying the folder doesn't exist.
 	if (path != "") curFolder = curFolder->goToFolder(path);
 
 	return curFolder->getFolderPath();
 }
 
+// This function will return the current folder path.
 std::string FileSystem::getCurrentPath() {
 	return curFolder->getFolderPath();
 }
 
+// This function will return the current list of a directory.
 std::string FileSystem::listDir(std::string path) {
 	std::vector<std::string> folders = curFolder->getFolders();
 	std::vector<std::string> files = curFolder->getFiles();
@@ -110,6 +128,7 @@ std::string FileSystem::listDir(std::string path) {
 	return retString;
 }
 
+// This function will format the system (our current filesystem).
 void FileSystem::formatSystem() {
 	for (int i = 0; i < nrOfBlocks; ++i) {
 		availableBlocks[i] = true;
