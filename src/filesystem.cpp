@@ -68,11 +68,18 @@ bool FileSystem::createFile(std::string conntent, std::string name, std::string 
 			availableBlocks[i] = false;
 			fileCreated = true;
 			freeBlock = i;
+
+			//preper size for the memblockDevice needs to be ass long as a block
+			for (int k = conntent.size(); k < 512; ++k)
+			{
+				conntent += " ";
+			}
+
 			break;
 		}
 	}
 
-	return fileCreated ? curFolder->addFile(name, freeBlock, path) : false;
+	return fileCreated ? (curFolder->addFile(name, freeBlock, path) && (1 == this->mMemblockDevice->writeBlock(freeBlock, conntent))) : false;
 }
 
 // This function will create a folder.
