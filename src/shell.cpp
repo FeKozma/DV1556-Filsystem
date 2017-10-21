@@ -58,7 +58,7 @@ int main(void) {
 				break;
 			case 5: // create
 
-				fileSys.createFile(getInput("Enter title"), getInput("Enter content"), commandArr[1]);
+				fileSys.createFile(getInput("Enter content"), getInput("Enter title"), commandArr[1]);
 				break;
 			case 6: // cat
 				std::cout << fileSys.viewFileOn(commandArr[1]) << std::endl;
