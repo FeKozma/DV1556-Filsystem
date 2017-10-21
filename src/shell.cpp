@@ -15,6 +15,8 @@ int parseCommandString(const std::string &userCommand, std::string strArr[]);
 int findCommand(std::string &command);
 bool quit();
 std::string help();
+std::string getInput(std::string Question);
+
 
 /* More functions ... */
 
@@ -28,7 +30,8 @@ int main(void) {
 	std::string currentDir = "/";    // Current directory, used for output
 
 	int printInt;
-	std::string printString;
+	std::string readString1;
+	std::string readString2;
 
 	bool bRun = true;
 
@@ -54,10 +57,10 @@ int main(void) {
 				std::cout << fileSys.listDir(commandArr[1]);
 				break;
 			case 5: // create
-				std::cout << "Enter text: ";
-				std::cin >> printString;
-				std::cin.ignore();
-				fileSys.createFile(printString, commandArr[1]);
+				readString1 = getInput("Enter title");
+				readString2 = getInput("Enter content");
+				
+				fileSys.createFile(readString2, commandArr[1]);
 				break;
 			case 6: // cat
 				std::cout << fileSys.viewFileOn(commandArr[1]) << std::endl;
@@ -97,6 +100,15 @@ int main(void) {
 	} while (bRun == true);
 
 	return 0;
+}
+
+std::string getInput(std::string Question)
+{
+	std::string retString;
+	std::cout << Question + ": ";
+	std::cin >> retString;
+	std::cin.ignore();
+	return retString;
 }
 
 int parseCommandString(const std::string &userCommand, std::string strArr[]) {
