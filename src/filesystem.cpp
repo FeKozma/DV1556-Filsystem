@@ -55,7 +55,7 @@ std::string FileSystem::viewFileOn(std::string fileName) {
 
 // This function will create a file to the system.
 // Returns: A boolean wether the folder were created or not.
-bool FileSystem::createFile(std::string name, std::string conntent, std::string path) {
+bool FileSystem::createFile(std::string conntent, std::string name, std::string path) {
 	if (path == "") path = curFolder->getFolderPath();
 	if (name == "" || conntent == "") return false;
 

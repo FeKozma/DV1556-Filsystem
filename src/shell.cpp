@@ -57,10 +57,8 @@ int main(void) {
 				std::cout << fileSys.listDir(commandArr[1]);
 				break;
 			case 5: // create
-				readString1 = getInput("Enter title");
-				readString2 = getInput("Enter content");
-				
-				fileSys.createFile(readString2, readString1, commandArr[1]);
+
+				fileSys.createFile(getInput("Enter title"), getInput("Enter content"), commandArr[1]);
 				break;
 			case 6: // cat
 				std::cout << fileSys.viewFileOn(commandArr[1]) << std::endl;
