@@ -60,7 +60,7 @@ int main(void) {
 				readString1 = getInput("Enter title");
 				readString2 = getInput("Enter content");
 				
-				fileSys.createFile(readString2, commandArr[1]);
+				fileSys.createFile(readString2, readString1, commandArr[1]);
 				break;
 			case 6: // cat
 				std::cout << fileSys.viewFileOn(commandArr[1]) << std::endl;

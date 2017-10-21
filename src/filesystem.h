@@ -24,7 +24,7 @@ public:
 	std::string viewFileOn(std::string fileName);
 
 	/* This function creates a file in the filesystem */
-	bool createFile(std::string data ,std::string name, std::string path = "");
+	bool createFile(std::string name,std::string  conntent, std::string path = "");
 
 	/* Creates a folder in the filesystem */
 	std::string createFolderi(std::string name = "", std::string path = "");

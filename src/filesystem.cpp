@@ -55,16 +55,16 @@ std::string FileSystem::viewFileOn(std::string fileName) {
 
 // This function will create a file to the system.
 // Returns: A boolean wether the folder were created or not.
-bool FileSystem::createFile(std::string data, std::string name, std::string path) {
+bool FileSystem::createFile(std::string name, std::string conntent, std::string path) {
 	if (path == "") path = curFolder->getFolderPath();
-	if (name == "" || data == "") return false;
+	if (name == "" || conntent == "") return false;
 
 	bool fileCreated = false;
 	int freeBlock = -1;
 
 	for (int i = 0; i < nrOfBlocks; ++i) {
 		if (availableBlocks[i] == true) {
-			createFileOn(data, i);
+			createFileOn(conntent, i);
 			availableBlocks[i] = false;
 			fileCreated = true;
 			freeBlock = i;
