@@ -16,7 +16,14 @@ inode::inode(inode* &parent) {
 // Returns whether it could add a file not not.
 bool inode::addFile(std::string name, int freeBlock, std::string path) {
 	bool fileAdded = false;
-	if (name != "") {
+    if(path != "")
+    {
+        //TODO find right path and put file there
+        inode* addHere = this->goToFolder(path);
+        addHere->addFile(name, freeBlock, "");
+        
+    }
+	else if (name != "") {
 		std::vector<std::string> pathList = pathSplitter(path);
 
 		inode* folder = findFolderRecursive(pathList, 0, pathList.capacity());
