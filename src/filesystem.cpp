@@ -65,7 +65,7 @@ void FileSystem::stringTrim(std::string &s) {
 // This function will create and add a new file to the system.
 // Returns: A boolean wether the folder were created or not.
 bool FileSystem::createFile(std::string content, std::string name, std::string path) {
-	if (name == "" || content == "") return false;
+	if (name == "" /*|| content == ""*/) return false; //man ska väll kunna skapa en tom fil
 
 	bool fileCreated = false;
 	int freeBlock = -1;
@@ -85,8 +85,18 @@ bool FileSystem::createFile(std::string content, std::string name, std::string p
 			break;
 		}
 	}
-
-	return fileCreated ? (curFolder->addFile(name, freeBlock, path) && (1 == this->mMemblockDevice->writeBlock(freeBlock, content))) : false;
+    
+    //std::cout << "path: " + path + "\n";
+    if (curFolder->addFile(name, freeBlock, path))
+        {
+            if (this->mMemblockDevice->writeBlock(freeBlock, content))
+            {
+                fileCreated = true;
+            }
+        }
+    
+    
+	return fileCreated;
 }
 
 // This function will create a folder.
