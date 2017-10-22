@@ -67,7 +67,9 @@ int inode::findFile(std::string name) {
 // Return: A boolean whether the folder were added or not.
 bool inode::addFolder(std::string name, std::string path) {
 	bool folderAdded = false;
-    path = name;
+    //TODO
+	//REMOVE NAME!!
+	path = name;
     std::vector<std::string> pathSplit = this->pathSplitter(path);
 
     
