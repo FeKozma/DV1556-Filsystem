@@ -100,7 +100,7 @@ bool inode::addFolder(std::string name, std::string path) {
         
         inode iNode = inode();
         iNode.name = name;
-        iNode.parent = goToFolder(path);
+        iNode.parent = this;
         folder.push_back(iNode);
 	}
 	else if (findFolder(name) == -1) {
@@ -108,7 +108,7 @@ bool inode::addFolder(std::string name, std::string path) {
         
         inode iNode = inode();
         iNode.name = name;
-        iNode.parent = goToFolder(path);
+        iNode.parent = this;
         folder.push_back(iNode);
 	}
 
