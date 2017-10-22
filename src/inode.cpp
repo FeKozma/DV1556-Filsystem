@@ -1,5 +1,6 @@
 #include "inode.h"
 
+
 const std::string NAMELESS_FOLDER = "no-name"; // Used for folders without a name.
 
 // Used when initializing root.
@@ -66,9 +67,23 @@ int inode::findFile(std::string name) {
 // Return: A boolean whether the folder were added or not.
 bool inode::addFolder(std::string name, std::string path) {
 	bool folderAdded = false;
+    path = name;
+    std::vector<std::string> pathSplit = this->pathSplitter(path);
 
+    
+   
+    
+    if(pathSplit.capacity() > 1)
+    {
+        inode addHere = this->findFolderRecursive(pathSplit, 0, pathSplit.capacity()-1);
+        if (addHere != nullptr)
+        {
+            addHere->addFolder(pathSplit.at(pathSplit.capacity()-1), pathSplit.at(pathSplit.capacity()-1));
+            folderAdded = true;
+        }
+    }
 	// If no name is entered, name the folder to what the variable NAMELESS_FOLDER is plus the variable i.
-	if (name == "") {
+	else if (name == "") {
 		name = NAMELESS_FOLDER;
 		int sizeName = name.size();
 		int i = 0;
