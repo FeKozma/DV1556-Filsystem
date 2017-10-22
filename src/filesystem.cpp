@@ -65,7 +65,6 @@ void FileSystem::stringTrim(std::string &s) {
 // This function will create and add a new file to the system.
 // Returns: A boolean wether the folder were created or not.
 bool FileSystem::createFile(std::string content, std::string name, std::string path) {
-	if (path == "") path = curFolder->getFolderPath();
 	if (name == "" || content == "") return false;
 
 	bool fileCreated = false;
