@@ -1,4 +1,5 @@
 #include "inode.h"
+#include <iostream>
 
 
 const std::string NAMELESS_FOLDER = "no-name"; // Used for folders without a name.
@@ -66,10 +67,10 @@ int inode::findFile(std::string name) {
 // Used to add a folder to the system.
 // Return: A boolean whether the folder were added or not.
 bool inode::addFolder(std::string name, std::string path) {
-	bool folderAdded = false;
     //TODO
-	//REMOVE NAME!!
-	path = name;
+    //REMOVE NAME
+	bool folderAdded = false;
+    path = name;
     std::vector<std::string> pathSplit = this->pathSplitter(path);
 
     
@@ -96,18 +97,22 @@ bool inode::addFolder(std::string name, std::string path) {
 			name += "(" + std::to_string(i) + ")";
 		}
 		folderAdded = true;
+        
+        inode iNode = inode();
+        iNode.name = name;
+        iNode.parent = goToFolder(path);
+        folder.push_back(iNode);
 	}
 	else if (findFolder(name) == -1) {
 		folderAdded = true;
+        
+        inode iNode = inode();
+        iNode.name = name;
+        iNode.parent = goToFolder(path);
+        folder.push_back(iNode);
 	}
 
-	if (folderAdded) {
-		// Add folder
-		inode iNode = inode();
-		iNode.name = name;
-		iNode.parent = goToFolder(path);
-		folder.push_back(iNode);
-	}
+	
 
 	return folderAdded;
 }
@@ -187,7 +192,7 @@ std::vector<std::string> inode::pathSplitter(std::string path) {
 // TODO: memory leak somewhere in this method.
 // This method will find a path recursive to ant path, and return the path.
 inode* inode::findFolderRecursive(std::vector<std::string> path, int pos, int cap) {
-	inode* retINode = this;
+	inode* retINode = nullptr;
 
 	if (cap > pos) {
 		std::string findFoldername = path.at(pos);
