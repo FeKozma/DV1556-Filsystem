@@ -175,7 +175,7 @@ void SignalHandler(int signal) {
 	}
 }
 
-void emptyCommands(std::string* arr) {
+void emptyCommands(std::string* &arr) {
 	for (int i = 0; i < MAXCOMMANDS; ++i) {
 		arr[i] = "";
 	}
