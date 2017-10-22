@@ -6,16 +6,11 @@
 
 class inode {
 private:
-	//Where this folder exists
-	inode* parent;
-	//This folder name
-	std::string name; 
-	//Which block is busy by the file
-	std::vector<int> files; 
-	// filesName överstämmer med files. filesName.at(1) sparas på position som sparas i files.at(1)
-	std::vector<std::string> filesName;  
-	//Links to folders in this folder
-	std::vector<inode> folder; 
+	inode* parent; // Where this folder exists
+	std::string name; // This folder name
+	std::vector<int> files; // Which block is busy by the file
+	std::vector<std::string> filesName; // 'filesName' correspond to 'files'. filesName.at(1) will be saved at the position files.at(1).
+	std::vector<inode> folder; // Links to folders in this folder
 
 	int findFolder(std::string name = "");
 	

@@ -3,13 +3,10 @@
 
 #include "memblockdevice.h"
 #include "inode.h"
-#include <algorithm> 
+#include <algorithm>
 #include <cctype>
-#include <locale>
 
-
-class FileSystem
-{
+class FileSystem {
 private:
 	MemBlockDevice *mMemblockDevice;
 	inode *curFolder;
@@ -30,7 +27,7 @@ public:
 	void stringTrim(std::string &s);
 
 	/* This function creates a file in the filesystem */
-	bool createFile(std::string conntent ,std::string name, std::string path = "");
+	bool createFile(std::string content ,std::string name, std::string path = "");
 
 	/* Creates a folder in the filesystem */
 	std::string createFolderi(std::string name = "", std::string path = "");

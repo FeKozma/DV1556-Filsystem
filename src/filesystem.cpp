@@ -1,6 +1,5 @@
 #include "filesystem.h"
 
-
 FileSystem::FileSystem(int blockSize, int fileSize) {
 	mMemblockDevice = new MemBlockDevice(blockSize);
 	availableBlocks = new bool[blockSize];
@@ -55,39 +54,40 @@ std::string FileSystem::viewFileOn(std::string fileName) {
 	return content;
 }
 
+// This method removes spaces at the end of a string.
+// Is using the includes <algorithm>.
 void FileSystem::stringTrim(std::string &s) {
 	s.erase(std::find_if(s.rbegin(), s.rend(), [](int ch) {
 		return !std::isspace(ch);
 	}).base(), s.end());
 }
 
-// This function will create a file to the system.
+// This function will create and add a new file to the system.
 // Returns: A boolean wether the folder were created or not.
-bool FileSystem::createFile(std::string conntent, std::string name, std::string path) {
+bool FileSystem::createFile(std::string content, std::string name, std::string path) {
 	if (path == "") path = curFolder->getFolderPath();
-	if (name == "" || conntent == "") return false;
+	if (name == "" || content == "") return false;
 
 	bool fileCreated = false;
 	int freeBlock = -1;
 
 	for (int i = 0; i < nrOfBlocks; ++i) {
 		if (availableBlocks[i] == true) {
-			createFileOn(conntent, i);
+			createFileOn(content, i);
 			availableBlocks[i] = false;
 			fileCreated = true;
 			freeBlock = i;
 
-			//preper size for the memblockDevice needs to be ass long as a block
-			for (int k = conntent.size(); k < 512; ++k)
-			{
-				conntent += " ";
+			// Prepare size for the memBlockDevice, what it needs to be as long as a block.
+			for (int k = content.size(); k < 512; ++k) {
+				content += " ";
 			}
 
 			break;
 		}
 	}
 
-	return fileCreated ? (curFolder->addFile(name, freeBlock, path) && (1 == this->mMemblockDevice->writeBlock(freeBlock, conntent))) : false;
+	return fileCreated ? (curFolder->addFile(name, freeBlock, path) && (1 == this->mMemblockDevice->writeBlock(freeBlock, content))) : false;
 }
 
 // This function will create a folder.

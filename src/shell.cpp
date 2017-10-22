@@ -2,8 +2,6 @@
 #include "filesystem.h"
 #include <signal.h>
 
-
-
 const int MAXCOMMANDS = 8;
 const int NUMAVAILABLECOMMANDS = 17;
 
@@ -16,37 +14,30 @@ std::string availableCommands[NUMAVAILABLECOMMANDS] = {
 int parseCommandString(const std::string &userCommand, std::string strArr[]);
 int findCommand(std::string &command);
 bool quit();
+
 std::string help();
 std::string getInput(std::string Question);
+
 void emptyCommands(std::string* arr);
-
-
 void SignalHandler(int signal);
-
-
-
-/* More functions ... */
 
 int main(void) {
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 
-	//signal handler
+	// Signal handler
 	typedef void(*SignalHandlerPointer)(int);
 
 	SignalHandlerPointer previousHandler;
 	previousHandler = signal(SIGINT, SignalHandler);
-	//end of signal handelr
+	// End of signal handler
 
 	FileSystem fileSys(250, 512);
 
 	std::string userCommand, commandArr[MAXCOMMANDS];
-	std::string user = "user@DV1492";    // Change this if you want another user to be displayed
-	std::string currentDir = "/";    // Current directory, used for output
+	std::string user = "user@DV1492";  // Change this if you want another user to be displayed
+	std::string currentDir = "/";  // Current directory, used for output
 
 	int printInt;
-//	std::string readString1;
-//	std::string readString2;
-
 	bool bRun = true;
 	
 	do {
@@ -71,7 +62,6 @@ int main(void) {
 				std::cout << fileSys.listDir(commandArr[1]);
 				break;
 			case 5: // create
-
 				std::cout << fileSys.createFile(getInput("Enter content"), getInput("Enter title"), commandArr[1]) ? "file saved" : "file not saved";
 				break;
 			case 6: // cat
@@ -109,7 +99,7 @@ int main(void) {
 				std::cout << "Unknown command: " << commandArr[0] << std::endl;
 			}
 
-			//empty comand.
+			// Empty command.
 			emptyCommands(commandArr);
 			
 		}
@@ -118,10 +108,10 @@ int main(void) {
 	return 0;
 }
 
-std::string getInput(std::string Question)
-{
+std::string getInput(std::string question) {
 	std::string retString;
-	std::cout << Question + ": ";
+	// TODO: If question is empty, return error?
+	std::cout << (question != "" ? ": " : "");
 	std::getline(std::cin, retString);
 	return retString;
 }
@@ -176,22 +166,17 @@ std::string help() {
 }
 
 
-void SignalHandler(int signal)
-{
+void SignalHandler(int signal) {
 	if (signal == SIGINT) {
-		std::cout << "\ncomand not found\n";
+		std::cout << "\nCommand not found.\n";
 		exit(signal);
-	}
-	else {
+	} else {
 		// ...  
 	}
 }
 
-void emptyCommands(std::string* arr)
-{
-	for (int i = 0; i < MAXCOMMANDS; ++i)
-	{
+void emptyCommands(std::string* arr) {
+	for (int i = 0; i < MAXCOMMANDS; ++i) {
 		arr[i] = "";
 	}
-
 }
