@@ -77,7 +77,7 @@ bool inode::addFolder(std::string name, std::string path) {
     
     if(pathSplit.capacity() > 1)
     {
-        inode addHere = this->findFolderRecursive(pathSplit, 0, pathSplit.capacity()-1);
+        inode* addHere = this->findFolderRecursive(pathSplit, 0, pathSplit.capacity()-1);
         if (addHere != nullptr)
         {
             addHere->addFolder(pathSplit.at(pathSplit.capacity()-1), pathSplit.at(pathSplit.capacity()-1));
