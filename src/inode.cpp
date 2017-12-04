@@ -1,4 +1,6 @@
 #include "inode.h"
+#include <iostream>
+
 
 const std::string NAMELESS_FOLDER = "no-name"; // Used for folders without a name.
 
@@ -16,7 +18,13 @@ inode::inode(inode* &parent) {
 // Returns whether it could add a file not not.
 bool inode::addFile(std::string name, int freeBlock, std::string path) {
 	bool fileAdded = false;
-	if (name != "") {
+    if(path != "")
+    {
+        inode* addHere = this->goToFolder(path);
+        addHere->addFile(name, freeBlock, "");
+        
+    }
+	else if (name != "") {
 		std::vector<std::string> pathList = pathSplitter(path);
 
 		inode* folder = findFolderRecursive(pathList, 0, pathList.capacity());
@@ -59,10 +67,26 @@ int inode::findFile(std::string name) {
 // Used to add a folder to the system.
 // Return: A boolean whether the folder were added or not.
 bool inode::addFolder(std::string name, std::string path) {
+    //TODO
+    //REMOVE NAME
 	bool folderAdded = false;
+    path = name;
+    std::vector<std::string> pathSplit = this->pathSplitter(path);
 
+    
+   
+    
+    if(pathSplit.capacity() > 1)
+    {
+        inode* addHere = this->findFolderRecursive(pathSplit, 0, pathSplit.capacity()-1);
+        if (addHere != nullptr)
+        {
+            addHere->addFolder(pathSplit.at(pathSplit.capacity()-1), pathSplit.at(pathSplit.capacity()-1));
+            folderAdded = true;
+        }
+    }
 	// If no name is entered, name the folder to what the variable NAMELESS_FOLDER is plus the variable i.
-	if (name == "") {
+	else if (name == "") {
 		name = NAMELESS_FOLDER;
 		int sizeName = name.size();
 		int i = 0;
@@ -73,18 +97,22 @@ bool inode::addFolder(std::string name, std::string path) {
 			name += "(" + std::to_string(i) + ")";
 		}
 		folderAdded = true;
+        
+        inode iNode = inode();
+        iNode.name = name;
+        iNode.parent = this;
+        folder.push_back(iNode);
 	}
 	else if (findFolder(name) == -1) {
 		folderAdded = true;
+        
+        inode iNode = inode();
+        iNode.name = name;
+        iNode.parent = this;
+        folder.push_back(iNode);
 	}
 
-	if (folderAdded) {
-		// Add folder
-		inode iNode = inode();
-		iNode.name = name;
-		iNode.parent = goToFolder(path);
-		folder.push_back(iNode);
-	}
+	
 
 	return folderAdded;
 }
@@ -164,7 +192,7 @@ std::vector<std::string> inode::pathSplitter(std::string path) {
 // TODO: memory leak somewhere in this method.
 // This method will find a path recursive to ant path, and return the path.
 inode* inode::findFolderRecursive(std::vector<std::string> path, int pos, int cap) {
-	inode* retINode = this;
+	inode* retINode = nullptr;
 
 	if (cap > pos) {
 		std::string findFoldername = path.at(pos);
