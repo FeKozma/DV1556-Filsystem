@@ -18,17 +18,17 @@ bool quit();
 std::string help();
 std::string getInput(std::string Question);
 
-void emptyCommands(std::string* arr);
-//void SignalHandler(int signal);
+void emptyCommands(std::string *arr);
+void SignalHandler(int signal);
 
 int main(void) {
-	//_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 
 	// Signal handler
-	//typedef void(*SignalHandlerPointer)(int);
+	typedef void(*SignalHandlerPointer)(int);
 
-	//SignalHandlerPointer previousHandler;
-	//previousHandler = signal(SIGINT, SignalHandler);
+	SignalHandlerPointer previousHandler;
+	previousHandler = signal(SIGINT, SignalHandler);
 	// End of signal handler
 
 	FileSystem fileSys(250, 512);
@@ -164,7 +164,6 @@ std::string help() {
 	return helpStr;
 }
 
-/*
 void SignalHandler(int signal) {
 	if (signal == SIGINT) {
 		std::cout << "\nCommand not found.\n";
@@ -172,9 +171,9 @@ void SignalHandler(int signal) {
 	} else {
 		// ...  
 	}
-}*/
+}
 
-void emptyCommands(std::string* &arr) {
+void emptyCommands(std::string *arr) {
 	for (int i = 0; i < MAXCOMMANDS; ++i) {
 		arr[i] = "";
 	}
