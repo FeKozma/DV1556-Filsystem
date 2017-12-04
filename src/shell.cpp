@@ -49,54 +49,53 @@ int main(void) {
 
 			int cIndex = findCommand(commandArr[0]);
 			switch (cIndex) {
-
-			case 0: // q
-			case 1: // quit
-			case 2: // exit
-				bRun = quit();
-				break;
-			case 3: // format
-				fileSys.formatSystem();
-				break;
-			case 4: // ls
-				std::cout << fileSys.listDir(commandArr[1]);
-				break;
-			case 5: // create
-				std::cout << (fileSys.createFile(getInput("Enter content"), getInput("Enter title"), commandArr[1]));
-				break;
-			case 6: // cat
-				std::cout << fileSys.viewFileOn(commandArr[1]) << std::endl;
-				break;
-			case 7: // createImage
-				break;
-			case 8: // restoreImage
-				break;
-			case 9: // rm
-				fileSys.removeFile(commandArr[1]);
-				break;
-			case 10: // cp
-				break;
-			case 11: // append
-				break;
-			case 12: // mv
-				break;
-			case 13: // mkdir
-				for (int i = 1; i < nrOfCommands; ++i) {
-					fileSys.createFolderi(commandArr[i]);
-					commandArr[i] = "";
-				}
-				break;
-			case 14: // cd	
-				fileSys.goToFolder(commandArr[1]);
-				break;
-			case 15: // pwd
-				std::cout << fileSys.getCurrentPath() << std::endl;
-				break;
-			case 16: // help
-				std::cout << help() << std::endl;
-				break;
-			default:
-				std::cout << "Unknown command: " << commandArr[0] << std::endl;
+				case 0: // q
+				case 1: // quit
+				case 2: // exit
+					bRun = quit();
+					break;
+				case 3: // format
+					fileSys.formatSystem();
+					break;
+				case 4: // ls
+					std::cout << fileSys.listDir(commandArr[1]);
+					break;
+				case 5: // create
+					std::cout << (fileSys.createFile(getInput("Enter content"), getInput("Enter title"), commandArr[1]));
+					break;
+				case 6: // cat
+					std::cout << fileSys.viewFileOn(commandArr[1]) << std::endl;
+					break;
+				case 7: // createImage
+					break;
+				case 8: // restoreImage
+					break;
+				case 9: // rm
+					fileSys.removeFile(commandArr[1]);
+					break;
+				case 10: // cp
+					break;
+				case 11: // append
+					break;
+				case 12: // mv
+					break;
+				case 13: // mkdir
+					for (int i = 1; i < nrOfCommands; ++i) {
+						fileSys.createFolderi(commandArr[i]);
+						commandArr[i] = "";
+					}
+					break;
+				case 14: // cd
+					fileSys.goToFolder(commandArr[1]);
+					break;
+				case 15: // pwd
+					std::cout << fileSys.getCurrentPath() << std::endl;
+					break;
+				case 16: // help
+					std::cout << help() << std::endl;
+					break;
+				default:
+					std::cout << "Unknown command: " << commandArr[0] << std::endl;
 			}
 
 			// Empty command.
@@ -108,6 +107,7 @@ int main(void) {
 	return 0;
 }
 
+// Write a question/string, then return the input when the user press enter.
 std::string getInput(std::string question) {
 	std::string retString;
 	std::cout << (question + ": ");
@@ -115,6 +115,7 @@ std::string getInput(std::string question) {
 	return retString;
 }
 
+// Return the amount of commands the user entered (spaces probably).
 int parseCommandString(const std::string &userCommand, std::string strArr[]) {
 	std::stringstream ssin(userCommand);
 	int counter = 0;
@@ -127,6 +128,8 @@ int parseCommandString(const std::string &userCommand, std::string strArr[]) {
 	}
 	return counter;
 }
+
+// Find the current command that is used.
 int findCommand(std::string &command) {
 	int index = -1;
 	for (int i = 0; i < NUMAVAILABLECOMMANDS && index == -1; ++i) {
@@ -137,11 +140,13 @@ int findCommand(std::string &command) {
 	return index;
 }
 
+// Will show a message that the program is existing.
 bool quit() {
 	std::cout << "Exiting\n";
 	return false;
 }
 
+// Will return a string with all help information.
 std::string help() {
 	std::string helpStr;
 	helpStr += "OSD Disk Tool .oO Help Screen Oo.\n";
@@ -164,6 +169,7 @@ std::string help() {
 	return helpStr;
 }
 
+// A signal handler for when you press for example Ctrl + C.
 void SignalHandler(int signal) {
 	if (signal == SIGINT) {
 		std::cout << "\nCommand not found.\n";
@@ -173,6 +179,7 @@ void SignalHandler(int signal) {
 	}
 }
 
+// Is used when you have no command to show.
 void emptyCommands(std::string *arr) {
 	for (int i = 0; i < MAXCOMMANDS; ++i) {
 		arr[i] = "";
