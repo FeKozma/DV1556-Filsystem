@@ -1,6 +1,8 @@
 #include <sstream>
 #include "filesystem.h"
 #include <signal.h>
+#include <windows.h> // WinApi header
+
 
 const int MAXCOMMANDS = 8;
 const int NUMAVAILABLECOMMANDS = 17;
@@ -24,6 +26,15 @@ void SignalHandler(int signal);
 int main(void) {
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 
+	// add color to promt
+	HANDLE hConsole;
+	hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+	int colorPromt = 3;
+	int colorText = 7;
+	SetConsoleTextAttribute(hConsole, colorPromt);
+
+
+
 	// Signal handler
 	typedef void(*SignalHandlerPointer)(int);
 
@@ -41,7 +52,12 @@ int main(void) {
 	bool bRun = true;
 	
 	do {
+
+
 		std::cout << user << ":" << currentDir << "$ ";
+		SetConsoleTextAttribute(hConsole, colorText);
+
+
 		getline(std::cin, userCommand);
 
 		int nrOfCommands = parseCommandString(userCommand, commandArr);
