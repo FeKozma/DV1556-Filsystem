@@ -6,6 +6,7 @@
 
 const int MAXCOMMANDS = 8;
 const int NUMAVAILABLECOMMANDS = 17;
+const HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 
 std::string availableCommands[NUMAVAILABLECOMMANDS] = {
 	"q","quit","exit","format","ls","create","cat","createImage","restoreImage",
@@ -19,16 +20,15 @@ bool quit();
 
 std::string help();
 std::string getInput(std::string Question);
-
+void print(std::string, int);
 void emptyCommands(std::string *arr);
 void SignalHandler(int signal);
 
 int main(void) {
+	SetConsoleTitle(TEXT("FELIX OCH JONATHAN´S FILSYSTEM"));
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 
 	// add color to text
-	HANDLE hConsole;
-	hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 	int colorPromt = 3;
 	int colorText = 7;
 	int colorGreen = 2;
@@ -132,6 +132,14 @@ int main(void) {
 	} while (bRun == true);
 
 	return 0;
+}
+
+//set text color and print text
+void print(std::string toPrint, int color) {
+	SetConsoleTextAttribute(hConsole, color);
+	std::cout << toPrint << std::endl;
+	
+
 }
 
 // Write a question/string, then return the input when the user press enter.
