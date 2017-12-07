@@ -31,7 +31,6 @@ int main(void) {
 	hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 	int colorPromt = 3;
 	int colorText = 7;
-	SetConsoleTextAttribute(hConsole, colorPromt);
 
 
 
@@ -53,7 +52,7 @@ int main(void) {
 	
 	do {
 
-
+		SetConsoleTextAttribute(hConsole, colorPromt);
 		std::cout << user << ":" << currentDir << "$ ";
 		SetConsoleTextAttribute(hConsole, colorText);
 
