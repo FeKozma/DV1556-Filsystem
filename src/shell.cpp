@@ -30,18 +30,11 @@ int main(void) {
 
 	// add color to text
 	int colorPromt = 3;
-	int colorText = 7;
 	int colorGreen = 2;
 	int colorRed = 4;
 
 
 
-	// Signal handler
-	typedef void(*SignalHandlerPointer)(int);
-
-	SignalHandlerPointer previousHandler;
-	previousHandler = signal(SIGINT, SignalHandler);
-	// End of signal handler
 
 	FileSystem fileSys(250, 512);
 
@@ -52,12 +45,11 @@ int main(void) {
 	int printInt;
 	bool bRun = true;
 	
+
+
 	do {
 
-		SetConsoleTextAttribute(hConsole, colorPromt);
-		std::cout << user << ":" << currentDir << "$ ";
-		SetConsoleTextAttribute(hConsole, colorText);
-
+		print(user + ":" + currentDir + "$ ", colorPromt);
 
 		getline(std::cin, userCommand);
 
@@ -80,14 +72,10 @@ int main(void) {
 				case 5: // create
 					if (fileSys.createFile(getInput("Enter content"), getInput("Enter title"), commandArr[1]))
 					{
-						SetConsoleTextAttribute(hConsole, colorGreen);
-						std::cout << "file created\n";
-						SetConsoleTextAttribute(hConsole, colorText);
+						print("File created\n", colorGreen);
 					}
 					else {
-						SetConsoleTextAttribute(hConsole, colorRed);
-						std::cout << "file not created\n";
-						SetConsoleTextAttribute(hConsole, colorText);
+						print("File not created\n", colorRed);
 					}
 					break;
 				case 6: // cat
@@ -134,12 +122,12 @@ int main(void) {
 	return 0;
 }
 
+
 //set text color and print text
 void print(std::string toPrint, int color) {
 	SetConsoleTextAttribute(hConsole, color);
-	std::cout << toPrint << std::endl;
-	
-
+	std::cout << toPrint;
+	SetConsoleTextAttribute(hConsole, 7);
 }
 
 // Write a question/string, then return the input when the user press enter.
