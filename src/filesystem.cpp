@@ -125,7 +125,13 @@ void FileSystem::removeFile(std::string fileName) {
 // Returns: It will return the folder it got to.
 std::string FileSystem::goToFolder(std::string path) {
 	// TODO: return an error message saying the folder doesn't exist.
-	if (path != "") curFolder = curFolder->goToFolder(path);
+	if (path != "") {
+		inode *folder = curFolder->goToFolder(path);
+		if (folder != nullptr)
+		{ 
+			curFolder = folder;
+		}
+	}
 
 	return curFolder->getFolderPath();
 }
