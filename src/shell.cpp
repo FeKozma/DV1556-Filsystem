@@ -26,11 +26,13 @@ void SignalHandler(int signal);
 int main(void) {
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 
-	// add color to promt
+	// add color to text
 	HANDLE hConsole;
 	hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 	int colorPromt = 3;
 	int colorText = 7;
+	int colorGreen = 2;
+	int colorRed = 4;
 
 
 
@@ -76,7 +78,17 @@ int main(void) {
 					std::cout << fileSys.listDir(commandArr[1]);
 					break;
 				case 5: // create
-					std::cout << (fileSys.createFile(getInput("Enter content"), getInput("Enter title"), commandArr[1]));
+					if (fileSys.createFile(getInput("Enter content"), getInput("Enter title"), commandArr[1]))
+					{
+						SetConsoleTextAttribute(hConsole, colorGreen);
+						std::cout << "file created\n";
+						SetConsoleTextAttribute(hConsole, colorText);
+					}
+					else {
+						SetConsoleTextAttribute(hConsole, colorRed);
+						std::cout << "file not created\n";
+						SetConsoleTextAttribute(hConsole, colorText);
+					}
 					break;
 				case 6: // cat
 					std::cout << fileSys.viewFileOn(commandArr[1]) << std::endl;

@@ -89,7 +89,7 @@ bool FileSystem::createFile(std::string content, std::string name, std::string p
     //check if path exists and if so, mark the memory pos as taken
     if (curFolder->addFile(name, freeBlock, path))
     {
-        if (this->mMemblockDevice->writeBlock(freeBlock, content))
+        if (this->mMemblockDevice->writeBlock(freeBlock, content) == 1)
 		{
             fileCreated = true;
 			availableBlocks[freeBlock] = false;

@@ -23,7 +23,7 @@ bool inode::addFile(std::string name, int freeBlock, std::string path) {
         inode* addHere = this->goToFolder(path);
 		if (addHere != nullptr)
 		{
-			addHere->addFile(name, freeBlock, "");
+			fileAdded = addHere->addFile(name, freeBlock, "");
 		}
         
     }
