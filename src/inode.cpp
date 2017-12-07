@@ -192,22 +192,31 @@ std::vector<std::string> inode::pathSplitter(std::string path) {
 	return retPath;
 }
 
-// TODO: memory leak somewhere in this method.
+// TODO: memory leak somewhere in this method. vilken Felix inte kan hitta
 // This method will find a path recursive to ant path, and return the path.
-inode* inode::findFolderRecursive(std::vector<std::string> path, int pos, int cap) {
+inode* inode::findFolderRecursive(std::vector<std::string> path, int pos, int cap, bool useWithKnowledge) {
+	
 	inode* retINode = nullptr;
-	//TODO: fix so you find folder path "/" ex imposible to use cmd "create /"
+
+	if (useWithKnowledge)
+	{
+		retINode = this;
+	}
+	
+
 	if (cap > pos) {
 		std::string findFoldername = path.at(pos);
 
 		// If it's a special case (..)
 		if (findFoldername == "..") {
-			retINode = (*parent).findFolderRecursive(path, ++pos, cap);
+			//delete retINode; <--USE?
+			retINode = (*parent).findFolderRecursive(path, ++pos, cap, true);
 		}
 
 		// If it's a special case (/)
 		else if (findFoldername == "") {
-			retINode = (*getRoot(*this)).findFolderRecursive(path, ++pos, cap);
+			//delete retINode; <--USE?
+			retINode = (*getRoot(*this)).findFolderRecursive(path, ++pos, cap, true);
 		}
 		else {
 
