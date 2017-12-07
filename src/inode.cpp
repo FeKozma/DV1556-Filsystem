@@ -196,7 +196,7 @@ std::vector<std::string> inode::pathSplitter(std::string path) {
 // This method will find a path recursive to ant path, and return the path.
 inode* inode::findFolderRecursive(std::vector<std::string> path, int pos, int cap) {
 	inode* retINode = nullptr;
-
+	//TODO: fix so you find folder path "/" ex imposible to use cmd "create /"
 	if (cap > pos) {
 		std::string findFoldername = path.at(pos);
 
