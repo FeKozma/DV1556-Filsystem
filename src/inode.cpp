@@ -21,13 +21,16 @@ bool inode::addFile(std::string name, int freeBlock, std::string path) {
     if(path != "")
     {
         inode* addHere = this->goToFolder(path);
-        addHere->addFile(name, freeBlock, "");
+		if (addHere != nullptr)
+		{
+			addHere->addFile(name, freeBlock, "");
+		}
         
     }
 	else if (name != "") {
-		std::vector<std::string> pathList = pathSplitter(path);
+		//std::vector<std::string> pathList = pathSplitter(path);
 
-		inode* folder = findFolderRecursive(pathList, 0, pathList.capacity());
+		//inode* folder = findFolderRecursive(pathList, 0, pathList.capacity());
 
 		if (findFile(name) == -1) {
 			// Add file.
