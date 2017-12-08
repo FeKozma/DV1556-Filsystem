@@ -64,7 +64,7 @@ int main(void) {
 					bRun = quit();
 					break;
 				case 3: // format
-					fileSys.formatSystem();
+					std::cout << "blocks deleted: " << fileSys.formatSystem() << std::endl;
 					break;
 				case 4: // ls
 					std::cout << fileSys.listDir(commandArr[1]);

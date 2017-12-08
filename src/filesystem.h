@@ -47,8 +47,8 @@ public:
 	/* This function will get all the files and folders in the specified folder */
 	std::string listDir(std::string path);
 
-	/* This function will format the system */
-	void formatSystem();
+	/* This function will format the system. return nr of blocks removed */
+	int formatSystem();
 };
 
 #endif // FILESYSTEM_H
