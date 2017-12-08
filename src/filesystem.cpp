@@ -1,26 +1,27 @@
 #include "filesystem.h"
 
-void FileSystem::createImageRecusive(const inode root, std::string & output)
+//maby not the best thing to use ptr
+void FileSystem::createImageRecusive(inode *root, std::string & output)
 {
 	//TODO: this folderName
-	output += "1." + root.getFolderName() + "\n";
+	output += "1." + root->getFolderName() + "\n";
 	
 	//TODO: get filenames
-	std::vector<std::string> files = root.getFiles();
+	std::vector<std::string> files = root->getFiles();
 	for (int i = 0; i < files.size(); ++i)
 	{
 		output += "2." + files[i] + "\n";
 	}
 
 	//TODO: get position in memory
-	std::vector<int> pos = root.getFilePos();
+	std::vector<int> pos = root->getFilePos();
 	for (int i = 0; i < pos.size(); ++i)
 	{
 		output += "3." + std::to_string(pos[i]) + "\n"; 
 	}
 
 	//TODO: get all folders
-	std::vector<std::string> folder = root.getFolders();
+	std::vector<std::string> folder = root->getFolders();
 	for (int i = 0; i < folder.size(); ++i)
 	{
 		output += "4." + folder[i] + "\n";
@@ -29,7 +30,7 @@ void FileSystem::createImageRecusive(const inode root, std::string & output)
 	//TODO: go to  folder and recusive
 	for (int i = 0; i < folder.size(); ++i)
 	{
-		//createImageRecusive(root.goToFolder(folder[i]), output);
+		createImageRecusive(root->goToFolder(folder[i]), output);
 	}
 }
 
@@ -55,6 +56,7 @@ bool FileSystem::createImage(std::string filename, std::string path)
 	inode* rootFolder = this->curFolder->goToFolder("/");
 	createImageRecusive(rootFolder, stringToFile);
 	//TODO: save string to file
+	std::cout << std::endl << stringToFile << std::endl;
 	return false;
 }
 

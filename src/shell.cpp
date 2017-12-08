@@ -82,6 +82,7 @@ int main(void) {
 					std::cout << fileSys.viewFileOn(commandArr[1]) << std::endl;
 					break;
 				case 7: // createImage
+					fileSys.createImage();
 					break;
 				case 8: // restoreImage
 					break;

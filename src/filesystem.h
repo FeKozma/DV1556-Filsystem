@@ -15,7 +15,7 @@ private:
 	int fileSize;
 
 	//returnerar sträng som ska sparas
-	void createImageRecusive(inode root, std::string & uoutput);
+	void createImageRecusive(inode *root, std::string & uoutput);
 public:
 	FileSystem(int blockSize = 250, int fileSize = 512);
 	~FileSystem();
