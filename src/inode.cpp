@@ -55,7 +55,7 @@ void inode::removeFile(std::string fileName, std::string path) {
 
 // Used to find the ID of a file on the system.
 // Return: -1 for not existing. Otherwise returns the value it found.
-int inode::findFile(std::string name) {
+int inode::findFile(std::string name) const {
 	int filePos = -1;
 	for (int i = 0; i <  filesName.size(); ++i) {
 		if (filesName[i] == name)
@@ -122,14 +122,14 @@ bool inode::addFolder(std::string name, std::string path) {
 
 // Used to go to a folder with a path.
 // Return: An inode containing the path-folder.
-inode* inode::goToFolder(std::string path) {
+inode* inode::goToFolder(std::string path)  {
 	std::vector<std::string> pathList = pathSplitter(path);
 	return findFolderRecursive(pathList, 0, pathList.size());
 }
 
 // Used to find a folder in the system.
 // Return: An integer containing the folder position.
-int inode::findFolder(std::string name) {
+int inode::findFolder(std::string name) const {
 	int folderPos = -1;
 	for (std::vector<inode>::size_type i = 0; i != folder.size(); i++) {
 		if (this->folder[i].getFolderName() == name)
@@ -141,14 +141,14 @@ int inode::findFolder(std::string name) {
 }
 
 // Returns the folder name.
-std::string inode::getFolderName() {
+std::string inode::getFolderName() const {
 	return this->name;
 }
 
 // Returns the current folder path of this inode.
-std::string inode::getFolderPath() {
+std::string inode::getFolderPath() const {
 	std::string path = "/";
-	inode *current = this;
+	const inode *current = this;
 	while (current->getFolderName() != "") {
 		path = "/" + current->getFolderName() + path;
 		current = current->parent;
@@ -158,7 +158,7 @@ std::string inode::getFolderPath() {
 }
 
 // Returns an array of all folders in this inode.
-std::vector<std::string> inode::getFolders() {
+std::vector<std::string> inode::getFolders() const {
 	std::vector<std::string> folders;
 	for (int i = 0; i < folder.size(); ++i) {
 		folders.push_back(folder[i].getFolderName());
@@ -167,12 +167,17 @@ std::vector<std::string> inode::getFolders() {
 }
 
 // Returns the files.
-std::vector<std::string> inode::getFiles() {
+std::vector<std::string> inode::getFiles() const {
 	return filesName;
 }
 
+std::vector<int> inode::getFilePos() const
+{
+	return this->files;
+}
+
 // This function will split any path and returns ? TODO... fix/change?
-std::vector<std::string> inode::pathSplitter(std::string path) {
+std::vector<std::string> inode::pathSplitter(std::string path) const {
 	std::vector<std::string> retPath;
 
 	int start = 0;
@@ -194,7 +199,7 @@ std::vector<std::string> inode::pathSplitter(std::string path) {
 
 // TODO: memory leak somewhere in this method. vilken Felix inte kan hitta
 // This method will find a path recursive to ant path, and return the path.
-inode* inode::findFolderRecursive(std::vector<std::string> path, int pos, int cap, bool useWithKnowledge) {
+inode* inode::findFolderRecursive(std::vector<std::string> path, int pos, int cap, bool useWithKnowledge)  {
 	
 	inode* retINode = nullptr;
 
@@ -243,7 +248,7 @@ inode* inode::getRoot(inode &current) {
 }
 
 // This function will return a block id of a filename if it finds it.
-int inode::findBlockId(std::string fileName) {
+int inode::findBlockId(std::string fileName) const  {
 	int id = findFile(fileName);
 	if (id != -1)
 		return files[id];

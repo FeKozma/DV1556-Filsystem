@@ -1,12 +1,36 @@
 #include "filesystem.h"
 
-void FileSystem::createImageRecusive(inode roo, std::string & output)
+void FileSystem::createImageRecusive(const inode root, std::string & output)
 {
+	//TODO: this folderName
+	output += "1." + root.getFolderName() + "\n";
+	
 	//TODO: get filenames
-	//TODO: get file data
+	std::vector<std::string> files = root.getFiles();
+	for (int i = 0; i < files.size(); ++i)
+	{
+		output += "2." + files[i] + "\n";
+	}
+
 	//TODO: get position in memory
-	//TODO: get maps
-	//TODO: go to first map
+	std::vector<int> pos = root.getFilePos();
+	for (int i = 0; i < pos.size(); ++i)
+	{
+		output += "3." + std::to_string(pos[i]) + "\n"; 
+	}
+
+	//TODO: get all folders
+	std::vector<std::string> folder = root.getFolders();
+	for (int i = 0; i < folder.size(); ++i)
+	{
+		output += "4." + folder[i] + "\n";
+	}
+
+	//TODO: go to  folder and recusive
+	for (int i = 0; i < folder.size(); ++i)
+	{
+		//createImageRecusive(root.goToFolder(folder[i]), output);
+	}
 }
 
 FileSystem::FileSystem(int blockSize, int fileSize) {
