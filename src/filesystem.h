@@ -18,6 +18,8 @@ public:
 	FileSystem(int blockSize = 250, int fileSize = 512);
 	~FileSystem();
 
+	bool createImage(std::string filename = "data", std::string path = "");
+
 	// These are test functions, WARNING, TODO
 	int createFileOn(std::string testString, int blocknr = 1);
 

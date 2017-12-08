@@ -15,8 +15,19 @@ FileSystem::~FileSystem() {
 	delete[] availableBlocks;
 }
 
+bool FileSystem::createImage(std::string filename, std::string path)
+{
+	//TODO: go to root
+	//TODO: get filenames
+	//TODO: get file data
+	//TODO: get position in memory
+	//TODO: get maps
+	//TODO: go to first map 
+	return false;
+}
+
 /****************************************************
- ***************** Begin Functions ******************
+ ***************** Begin Test? Functions ******************
  ****************** WARNING TODO ********************
  ***************************************************/
 
