@@ -5,6 +5,10 @@
 #include "inode.h"
 #include <algorithm>
 #include <cctype>
+#include <iostream>
+#include <fstream>
+
+
 
 class FileSystem {
 private:
@@ -21,6 +25,8 @@ public:
 	~FileSystem();
 
 	bool createImage(std::string filename = "data", std::string path = "");
+
+	bool loadImage(std::string filename = "data");
 
 	// These are test functions, WARNING, TODO
 	int createFileOn(std::string testString, int blocknr = 1);

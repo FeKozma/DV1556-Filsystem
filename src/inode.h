@@ -3,6 +3,8 @@
 
 #include <string>
 #include <vector>
+#include <iostream>
+#include <fstream>
 
 class inode {
 private:
@@ -22,6 +24,7 @@ public:
 	
 	inode();
 	inode(inode* &parent);
+	inode(std::fstream in);
 	
 	~inode() {};
 	

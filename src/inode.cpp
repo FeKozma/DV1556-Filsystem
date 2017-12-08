@@ -14,6 +14,42 @@ inode::inode(inode* &parent) {
 	this->parent = parent;
 }
 
+inode::inode(std::fstream in)
+{
+	bool noBlankRow = false;
+	std::string output;
+	this->parent = this;
+	if (in.is_open()) {
+		while (!in.eof() && noBlankRow) {
+			in >> output;
+			if (output == "")
+			{
+				noBlankRow = true;
+			}
+			else
+			{
+				if (output[0] == *"1")
+				{
+					//TODO: create function removing the first 2 characters in string 
+				}
+				else if (output[0] == *"2")
+				{
+
+				}
+				else if (output[0] == *"3")
+				{
+
+				}
+				else if (output[0] == *"4")
+				{
+
+				}
+			}
+		}
+	}
+	name = in.
+}
+
 // Used when adding a file to the system
 // Returns whether it could add a file not not.
 bool inode::addFile(std::string name, int freeBlock, std::string path) {

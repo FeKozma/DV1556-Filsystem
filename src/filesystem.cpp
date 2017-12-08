@@ -27,6 +27,8 @@ void FileSystem::createImageRecusive(inode *root, std::string & output)
 		output += "4." + folder[i] + "\n";
 	}
 
+	output += "\n";
+	
 	//TODO: go to  folder and recusive
 	for (int i = 0; i < folder.size(); ++i)
 	{
@@ -57,6 +59,18 @@ bool FileSystem::createImage(std::string filename, std::string path)
 	createImageRecusive(rootFolder, stringToFile);
 	//TODO: save string to file
 	std::cout << std::endl << stringToFile << std::endl;
+	std::ofstream out(filename + ".txt");
+	out << stringToFile;
+	out.close();
+
+	return true;
+}
+
+bool FileSystem::loadImage(std::string filename)
+{
+	//TODO: open file
+	//TODO: if no file is found return false
+	//TODO: create new inode with suitible constructur
 	return false;
 }
 
