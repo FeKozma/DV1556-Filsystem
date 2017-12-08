@@ -1,5 +1,14 @@
 #include "filesystem.h"
 
+void FileSystem::createImageRecusive(inode roo, std::string & output)
+{
+	//TODO: get filenames
+	//TODO: get file data
+	//TODO: get position in memory
+	//TODO: get maps
+	//TODO: go to first map
+}
+
 FileSystem::FileSystem(int blockSize, int fileSize) {
 	mMemblockDevice = new MemBlockDevice(blockSize);
 	availableBlocks = new bool[blockSize];
@@ -17,12 +26,11 @@ FileSystem::~FileSystem() {
 
 bool FileSystem::createImage(std::string filename, std::string path)
 {
+	std::string stringToFile = "";
 	//TODO: go to root
-	//TODO: get filenames
-	//TODO: get file data
-	//TODO: get position in memory
-	//TODO: get maps
-	//TODO: go to first map 
+	inode* rootFolder = this->curFolder->goToFolder("/");
+	createImageRecusive(rootFolder, stringToFile);
+	//TODO: save string to file
 	return false;
 }
 
