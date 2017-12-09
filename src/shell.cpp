@@ -50,7 +50,7 @@ int main(void) {
 	do {
 
 		print(user + ":" + currentDir + "$ ", colorPromt);
-
+		
 		getline(std::cin, userCommand);
 
 		int nrOfCommands = parseCommandString(userCommand, commandArr);

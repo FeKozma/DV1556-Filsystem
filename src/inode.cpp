@@ -30,24 +30,28 @@ inode::inode(std::fstream in)
 			{
 				if (output[0] == *"1")
 				{
-					//TODO: create function removing the first 2 characters in string 
+					output.erase(0, 2);
 				}
 				else if (output[0] == *"2")
 				{
-
+					output.erase(0, 2);
 				}
 				else if (output[0] == *"3")
 				{
-
+					output.erase(0, 2);
 				}
 				else if (output[0] == *"4")
 				{
-
+					output.erase(0, 2);
+				}
+				else
+				{
+					std::cout << "error!!!" << std::endl;
 				}
 			}
 		}
 	}
-	name = in.
+	
 }
 
 // Used when adding a file to the system
@@ -282,6 +286,8 @@ inode* inode::getRoot(inode &current) {
 
 	return retInode;
 }
+
+
 
 // This function will return a block id of a filename if it finds it.
 int inode::findBlockId(std::string fileName) const  {

@@ -19,7 +19,7 @@ private:
 	std::vector<std::string> pathSplitter(std::string path) const;
 	inode* findFolderRecursive(std::vector<std::string> path, int pos, int cap /*cap -> sluta vid cap ex kan finnas filnamn i slutet av path*/, bool useWithKnowledge = false);
 	inode* getRoot(inode& curent);
-	
+
 public:
 	
 	inode();
