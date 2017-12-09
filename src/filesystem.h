@@ -14,8 +14,7 @@ class FileSystem {
 private:
 	MemBlockDevice *mMemblockDevice;
 	inode *curFolder;
-	bool *availableBlocks;
-	int nrOfBlocks;
+	//TODO:? fileSize borde kanske flyttas till mmemblockdevice
 	int fileSize;
 
 	//returnerar sträng som ska sparas
@@ -29,7 +28,7 @@ public:
 	bool loadImage(std::string filename = "data");
 
 	// These are test functions, WARNING, TODO
-	int createFileOn(std::string testString, int blocknr = 1);
+	int createFileOn(std::string testString);
 
 	/* This function will list the content of a file */
 	std::string viewFileOn(std::string fileName);

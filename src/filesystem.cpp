@@ -38,17 +38,17 @@ void FileSystem::createImageRecusive(inode *root, std::string & output)
 
 FileSystem::FileSystem(int blockSize, int fileSize) {
 	mMemblockDevice = new MemBlockDevice(blockSize);
-	availableBlocks = new bool[blockSize];
-	for (int i = 0; i < blockSize; ++i)
-		availableBlocks[i] = true;
+	//availableBlocks = new bool[blockSize];
+	//for (int i = 0; i < blockSize; ++i)
+	//	availableBlocks[i] = true;
 	curFolder = new inode();
-	nrOfBlocks = blockSize;
+	//nrOfBlocks = blockSize;
 }
 
 FileSystem::~FileSystem() {
 	delete mMemblockDevice;
 	delete curFolder;
-	delete[] availableBlocks;
+	//delete[] availableBlocks;
 }
 
 bool FileSystem::createImage(std::string filename, std::string path)
@@ -77,9 +77,12 @@ bool FileSystem::loadImage(std::string filename)
 		// create new inode with suitible constructur
 		delete this->curFolder;
 		this->curFolder = new inode(input);
+		
+		//TODO: save mMemblockDevice
 
-
+		
 		input.close();
+
 		added = true;
 	}
 
@@ -91,14 +94,14 @@ bool FileSystem::loadImage(std::string filename)
  ****************** WARNING TODO ********************
  ***************************************************/
 
-int FileSystem::createFileOn(std::string storeString, int blocknr) {
+int FileSystem::createFileOn(std::string storeString) {
 	int lengthOfBlock = fileSize;
 	
 	for (int i = storeString.length(); i < lengthOfBlock; i++) {
 		storeString += "0";
 	}
 	//std::cout << std::to_string(storeString.length()) + "\n";
-	int retVal = this->mMemblockDevice->writeBlock(blocknr, storeString);
+	int retVal = this->mMemblockDevice->writeBlock(storeString);
 	return retVal;
 }
 
@@ -142,29 +145,13 @@ bool FileSystem::createFile(std::string content, std::string name, std::string p
 	int freeBlock = -1;
 	
 	//insert file into free spot
-	for (int i = 0; i < nrOfBlocks; ++i) {
-		if (availableBlocks[i] == true) {
-			createFileOn(content, i);
-			freeBlock = i;
+	int pos = createFileOn(content);
 
-			// Prepare size for the memBlockDevice, what it needs to be as long as a block.
-			for (int k = content.size(); k < 512; ++k) {
-				content += " ";
-			}
-
-
-			i = nrOfBlocks;
-		}
-	}
     
     //check if path exists and if so, mark the memory pos as taken
-    if (curFolder->addFile(name, freeBlock, path))
+    if (pos != -1)
     {
-        if (this->mMemblockDevice->writeBlock(freeBlock, content) == 1)
-		{
-            fileCreated = true;
-			availableBlocks[freeBlock] = false;
-        }
+		curFolder->addFile(name, pos, path);
     }
     
     
@@ -187,10 +174,9 @@ void FileSystem::removeFile(std::string fileName) {
 
 	int blockId = curFolder->findBlockId(fileName);
 	
-	if (blockId != -1) {
-		availableBlocks[blockId] = true;
-		curFolder->removeFile(fileName);
-	}
+	this->mMemblockDevice->rmBlock(blockId);
+	this->curFolder->removeFile(fileName);
+	
 }
 
 // This function will go to a folder in the system.
@@ -233,7 +219,7 @@ std::string FileSystem::listDir(std::string path) {
 // This function will format the system (our current filesystem).
 int FileSystem::formatSystem() {
 	int deletedFiles = 0;
-	for (int i = 0; i < nrOfBlocks; ++i) {
+	/*for (int i = 0; i < nrOfBlocks; ++i) {
 		if (availableBlocks[i] == false)
 		{
 			availableBlocks[i] = true;
@@ -241,6 +227,6 @@ int FileSystem::formatSystem() {
 		}
 	}
 	delete curFolder;
-	curFolder = new inode();
+	curFolder = new inode();*/
 	return deletedFiles;
 }

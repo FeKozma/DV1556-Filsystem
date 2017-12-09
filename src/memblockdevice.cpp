@@ -2,15 +2,26 @@
 #include <stdexcept>
 
 MemBlockDevice::MemBlockDevice(int nrOfBlocks): BlockDevice(nrOfBlocks) {
-
+	this->availableBlocks = new bool[nrOfBlocks];
+	this->blocksCap = nrOfBlocks;
+	for (int i = 0; i < nrOfBlocks; i++)
+	{
+		availableBlocks[i] = true;
+	}
 }
 
 MemBlockDevice::MemBlockDevice(const MemBlockDevice &other) : BlockDevice(other) {
-
+	this->availableBlocks = new bool[nrOfBlocks];
+	this->blocksCap = nrOfBlocks;
+	for (int i = 0; i < nrOfBlocks; i++)
+	{
+		availableBlocks[i] = true;
+	}
 }
 
 MemBlockDevice::~MemBlockDevice() {
 	/* Implicit call to base-class destructor */
+	delete[] 	availableBlocks;
 }
 
 MemBlockDevice& MemBlockDevice::operator=(const MemBlockDevice &other) {
@@ -35,8 +46,60 @@ Block& MemBlockDevice::operator[](int index) const {
 }
 
 int MemBlockDevice::spaceLeft() const {
-	/* Not yet implemented */
-	return 0;
+	int freeNr = 0;
+	for (int i = 0; i < blocksCap; ++i)
+	{
+		if (availableBlocks[i] == true)
+		{
+			freeNr += 1;
+		}
+	}
+	return freeNr;
+}
+
+int MemBlockDevice::writeBlock(const std::vector<char>& vec)
+{
+	int retVal = findFree(1);
+	if (retVal != -1)
+	{
+		if (writeBlock(retVal, vec) != 1) {
+			retVal = -1;
+		}
+	}
+	return retVal;
+}
+
+int MemBlockDevice::writeBlock(const std::string & strBlock)
+{
+	//Problem: -2 is returned!!
+	int retVal = findFree(1);
+	if (retVal != -1)
+	{
+		if (writeBlock(retVal, strBlock) != 1) {
+			retVal = -1;
+		}
+	}
+	return retVal;
+}
+
+int MemBlockDevice::writeBlock(const char cArr[])
+{
+	int retVal = findFree(1);
+	if (retVal != -1)
+	{
+		if (writeBlock(retVal, cArr) != 1) {
+			retVal = -1;
+		}
+	}
+	return retVal;
+}
+
+void MemBlockDevice::rmBlock(int blockNr)
+{
+	if (blockNr >= 0)
+	{
+		availableBlocks[blockNr] = true;
+	}
 }
 
 int MemBlockDevice::writeBlock(int blockNr, const std::vector<char> &vec) {
@@ -69,6 +132,33 @@ int MemBlockDevice::writeBlock(int blockNr, const char cArr[]) {
 		this->memBlocks[blockNr].writeBlock(cArr);
 	}
 	return output;
+}
+
+int MemBlockDevice::findFree(int size)
+{
+	int count = 0;
+	int freeSpace = -1;
+	for (int i = 0; i < blocksCap; ++i)
+	{
+		if (availableBlocks[i] == true)
+		{
+			count++;
+			for (int k = 1; k < size; ++k)
+			{
+				if (availableBlocks[i + k] == true)
+				{
+					count++;
+				}
+			}
+			if (count >= size)
+			{
+				freeSpace = i;
+				i = blocksCap;
+			}
+			count = 0;
+		}
+	}
+	return freeSpace;
 }
 
 Block MemBlockDevice::readBlock(int blockNr) const {
