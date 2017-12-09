@@ -16,4 +16,4 @@ x32/
 *.vcxproj
 *.opendb
 *.db
-*.filters
+*.filters.

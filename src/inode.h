@@ -33,6 +33,7 @@ public:
 	std::vector<std::string> getFolders() const;
 	std::vector<std::string> getFiles() const;
 	std::vector<int> getFilePos() const;
+	int getNrOfFolders() const;
 
 	bool addFile(std::string name, int freeBlock, std::string path = "");
 	void removeFile(std::string name, std::string path = "");

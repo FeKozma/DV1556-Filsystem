@@ -14,7 +14,7 @@ inode::inode(inode* &parent) {
 	this->parent = parent;
 }
 
-inode::inode(std::fstream in)
+inode::inode(std::fstream  in)
 {
 	bool noBlankRow = false;
 	std::string output;
@@ -30,27 +30,37 @@ inode::inode(std::fstream in)
 			{
 				if (output[0] == *"1")
 				{
+					//1 = this is the current folders name
 					output.erase(0, 2);
+					this->name = output;
 				}
 				else if (output[0] == *"2")
 				{
+					//2 = file name
 					output.erase(0, 2);
+					this->filesName.push_back(output);
 				}
 				else if (output[0] == *"3")
 				{
+					//3 = files position in memory
 					output.erase(0, 2);
+					this->files.push_back(std::stoi(output));
 				}
 				else if (output[0] == *"4")
 				{
+					//4 = folders in this dir
 					output.erase(0, 2);
+					//TODO: save foldername
 				}
 				else
 				{
+					//? = wrong structure of file
 					std::cout << "error!!!" << std::endl;
 				}
 			}
 		}
 	}
+	//TODO: go in to first folder recusivly
 	
 }
 
@@ -214,6 +224,11 @@ std::vector<std::string> inode::getFiles() const {
 std::vector<int> inode::getFilePos() const
 {
 	return this->files;
+}
+
+int inode::getNrOfFolders() const
+{
+	return this->folder.size();
 }
 
 // This function will split any path and returns ? TODO... fix/change?

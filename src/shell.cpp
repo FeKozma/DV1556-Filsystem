@@ -82,7 +82,7 @@ int main(void) {
 					std::cout << fileSys.viewFileOn(commandArr[1]) << std::endl;
 					break;
 				case 7: // createImage
-					fileSys.createImage();
+					fileSys.createImage(getInput("enter image name"));
 					break;
 				case 8: // restoreImage
 					break;

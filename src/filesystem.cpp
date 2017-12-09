@@ -20,12 +20,12 @@ void FileSystem::createImageRecusive(inode *root, std::string & output)
 		output += "3." + std::to_string(pos[i]) + "\n"; 
 	}
 
-	//TODO: get all folders
+	//TODO: get nr of folders
 	std::vector<std::string> folder = root->getFolders();
-	for (int i = 0; i < folder.size(); ++i)
-	{
-		output += "4." + folder[i] + "\n";
-	}
+
+	
+	output += "4." + std::to_string(root->getNrOfFolders()) + "\n";
+	
 
 	output += "\n";
 	
