@@ -86,10 +86,10 @@ int main(void) {
 					break;
 				case 8: // restoreImage
 					if (fileSys.loadImage(commandArr[1])) {
-						print("filesystem succesfully restored", colorGreen);
+						print("filesystem succesfully restored\n", colorGreen);
 					}
 					else {
-						print("could not find image", colorRed);
+						print("could not find image\n", colorRed);
 					}
 					break;
 				case 9: // rm
