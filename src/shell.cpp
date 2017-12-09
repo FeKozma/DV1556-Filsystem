@@ -82,10 +82,15 @@ int main(void) {
 					std::cout << fileSys.viewFileOn(commandArr[1]) << std::endl;
 					break;
 				case 7: // createImage
-					fileSys.createImage(getInput("enter image name"));
+					fileSys.createImage(commandArr[1]);
 					break;
 				case 8: // restoreImage
-					fileSys.loadImage(getInput("enter image name"));
+					if (fileSys.loadImage(commandArr[1])) {
+						print("filesystem succesfully restored", colorGreen);
+					}
+					else {
+						print("could not find image", colorRed);
+					}
 					break;
 				case 9: // rm
 					fileSys.removeFile(commandArr[1]);
