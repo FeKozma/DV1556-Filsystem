@@ -24,7 +24,7 @@ public:
 	
 	inode();
 	inode(inode* &parent);
-	inode(std::fstream in);
+	inode(std::ifstream& in, inode* parent = nullptr);
 	
 	~inode() {};
 	

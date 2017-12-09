@@ -85,6 +85,7 @@ int main(void) {
 					fileSys.createImage(getInput("enter image name"));
 					break;
 				case 8: // restoreImage
+					fileSys.loadImage(getInput("enter image name"));
 					break;
 				case 9: // rm
 					fileSys.removeFile(commandArr[1]);

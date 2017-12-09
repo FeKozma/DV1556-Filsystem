@@ -14,14 +14,24 @@ inode::inode(inode* &parent) {
 	this->parent = parent;
 }
 
-inode::inode(std::fstream  in)
+inode::inode(std::ifstream&  input, inode* parent)
 {
 	bool noBlankRow = false;
 	std::string output;
-	this->parent = this;
-	if (in.is_open()) {
-		while (!in.eof() && noBlankRow) {
-			in >> output;
+	int nrFolders = 0;
+
+	if (parent == nullptr)
+	{
+		this->parent = this;
+	}
+	else
+	{
+		this->parent = parent;
+	}
+
+	if (input.is_open()) {
+		while (!input.eof() && noBlankRow) {
+			input >> output;
 			if (output == "")
 			{
 				noBlankRow = true;
@@ -33,6 +43,7 @@ inode::inode(std::fstream  in)
 					//1 = this is the current folders name
 					output.erase(0, 2);
 					this->name = output;
+					//TODO: check if problem. root folder has no text. should work
 				}
 				else if (output[0] == *"2")
 				{
@@ -50,7 +61,8 @@ inode::inode(std::fstream  in)
 				{
 					//4 = folders in this dir
 					output.erase(0, 2);
-					//TODO: save foldername
+					//TODO: save folder number
+					nrFolders = this->getNrOfFolders();
 				}
 				else
 				{
@@ -61,7 +73,11 @@ inode::inode(std::fstream  in)
 		}
 	}
 	//TODO: go in to first folder recusivly
-	
+	for (int i = 0; i < nrFolders; ++i)
+	{
+		inode toPush = inode(input, this);
+		this->folder.push_back(toPush);
+	}
 }
 
 // Used when adding a file to the system

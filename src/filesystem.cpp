@@ -69,8 +69,15 @@ bool FileSystem::createImage(std::string filename, std::string path)
 bool FileSystem::loadImage(std::string filename)
 {
 	//TODO: open file
+	std::ifstream input;
+	input.open(filename + ".txt");
+
 	//TODO: if no file is found return false
 	//TODO: create new inode with suitible constructur
+	delete this->curFolder;
+	this->curFolder = new inode(input);
+	std::cout << std::endl << this->curFolder->getFolders()[0] << std::endl;
+
 	return false;
 }
 
