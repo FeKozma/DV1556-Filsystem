@@ -16,7 +16,7 @@ inode::inode(inode* &parent) {
 
 inode::inode(std::ifstream&  input, inode* parent)
 {
-	bool noBlankRow = false;
+	bool endOfFolderInfo = false;
 	std::string output;
 	int nrFolders = 0;
 
@@ -30,46 +30,42 @@ inode::inode(std::ifstream&  input, inode* parent)
 	}
 
 	if (input.is_open()) {
-		while (!input.eof() && noBlankRow) {
+		while (!input.eof() && !endOfFolderInfo) {
 			input >> output;
-			if (output == "")
+			
+			if (output[0] == *"1")
 			{
-				noBlankRow = true;
+				//1 = this is the current folders name
+				output.erase(0, 2);
+				this->name = output;
+				//TODO: check if problem. root folder has no text. should work
+			}
+			else if (output[0] == *"2")
+			{
+				//2 = file name
+				output.erase(0, 2);
+				this->filesName.push_back(output);
+			}
+			else if (output[0] == *"3")
+			{
+				//3 = files position in memory
+				output.erase(0, 2);
+				this->files.push_back(std::stoi(output));
+			}
+			else if (output[0] == *"4")
+			{
+				//4 = folders in this dir
+				output.erase(0, 2);
+				//TODO: save folder number
+				nrFolders = std::stoi(output);
+				endOfFolderInfo = true;
 			}
 			else
 			{
-				if (output[0] == *"1")
-				{
-					//1 = this is the current folders name
-					output.erase(0, 2);
-					this->name = output;
-					//TODO: check if problem. root folder has no text. should work
-				}
-				else if (output[0] == *"2")
-				{
-					//2 = file name
-					output.erase(0, 2);
-					this->filesName.push_back(output);
-				}
-				else if (output[0] == *"3")
-				{
-					//3 = files position in memory
-					output.erase(0, 2);
-					this->files.push_back(std::stoi(output));
-				}
-				else if (output[0] == *"4")
-				{
-					//4 = folders in this dir
-					output.erase(0, 2);
-					//TODO: save folder number
-					nrFolders = this->getNrOfFolders();
-				}
-				else
-				{
-					//? = wrong structure of file
-					std::cout << "error!!!" << std::endl;
-				}
+				//? = wrong structure of file
+				std::cout << "error!!!" << std::endl;
 			}
+			
 		}
 	}
 	//TODO: go in to first folder recusivly

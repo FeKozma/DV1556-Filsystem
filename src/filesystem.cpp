@@ -76,8 +76,9 @@ bool FileSystem::loadImage(std::string filename)
 	//TODO: create new inode with suitible constructur
 	delete this->curFolder;
 	this->curFolder = new inode(input);
-	std::cout << std::endl << this->curFolder->getFolders()[0] << std::endl;
-
+	
+	
+	input.close();
 	return false;
 }
 
