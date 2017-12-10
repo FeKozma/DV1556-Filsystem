@@ -72,6 +72,7 @@ int MemBlockDevice::writeBlock(const std::vector<char>& vec)
 int MemBlockDevice::writeBlock(const std::string & strBlock)
 {
 	//Problem: -2 is returned!!
+
 	int retVal = findFree(1);
 	if (retVal != -1)
 	{

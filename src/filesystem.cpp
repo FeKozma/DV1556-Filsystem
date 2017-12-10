@@ -43,6 +43,7 @@ FileSystem::FileSystem(int blockSize, int fileSize) {
 	//	availableBlocks[i] = true;
 	curFolder = new inode();
 	//nrOfBlocks = blockSize;
+	this->fileSize = fileSize;
 }
 
 FileSystem::~FileSystem() {
@@ -152,6 +153,7 @@ bool FileSystem::createFile(std::string content, std::string name, std::string p
     if (pos != -1)
     {
 		curFolder->addFile(name, pos, path);
+		fileCreated = true;
     }
     
     
