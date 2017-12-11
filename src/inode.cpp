@@ -244,7 +244,7 @@ int inode::getNrOfFolders() const
 }
 
 // This function will split any path and returns ? TODO... fix/change?
-std::vector<std::string> inode::pathSplitter(std::string path) const {
+std::vector<std::string> inode::pathSplitter(const std::string path) const {
 	std::vector<std::string> retPath;
 
 	int start = 0;
@@ -266,7 +266,7 @@ std::vector<std::string> inode::pathSplitter(std::string path) const {
 
 // TODO: memory leak somewhere in this method. vilken Felix inte kan hitta
 // This method will find a path recursive to ant path, and return the path.
-inode* inode::findFolderRecursive(std::vector<std::string> path, int pos, int cap, bool useWithKnowledge)  {
+inode* inode::findFolderRecursive(std::vector<std::string> path, int pos, int cap, bool useWithKnowledge)   {
 	
 	inode* retINode = nullptr;
 
@@ -303,6 +303,12 @@ inode* inode::findFolderRecursive(std::vector<std::string> path, int pos, int ca
 	return retINode;
 }
 
+inode * inode::findFolderContainingFileRecursive( std::string path) 
+{
+	std::vector<std::string> pathList = this->pathSplitter(path);
+	return findFolderRecursive(pathList, 0, pathList.size() - 1);
+}
+
 // This method will return the root of this folder (all folders)
 inode* inode::getRoot(inode &current) {
 	inode *retInode = &current;
@@ -317,9 +323,16 @@ inode* inode::getRoot(inode &current) {
 
 
 // This function will return a block id of a filename if it finds it.
-int inode::findBlockId(std::string fileName) const  {
-	int id = findFile(fileName);
-	if (id != -1)
-		return files[id];
-	return -1;
+int inode::findBlockId(std::string fileName)   {
+	inode* path = this->findFolderContainingFileRecursive(fileName);
+
+	if (path == nullptr || path == this)
+	{
+		int id = findFile(fileName);
+		if (id != -1)
+			return files[id];
+		return -1;
+	}
+
+	
 }

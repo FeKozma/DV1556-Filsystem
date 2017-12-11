@@ -16,8 +16,9 @@ private:
 
 	int findFolder(std::string name = "") const;
 	
-	std::vector<std::string> pathSplitter(std::string path) const;
-	inode* findFolderRecursive(std::vector<std::string> path, int pos, int cap /*cap -> sluta vid cap ex kan finnas filnamn i slutet av path*/, bool useWithKnowledge = false);
+	std::vector<std::string> pathSplitter(const std::string path) const;
+	inode* findFolderRecursive(std::vector<std::string> path, int pos, int cap /*cap -> sluta vid cap ex kan finnas filnamn i slutet av path*/, bool useWithKnowledge = false) ;
+	inode* findFolderContainingFileRecursive( std::string path) ;
 	inode* getRoot(inode& curent);
 
 public:
@@ -41,7 +42,7 @@ public:
 	bool addFolder(std::string name = "", std::string path = "");
 	inode* goToFolder(std::string path);
 
-	int findBlockId(std::string fileName) const;
+	int findBlockId(std::string fileName) ;
 };
 
 #endif // INODE_H

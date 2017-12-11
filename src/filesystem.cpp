@@ -116,7 +116,7 @@ int FileSystem::createFileOn(std::string storeString) {
 
 // This function will return a string with the content of the fileName.
 std::string FileSystem::viewFileOn(std::string fileName) {
-	std::string path = curFolder->getFolderPath();
+	//std::string path = curFolder->getFolderPath();
 
 	int blockId = curFolder->findBlockId(fileName);
 	
