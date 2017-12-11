@@ -49,6 +49,9 @@ public:
 	std::string filesImage();
 
 	bool readFilesImage(std::ifstream& in);
+
+	/*formats the stystem. returns nr deleted files*/
+	int formatSys();
 };
 
 #endif // MEMBLOCKDEVICE_H

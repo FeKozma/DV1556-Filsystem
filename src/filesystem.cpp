@@ -224,15 +224,9 @@ std::string FileSystem::listDir(std::string path) {
 
 // This function will format the system (our current filesystem).
 int FileSystem::formatSystem() {
-	int deletedFiles = 0;
-	/*for (int i = 0; i < nrOfBlocks; ++i) {
-		if (availableBlocks[i] == false)
-		{
-			availableBlocks[i] = true;
-			deletedFiles += 1;
-		}
-	}
+	int deletedFiles = mMemblockDevice->formatSys();
+
 	delete curFolder;
-	curFolder = new inode();*/
+	curFolder = new inode();
 	return deletedFiles;
 }

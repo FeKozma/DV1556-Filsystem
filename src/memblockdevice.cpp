@@ -205,6 +205,7 @@ std::string MemBlockDevice::filesImage()
 			retString += readBlock(i).toString() + "\n";
 		}
 	}
+	retString += "EOF\n";
 	return retString;
 }
 
@@ -213,6 +214,9 @@ bool MemBlockDevice::readFilesImage(std::ifstream& input)
 	int pos;
 	std::string save;
 	bool success = false;
+	//remove old data
+	formatSys();
+	
 	if (input.is_open())
 	{
 		while(!input.eof())
@@ -226,7 +230,22 @@ bool MemBlockDevice::readFilesImage(std::ifstream& input)
 				save.erase(0, pos+2);
 				writeBlock(pos, save);
 			}
-		}
+ 		}
+		success = true;
 	}
 	return success;
+}
+
+int MemBlockDevice::formatSys()
+{
+	int retVal = 0;
+	for (int i = 0; i < this->blocksCap; ++i)
+	{
+		if (this->availableBlocks[i] == false)
+		{
+			retVal++;
+			this->availableBlocks[i] = true;
+		}
+	}
+	return retVal;
 }
