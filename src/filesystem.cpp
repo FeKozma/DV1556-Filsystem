@@ -118,7 +118,7 @@ int FileSystem::createFileOn(std::string storeString) {
 std::string FileSystem::viewFileOn(std::string fileName) {
 	//std::string path = curFolder->getFolderPath();
 
-	int blockId = curFolder->findBlockId(fileName);
+	int blockId = curFolder->findBlockIdPath(fileName);
 	
 	std::string content = "";
 

@@ -323,16 +323,29 @@ inode* inode::getRoot(inode &current) {
 
 
 // This function will return a block id of a filename if it finds it.
-int inode::findBlockId(std::string fileName)   {
-	inode* path = this->findFolderContainingFileRecursive(fileName);
+int inode::findBlockIdPath(std::string pathName)   {
+	inode* path = this->findFolderContainingFileRecursive(pathName);
 
 	if (path == nullptr || path == this)
 	{
-		int id = findFile(fileName);
-		if (id != -1)
-			return files[id];
-		return -1;
+		return findBlockId(pathName);
+	}
+	else {
+		return path->findBlockId(getLast(pathName));
 	}
 
 	
+}
+
+int inode::findBlockId(std::string pathName) {
+	int id = findFile(getLast(pathName));
+	if (id != -1)
+		return files[id];
+	return -1;
+}
+
+std::string inode::getLast(std::string path)
+{
+	std::size_t found = path.find_last_of("/\\");
+	return path.substr(found + 1);
 }

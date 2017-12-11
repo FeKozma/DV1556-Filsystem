@@ -42,7 +42,9 @@ public:
 	bool addFolder(std::string name = "", std::string path = "");
 	inode* goToFolder(std::string path);
 
-	int findBlockId(std::string fileName) ;
+	int findBlockIdPath(std::string pathName) ;
+	int findBlockId(std::string fileName);
+	std::string getLast(std::string path);
 };
 
 #endif // INODE_H
