@@ -27,6 +27,7 @@ public:
 
 	bool loadImage(std::string filename = "data");
 
+
 	// These are test functions, WARNING, TODO
 	int createFileOn(std::string testString);
 

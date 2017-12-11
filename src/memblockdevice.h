@@ -1,6 +1,8 @@
 #ifndef MEMBLOCKDEVICE_H
 #define MEMBLOCKDEVICE_H
 #include "blockdevice.h"
+#include <iostream>
+#include <fstream>
 
 class MemBlockDevice: public BlockDevice
 {
@@ -42,6 +44,11 @@ public:
 
 	/* Return the size */
 	int size() const;
+
+	/*return image of files*/
+	std::string filesImage();
+
+	bool readFilesImage(std::ifstream& in);
 };
 
 #endif // MEMBLOCKDEVICE_H

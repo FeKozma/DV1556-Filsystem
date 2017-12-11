@@ -65,6 +65,10 @@ int MemBlockDevice::writeBlock(const std::vector<char>& vec)
 		if (writeBlock(retVal, vec) != 1) {
 			retVal = -1;
 		}
+		else
+		{
+			this->availableBlocks[retVal] = false;
+		}
 	}
 	return retVal;
 }
@@ -79,6 +83,10 @@ int MemBlockDevice::writeBlock(const std::string & strBlock)
 		if (writeBlock(retVal, strBlock) != 1) {
 			retVal = -1;
 		}
+		else
+		{
+			this->availableBlocks[retVal] = false;
+		}
 	}
 	return retVal;
 }
@@ -90,6 +98,10 @@ int MemBlockDevice::writeBlock(const char cArr[])
 	{
 		if (writeBlock(retVal, cArr) != 1) {
 			retVal = -1;
+		}
+		else
+		{
+			this->availableBlocks[retVal] = false;
 		}
 	}
 	return retVal;
@@ -180,4 +192,41 @@ void MemBlockDevice::reset() {
 
 int MemBlockDevice::size() const {
 	return this->nrOfBlocks;
+}
+
+std::string MemBlockDevice::filesImage()
+{
+	std::string retString = "";
+	for (int i = 0; i < this->blocksCap; ++i)
+	{
+		if (!availableBlocks[i])
+		{
+			retString += std::to_string(i) + ":";
+			retString += readBlock(i).toString() + "\n";
+		}
+	}
+	return retString;
+}
+
+bool MemBlockDevice::readFilesImage(std::ifstream& input)
+{
+	int pos;
+	std::string save;
+	bool success = false;
+	if (input.is_open())
+	{
+		while(!input.eof())
+		{
+			input >> save;
+			std::size_t found = save.find(":");
+			if (found != std::string::npos)
+			{
+				pos = std::stoi(save.substr(0, found));
+				this->availableBlocks[pos] = false;
+				save.erase(0, pos+2);
+				writeBlock(pos, save);
+			}
+		}
+	}
+	return success;
 }

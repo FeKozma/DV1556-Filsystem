@@ -58,6 +58,8 @@ bool FileSystem::createImage(std::string filename, std::string path)
 	//TODO: go to root
 	inode* rootFolder = this->curFolder->goToFolder("/");
 	createImageRecusive(rootFolder, stringToFile);
+
+	stringToFile += mMemblockDevice->filesImage();
 	//TODO: save string to file
 	std::cout << std::endl << stringToFile << std::endl;
 	std::ofstream out(filename + ".txt");
@@ -79,8 +81,8 @@ bool FileSystem::loadImage(std::string filename)
 		delete this->curFolder;
 		this->curFolder = new inode(input);
 		
-		//TODO: save mMemblockDevice
-
+		//TODO: load mMemblockDevice
+		this->mMemblockDevice->readFilesImage(input);
 		
 		input.close();
 
@@ -89,6 +91,8 @@ bool FileSystem::loadImage(std::string filename)
 
 	return added;
 }
+
+
 
 /****************************************************
  ***************** Begin Test? Functions ******************
