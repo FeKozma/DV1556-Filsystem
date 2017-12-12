@@ -227,7 +227,7 @@ bool MemBlockDevice::readFilesImage(std::ifstream& input)
 			{
 				pos = std::stoi(save.substr(0, found));
 				this->availableBlocks[pos] = false;
-				save.erase(0, pos+2);
+				save.erase(0, found+1);
 				writeBlock(pos, save);
 			}
  		}
