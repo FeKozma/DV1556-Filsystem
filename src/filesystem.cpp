@@ -205,18 +205,28 @@ std::string FileSystem::getCurrentPath() {
 	return curFolder->getFolderPath();
 }
 
+std::string FileSystem::listDir(std::string path)
+{
+	inode* folder = this->curFolder->goToFolder(path);
+	if (folder == nullptr)
+	{
+		folder = this->curFolder;
+	}
+	
+}
+
 // This function will return the current list of a directory.
-std::string FileSystem::listDir(std::string path) {
+std::string FileSystem::listDir() {
 	std::vector<std::string> folders = curFolder->getFolders();
 	std::vector<std::string> files = curFolder->getFiles();
 	std::string retString = "Listing directory\nType\t\tName\t\tPermission\tSize\n";
 
 	// TODO: complete the string.
 	for (int i = 0; i < folders.size(); ++i) {
-		retString += "DIR\t\t" + folders[i] + (folders[i].length() <= 8 ? "\t" : "") + "\trw\t\t0 byte\n";
+		retString += "DIR\t\t" + folders[i] + (folders[i].length() <= 8 ? "\t" : "") + "\trw\t\t? byte\n";
 	}
 	for (int i = 0; i < files.size(); ++i) {
-		retString += "FILE\t\t" + files[i] + (files[i].length() <= 8 ? "\t" : "") + "\trw\t\t0 byte\n";
+		retString += "FILE\t\t" + files[i] + (files[i].length() <= 8 ? "\t" : "") + "\trw\t\t? byte\n";
 	}
 
 	return retString;

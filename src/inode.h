@@ -45,6 +45,8 @@ public:
 	int findBlockIdPath(std::string pathName) ;
 	int findBlockId(std::string fileName);
 	std::string getLast(std::string path);
+
+	std::string listDir();
 };
 
 #endif // INODE_H
