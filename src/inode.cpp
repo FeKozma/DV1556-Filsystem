@@ -277,7 +277,7 @@ inode* inode::findFolderRecursive(std::vector<std::string> path, int pos, int ca
 	
 
 	if (cap > pos) {
-		std::string findFoldername = path.at(pos);
+		std::string findFoldername = path.at(pos); 
 
 		// If it's a special case (..)
 		if (findFoldername == "..") {
@@ -296,7 +296,6 @@ inode* inode::findFolderRecursive(std::vector<std::string> path, int pos, int ca
 			int folderPos = findFolder(findFoldername);
 			if (folderPos != -1) {
 				retINode = &(folder[folderPos]); 
-				path.erase(path.begin());
 				inode* test = &*(folder.at(folderPos)).findFolderRecursive(path, ++pos, cap);
 				if (test != nullptr)
 				{
