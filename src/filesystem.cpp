@@ -242,3 +242,13 @@ int FileSystem::formatSystem() {
 	curFolder = new inode();
 	return deletedFiles;
 }
+
+bool FileSystem::copyFile(std::string oldFile, std::string newFile)
+{
+	int pos = this->curFolder->findBlockIdPath(oldFile);
+	int newPos = this->mMemblockDevice->copyBlock(pos);
+	
+	return false;
+}
+
+

@@ -249,3 +249,11 @@ int MemBlockDevice::formatSys()
 	}
 	return retVal;
 }
+
+int MemBlockDevice::copyBlock(int pos)
+{
+	int newPos = this->findFree(1);
+
+	writeBlock(newPos, this->readBlock(pos).toString());
+	return newPos;
+}

@@ -61,6 +61,9 @@ public:
 
 	/* This function will format the system. return nr of blocks removed */
 	int formatSystem();
+
+	/**/
+	bool copyFile(std::string oldFile, std::string newFile);
 };
 
 #endif // FILESYSTEM_H

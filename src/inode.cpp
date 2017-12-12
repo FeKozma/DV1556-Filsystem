@@ -105,6 +105,13 @@ bool inode::addFile(std::string name, int freeBlock, std::string path) {
 	return fileAdded;
 }
 
+bool inode::addFile(std::string path, int freeBlock)
+{
+	//TODO: check if working 
+	std::string* arr = this->getPathAndFileName(path);
+	return addFile(arr[0], freeBlock, arr[1]);
+}
+
 // Used when removing a file from the system.
 void inode::removeFile(std::string fileName, std::string path) {
 	int id = findFile(fileName);
@@ -324,6 +331,23 @@ inode* inode::getRoot(inode &current) {
 	}
 
 	return retInode;
+}
+
+std::string* inode::getPathAndFileName(std::string path)
+{
+	std::string arr[2];
+	int start = 0;
+	for (int i = path.size() - 1; i >= 0; --i)
+	{
+		if (path[i] == '/')
+		{
+			start = i + 1;
+			i = 0;
+		}
+	}
+	arr[1] = path.substr(start);
+	arr[0] = path.substr(0, start);
+	return arr;
 }
 
 

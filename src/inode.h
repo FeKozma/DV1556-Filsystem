@@ -20,6 +20,9 @@ private:
 	inode* findFolderRecursive(std::vector<std::string> path, int pos, int cap /*cap -> sluta vid cap ex kan finnas filnamn i slutet av path*/, bool useWithKnowledge = false) ;
 	inode* findFolderContainingFileRecursive( std::string path) ;
 	inode* getRoot(inode& curent);
+	//pos = 1 filename pos = 0 pathname
+	std::string* getPathAndFileName(std::string path);
+	
 
 public:
 	
@@ -36,17 +39,33 @@ public:
 	std::vector<int> getFilePos() const;
 	int getNrOfFolders() const;
 
+	/*add file*/
 	bool addFile(std::string name, int freeBlock, std::string path = "");
+	bool addFile(std::string path, int freeBlock);
+
+	/*remove file*/
 	void removeFile(std::string name, std::string path = "");
+	
+	/*find file in this node*/
 	int findFile(std::string name) const;
+	
+	/*add folder*/
 	bool addFolder(std::string name = "", std::string path = "");
+	
+	/*go to decired folder*/
 	inode* goToFolder(std::string path);
 
+	/*find a block given its path, including filename*/
 	int findBlockIdPath(std::string pathName) ;
+	
+	/*find file in this node*/
 	int findBlockId(std::string fileName);
+
+	/*get last dir or file in given path*/
 	std::string getLast(std::string path);
 
 	std::string listDir();
+
 };
 
 #endif // INODE_H

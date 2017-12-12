@@ -52,6 +52,9 @@ public:
 
 	/*formats the stystem. returns nr deleted files*/
 	int formatSys();
+
+	/*kopie the block on the given pos to a new pos that is returned*/
+	int copyBlock(int pos);
 };
 
 #endif // MEMBLOCKDEVICE_H
