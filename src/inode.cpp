@@ -295,7 +295,10 @@ inode* inode::findFolderRecursive(std::vector<std::string> path, int pos, int ca
 			// If findFolder is a folder name
 			int folderPos = findFolder(findFoldername);
 			if (folderPos != -1) {
-				retINode = &(folder[folderPos]); //&*(folder.at(folderPos)).findFolderRecursive(path, ++pos, cap);
+				retINode = &(folder[folderPos]); 
+				path.erase(path.begin());
+				inode* test = &*(folder.at(folderPos)).findFolderRecursive(path, ++pos, cap);
+
 			}
 		}
 	}
@@ -352,5 +355,19 @@ std::string inode::getLast(std::string path)
 
 std::string inode::listDir()
 {
-	return std::string();
+	std::string retStr = "Listing directory\nType\t\tName\t\tPermission\tSize\n";
+	std::vector<std::string> folderNames = getFolders();
+	
+
+	for (int i = 0; i < folderNames.size(); ++i)
+	{
+		retStr += "DIR\t\t" + folderNames[i] + (folderNames[i].length() <= 8 ? "\t" : "") + "\trw\t\tNULL byte\n";
+	}
+	for (int i = 0; i < filesName.size(); ++i)
+	{
+		retStr += "FILE\t\t" + filesName[i] + (filesName[i].length() <= 8 ? "\t" : "") + "\trw\t\tNULL byte\n";
+
+	}
+
+	return retStr;
 }

@@ -205,6 +205,7 @@ std::string FileSystem::getCurrentPath() {
 	return curFolder->getFolderPath();
 }
 
+// This function will return the current list of a directory.
 std::string FileSystem::listDir(std::string path)
 {
 	inode* folder = this->curFolder->goToFolder(path);
@@ -212,10 +213,11 @@ std::string FileSystem::listDir(std::string path)
 	{
 		folder = this->curFolder;
 	}
+	return folder->listDir();
 	
 }
 
-// This function will return the current list of a directory.
+// This function will return the current list of this dir.
 std::string FileSystem::listDir() {
 	std::vector<std::string> folders = curFolder->getFolders();
 	std::vector<std::string> files = curFolder->getFiles();
