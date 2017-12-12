@@ -298,6 +298,10 @@ inode* inode::findFolderRecursive(std::vector<std::string> path, int pos, int ca
 				retINode = &(folder[folderPos]); 
 				path.erase(path.begin());
 				inode* test = &*(folder.at(folderPos)).findFolderRecursive(path, ++pos, cap);
+				if (test != nullptr)
+				{
+					retINode = test;
+				}
 
 			}
 		}
