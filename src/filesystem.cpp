@@ -245,6 +245,8 @@ int FileSystem::formatSystem() {
 
 bool FileSystem::copyFile(std::string oldFile, std::string newFile)
 {
+	//TODO check if newFile exists
+	
 	int pos = this->curFolder->findBlockIdPath(oldFile);
 	int newPos = this->mMemblockDevice->copyBlock(pos);
 	
