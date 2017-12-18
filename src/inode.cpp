@@ -193,7 +193,14 @@ bool inode::addFolder(std::string name, std::string path) {
 // Return: An inode containing the path-folder.
 inode* inode::goToFolder(std::string path)  {
 	std::vector<std::string> pathList = pathSplitter(path);
-	return findFolderRecursive(pathList, 0, pathList.size());
+	if (path == "")
+	{
+		return this;
+	}
+	else
+	{
+		return findFolderRecursive(pathList, 0, pathList.size());
+	}
 }
 
 // Used to find a folder in the system.
@@ -378,6 +385,16 @@ std::string inode::getLast(std::string path)
 {
 	std::size_t found = path.find_last_of("/\\");
 	return path.substr(found + 1);
+}
+
+std::string inode::ignoreLast(const std::string & path) const
+{
+	std::size_t found = path.find_last_of("/\\");
+	if (found > path.size())
+	{
+		found = 0;
+	}
+	return path.substr(0, found);
 }
 
 std::string inode::listDir()

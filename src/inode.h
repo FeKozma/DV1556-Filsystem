@@ -40,7 +40,7 @@ public:
 	int getNrOfFolders() const;
 
 	/*add file*/
-	bool addFile(std::string name, int freeBlock, std::string path = "");
+	bool addFile(std::string name, int freeBlock, std::string path);
 	bool addFile(std::string path, int freeBlock);
 
 	/*remove file*/
@@ -63,6 +63,9 @@ public:
 
 	/*get last dir or file in given path*/
 	std::string getLast(std::string path);
+
+	/*ignore last dir or file in given path*/
+	std::string ignoreLast(const std::string &path) const;
 
 	std::string listDir();
 

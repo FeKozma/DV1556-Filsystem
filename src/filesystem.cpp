@@ -246,11 +246,26 @@ int FileSystem::formatSystem() {
 bool FileSystem::copyFile(std::string oldFile, std::string newFile)
 {
 	//TODO check if newFile exists
-	
+	bool succes = false;
+
 	int pos = this->curFolder->findBlockIdPath(oldFile);
-	int newPos = this->mMemblockDevice->copyBlock(pos);
-	
-	return false;
+	if (pos != -1)
+	{
+		inode* addFileHere = this->curFolder->goToFolder(this->curFolder->ignoreLast(newFile));
+		if (addFileHere != nullptr)
+		{
+			int newPos = this->mMemblockDevice->copyBlock(pos);
+			succes = true;
+			if (!addFileHere->addFile(this->curFolder->getLast(newFile), newPos, ""))
+			{
+				this->mMemblockDevice->rmBlock(newPos);
+				succes = false;
+			}
+
+		}
+	}
+	return succes;
+
 }
 
 

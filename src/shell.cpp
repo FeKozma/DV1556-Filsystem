@@ -96,6 +96,14 @@ int main(void) {
 					fileSys.removeFile(commandArr[1]);
 					break;
 				case 10: // cp
+					if (fileSys.copyFile(commandArr[1], commandArr[2]))
+					{
+						print("file copied\n", colorGreen);
+					}
+					else
+					{
+						print("error\n", colorRed);
+					}
 					break;
 				case 11: // append
 					break;
