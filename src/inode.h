@@ -69,6 +69,8 @@ public:
 
 	std::string listDir();
 
+	/*rename file given old filename and new filename*/
+	bool ´renameFile(std::string oldFile, std::string newFile);
 };
 
 #endif // INODE_H

@@ -415,3 +415,8 @@ std::string inode::listDir()
 
 	return retStr;
 }
+
+bool inode::´renameFile(std::string oldFile, std::string newFile)
+{
+	return false;
+}
