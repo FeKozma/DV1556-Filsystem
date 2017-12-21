@@ -64,6 +64,8 @@ public:
 
 	/**/
 	bool copyFile(std::string oldFile, std::string newFile);
+
+	bool renameFileGivenPath(std::string oldFile, std::string newFile);
 };
 
 #endif // FILESYSTEM_H

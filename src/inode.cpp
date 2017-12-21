@@ -326,7 +326,14 @@ inode* inode::findFolderRecursive(std::vector<std::string> path, int pos, int ca
 inode * inode::findFolderContainingFileRecursive( std::string path) 
 {
 	std::vector<std::string> pathList = this->pathSplitter(path);
-	return findFolderRecursive(pathList, 0, pathList.size() - 1);
+	if (pathList.size() == 1)
+	{
+		return this;
+	}
+	else
+	{
+		return findFolderRecursive(pathList, 0, pathList.size() - 1);
+	}
 }
 
 // This method will return the root of this folder (all folders)
@@ -355,6 +362,20 @@ std::string* inode::getPathAndFileName(std::string path)
 	arr[1] = path.substr(start);
 	arr[0] = path.substr(0, start);
 	return arr;
+}
+
+bool inode::renameFileGivenName(std::string oldFile, std::string newFile)
+{
+	bool retVal = false;
+	for (int i = 0; i < this->files.size(); ++i)
+	{
+		if (filesName[i] == oldFile)
+		{
+			filesName[i] = newFile;
+			retVal = true;
+		}
+	}
+	return retVal;
 }
 
 
@@ -416,7 +437,11 @@ std::string inode::listDir()
 	return retStr;
 }
 
-bool inode::´renameFile(std::string oldFile, std::string newFile)
+bool inode::renameFileGivenPath(std::string oldFile, std::string newFile)
 {
-	return false;
+	inode* folder = this->findFolderContainingFileRecursive(oldFile);
+	
+	
+
+	return folder->renameFileGivenName(folder->getLast(oldFile), newFile);
 }

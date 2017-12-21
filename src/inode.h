@@ -22,6 +22,7 @@ private:
 	inode* getRoot(inode& curent);
 	//pos = 1 filename pos = 0 pathname
 	std::string* getPathAndFileName(std::string path);
+	bool renameFileGivenName(std::string oldFile, std::string newFile);
 	
 
 public:
@@ -70,7 +71,7 @@ public:
 	std::string listDir();
 
 	/*rename file given old filename and new filename*/
-	bool ´renameFile(std::string oldFile, std::string newFile);
+	bool renameFileGivenPath(std::string oldFile, std::string newFile);
 };
 
 #endif // INODE_H

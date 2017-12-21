@@ -149,15 +149,23 @@ bool FileSystem::createFile(std::string content, std::string name, std::string p
 	bool fileCreated = false;
 	int freeBlock = -1;
 	
-	//insert file into free spot
-	int pos = createFileOn(content);
+	int space = this->mMemblockDevice->spaceLeft();
 
     
     //check if path exists and if so, mark the memory pos as taken
-    if (pos != -1)
+    if (space != 0)
     {
-		curFolder->addFile(name, pos, path);
-		fileCreated = true;
+		int pos = createFileOn(content);
+
+		if (curFolder->addFile(name, pos, path))
+		{
+			fileCreated = true;
+		}
+		else
+		{
+			this->mMemblockDevice->rmBlock(pos);
+		}
+		
     }
     
     
@@ -266,6 +274,11 @@ bool FileSystem::copyFile(std::string oldFile, std::string newFile)
 	}
 	return succes;
 
+}
+
+bool FileSystem::renameFileGivenPath(std::string oldFile, std::string newFile)
+{
+	return this->curFolder->renameFileGivenPath(oldFile, newFile);
 }
 
 

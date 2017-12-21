@@ -23,6 +23,7 @@ std::string getInput(std::string Question);
 void print(std::string, int);
 void emptyCommands(std::string *arr);
 void SignalHandler(int signal);
+void print(std::string text);
 
 int main(void) {
 	SetConsoleTitle(TEXT("FELIX OCH JONATHAN´S FILSYSTEM"));
@@ -79,7 +80,7 @@ int main(void) {
 					}
 					break;
 				case 6: // cat
-					std::cout << fileSys.viewFileOn(commandArr[1]) << std::endl;
+					print(fileSys.viewFileOn(commandArr[1]));
 					break;
 				case 7: // createImage
 					fileSys.createImage(commandArr[1]);
@@ -108,6 +109,13 @@ int main(void) {
 				case 11: // append
 					break;
 				case 12: // mv
+					if (fileSys.renameFileGivenPath(commandArr[1], commandArr[2]))
+					{
+						print("file renamed\n", colorGreen);
+					}
+					else {
+						print("file not found\n", colorRed);
+					}
 					break;
 				case 13: // mkdir
 					for (int i = 1; i < nrOfCommands; ++i) {
@@ -143,6 +151,23 @@ void print(std::string toPrint, int color) {
 	SetConsoleTextAttribute(hConsole, color);
 	std::cout << toPrint;
 	SetConsoleTextAttribute(hConsole, 7);
+}
+
+void print(std::string text)
+{
+	int prevPrint = 0;
+	for (int i = 0; i < text.size()-1; ++i)
+	{
+		if (text[i] == '\\')
+		{
+			if (text[i + 1] == 'n')
+			{
+				std::cout << text.substr(prevPrint, i - prevPrint) << std::endl;
+				prevPrint = i+2;
+			}
+		}
+	}
+	std::cout << text.substr(prevPrint, text.size()-prevPrint) << std::endl;
 }
 
 // Write a question/string, then return the input when the user press enter.
