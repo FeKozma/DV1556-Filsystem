@@ -187,13 +187,15 @@ std::string FileSystem::createFolderi(std::string name, std::string path) {
 }
 
 // This folder will remove a file from the system.
-void FileSystem::removeFile(std::string fileName) {
-	std::string path = curFolder->getFolderPath();
+void FileSystem::removeFile(std::string path) {
+	
+	inode* folder = curFolder->goToFolder(curFolder->ignoreLast(path));
 
-	int blockId = curFolder->findBlockId(fileName);
+	std::string fileName =  folder->getLast(path);
+	int blockId = folder->findBlockId(path);
 	
 	this->mMemblockDevice->rmBlock(blockId);
-	this->curFolder->removeFile(fileName);
+	folder->removeFile(fileName);
 	
 }
 
