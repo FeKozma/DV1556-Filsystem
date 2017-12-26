@@ -144,7 +144,11 @@ void FileSystem::stringTrim(std::string &s) {
 // This function will create and add a new file to the system.
 // Returns: A boolean wether the folder were created or not.
 bool FileSystem::createFile(std::string content, std::string name, std::string path) {
-	if (name == "") return false; 
+	std::size_t found = name.find_first_of("/\\");
+	if (found < name.size() || name == "")
+	{
+		return false;
+	}
 
 	bool fileCreated = false;
 	int freeBlock = -1;

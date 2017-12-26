@@ -410,7 +410,7 @@ std::string inode::getLast(std::string path)
 
 std::string inode::ignoreLast(const std::string & path) const
 {
-	std::size_t found = path.find_last_of("/\\");
+	std::size_t found = path.find_last_of("/");
 	if (found > path.size())
 	{
 		found = -1;
