@@ -100,9 +100,9 @@ bool FileSystem::loadImage(std::string filename)
  ***************************************************/
 
 int FileSystem::createFileOn(std::string storeString) {
-	int lengthOfBlock = fileSize;
+	int lengthOfBlock = fileSize -1;
 	
-
+	// "+ 1" beacuse i store if the block is continuing inside the block
 	for (int i = storeString.length(); 0 != (i % lengthOfBlock); i++) {
 		storeString += " ";
 	}
@@ -122,16 +122,19 @@ int FileSystem::createFileOn(std::string storeString) {
 std::string FileSystem::viewFileOn(std::string fileName) {
 	//std::string path = curFolder->getFolderPath();
 
-	int blockId = curFolder->findBlockIdPath(fileName);
+	int blockId = curFolder->findBlockIdPath(fileName) - 1;
 	
 	std::string content = "";
+	Block block;
+	if (blockId != -2) {
+		do {
+			blockId++;
+			block = mMemblockDevice->readBlock(blockId);
 
-	if (blockId != -1) {
-		Block block = mMemblockDevice->readBlock(blockId);
-		
-		for (int i = 0; i < block.size(); ++i) {
-			content += block[i];
-		}
+			for (int i = 1; i < block.size(); ++i) {
+				content += block[i];
+			}
+		} while (block.getIfMore());
 	}
 	stringTrim(content);
 	return content;
@@ -164,7 +167,7 @@ bool FileSystem::createFile(std::string content, std::string name, std::string p
     //check if path exists and if so, mark the memory pos as taken
     if (space != 0)
     {
-		int pos = createFileOn(content);
+ 		int pos = createFileOn(content);
 
 		if (curFolder->addFile(name, pos, path))
 		{

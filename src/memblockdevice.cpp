@@ -82,7 +82,7 @@ int MemBlockDevice::writeBlock(const std::string & strBlock, int nrBlocks)
 	{
 		for (int i = 0; i < nrBlocks; ++i)
 		{
-			if (writeBlock(retVal+i, strBlock.substr((i)*512, 512)) != 1) {   //TODO: not use 512 use var
+			if (writeBlock(retVal+i, strBlock.substr((i)*511, 511), nrBlocks -i -1) != 1) {   //TODO: not use 512 use var
 				retVal = -1;
 				i = nrBlocks;
 			}
@@ -92,6 +92,22 @@ int MemBlockDevice::writeBlock(const std::string & strBlock, int nrBlocks)
 			}
 		}
 		
+	}
+	return retVal;
+}
+
+int MemBlockDevice::writeBlock(const std::string & strBlock)
+{
+	int retVal = findFree(1);
+	if (retVal != -1)
+	{
+		if (writeBlock(retVal, strBlock) != 1) {
+			retVal = -1;
+		}
+		else
+		{
+			this->availableBlocks[retVal] = false;
+		}
 	}
 	return retVal;
 }
@@ -117,8 +133,19 @@ bool MemBlockDevice::rmBlock(int blockNr)
 	bool retVal = false;
 	if (blockNr >= 0)
 	{
-		availableBlocks[blockNr] = true;
-		retVal = true;
+		if (this->memBlocks[blockNr].getIfMore())
+		{
+			if (rmBlock(blockNr + 1))
+			{
+				availableBlocks[blockNr] = true;
+				retVal = true;
+			}
+		}
+		else
+		{
+			availableBlocks[blockNr] = true;
+			retVal = true;
+		}
 	}
 	return retVal;
 }
@@ -134,7 +161,27 @@ int MemBlockDevice::writeBlock(int blockNr, const std::vector<char> &vec) {
 	return output;
 }
 
-int MemBlockDevice::writeBlock(int blockNr, const std::string &strBlock) {
+int MemBlockDevice::writeBlock(int blockNr, const std::string &strBlock, const bool notLastBlock) {
+	int output = -1;    // Assume blockNr out-of-range
+
+	if (blockNr < this->nrOfBlocks && blockNr >= 0) {
+		/* -2 = str-length and block dont have same dimensions */
+		/* 1 = success */
+		if (notLastBlock)
+		{
+			output = this->memBlocks[blockNr].writeBlock('0' + strBlock);
+		}
+		else
+		{
+			output = this->memBlocks[blockNr].writeBlock('1' + strBlock);
+
+		}
+	}
+	return output;
+}
+
+int MemBlockDevice::writeBlock(int blockNr, const std::string & strBlock)
+{
 	int output = -1;    // Assume blockNr out-of-range
 
 	if (blockNr < this->nrOfBlocks && blockNr >= 0) {

@@ -11,6 +11,11 @@ private:
 	int blocksCap;
 	/* Writes a block */
 	int writeBlock(int blockNr, const std::vector<char> &vec);
+	
+	//makes it posible to save big files over multiple blocks
+	int writeBlock(int blockNr, const std::string &strBlock, const bool notLastBlock);
+	
+	//adds the string as is to memmory. neds to start correctly (0 or 1).
 	int writeBlock(int blockNr, const std::string &strBlock);
 	int writeBlock(int blockNr, const char cArr[]);     // Use with care, make sure that cArr has at least the same dimension as block
 
@@ -31,6 +36,7 @@ public:
 	/* Writes a block given no blocknr*/
 	int writeBlock(const std::vector<char> &vec);
 	int writeBlock(const std::string &strBlock, int nrBlocks);
+	int writeBlock(const std::string &strBlock);
 	int writeBlock(const char cArr[]);     // Use with care, make sure that cArr has at least the same dimension as block
 	
 	/*remove a block*/

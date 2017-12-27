@@ -97,6 +97,16 @@ std::string Block::toString() const {
 	return output;
 }
 
+bool Block::getIfMore()
+{
+	bool retVal = false;
+	if (block[0] == '0')
+	{
+		retVal = true;
+	}
+	return retVal;
+}
+
 
 
 

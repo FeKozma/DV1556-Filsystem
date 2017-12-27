@@ -39,6 +39,8 @@ public:
 	void writeBlock(const char cArr[]);     // Use with caution! Make sure that cArr is at least as large as private member block.
 
 	std::string toString() const;
+
+	bool getIfMore();
 };
 
 #endif // BLOCK_H
