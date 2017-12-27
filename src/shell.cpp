@@ -5,12 +5,12 @@
 
 
 const int MAXCOMMANDS = 8;
-const int NUMAVAILABLECOMMANDS = 17;
+const int NUMAVAILABLECOMMANDS = 18;
 const HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 
 std::string availableCommands[NUMAVAILABLECOMMANDS] = {
 	"q","quit","exit","format","ls","create","cat","createImage","restoreImage",
-	"rm","cp","append","mv","mkdir","cd","pwd","help"
+	"rm","cp","append","mv","mkdir","cd","pwd","help", "disk"
 };
 
 /* Takes usercommand from input and returns number of commands, commands are stored in strArr[] */
@@ -25,14 +25,15 @@ void emptyCommands(std::string *arr);
 void SignalHandler(int signal);
 void print(std::string text);
 
+// add color to text
+const int colorPromt = 3;
+const int colorGreen = 2;
+const int colorRed = 4;
+
 int main(void) {
 	SetConsoleTitle(TEXT("FELIX OCH JONATHAN´S FILSYSTEM"));
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 
-	// add color to text
-	int colorPromt = 3;
-	int colorGreen = 2;
-	int colorRed = 4;
 
 
 
@@ -46,6 +47,38 @@ int main(void) {
 	int printInt;
 	bool bRun = true;
 	
+
+	/*tests*/
+	//createFile
+	if (!fileSys.createFile("file1\nroot folder\n", "file1", "/"))
+	{
+		print("err1\n", colorRed);
+	}
+	if (!fileSys.createFile("file2\nroot folder\n", "file2", "/"))
+	{
+		print("err2\n", colorRed);
+	}
+	if (fileSys.createFile("not rigt\nroot folder\n", "file2", "/"))
+	{
+		print("err3\n", colorRed);
+	}
+
+	//mkdir
+
+	std::cout << fileSys.createFolderi("/dir1") << std::endl;
+	std::cout << fileSys.createFolderi("/dir2") << std::endl;
+	std::cout << fileSys.createFolderi("dir3") << std::endl;
+
+	if (!fileSys.createFile("file1\ndir2\n", "file1", "/dir2"))
+	{
+		print("err4\n", colorRed);
+
+	}
+	std::cout << fileSys.createFolderi("/dir2") << std::endl;
+	//fileSys.removeFile("dir2/file1");
+
+
+	/*end of test*/
 
 
 	do {
@@ -94,7 +127,13 @@ int main(void) {
 					}
 					break;
 				case 9: // rm
-					fileSys.removeFile(commandArr[1]);
+					if (fileSys.removeFile(commandArr[1]))
+					{
+						print("file removed\n", colorGreen);
+					}
+					else {
+						print("file not found\n", colorRed);
+					}
 					break;
 				case 10: // cp
 					if (fileSys.copyFile(commandArr[1], commandArr[2]))
@@ -132,6 +171,9 @@ int main(void) {
 				case 16: // help
 					std::cout << help() << std::endl;
 					break;
+				case 17: //disk
+					std::cout << fileSys.getDiskAllocations() << std::endl;
+					break;
 				default:
 					std::cout << "Unknown command: " << commandArr[0] << std::endl;
 			}
@@ -155,19 +197,26 @@ void print(std::string toPrint, int color) {
 
 void print(std::string text)
 {
-	int prevPrint = 0;
-	for (int i = 0; i < text.size()-1; ++i)
+	if (text == "")
 	{
-		if (text[i] == '\\')
+		print("no data\n", colorRed);
+	}
+	else
+	{
+		int prevPrint = 0;
+		for (int i = 0; i < text.size() - 1; ++i)
 		{
-			if (text[i + 1] == 'n')
+			if (text[i] == '\\')
 			{
-				std::cout << text.substr(prevPrint, i - prevPrint) << std::endl;
-				prevPrint = i+2;
+				if (text[i + 1] == 'n')
+				{
+					std::cout << text.substr(prevPrint, i - prevPrint) << std::endl;
+					prevPrint = i + 2;
+				}
 			}
 		}
+		std::cout << text.substr(prevPrint, text.size() - prevPrint) << std::endl;
 	}
-	std::cout << text.substr(prevPrint, text.size()-prevPrint) << std::endl;
 }
 
 // Write a question/string, then return the input when the user press enter.

@@ -43,7 +43,7 @@ public:
 	std::string createFolderi(std::string name = "", std::string path = "");
 
 	/* Removes a file in the filesystem */
-	void removeFile(std::string fileName);
+	bool removeFile(std::string fileName);
 
 	/* Removes a folder in the filesystem */
 	// removeFolder(...);
@@ -66,6 +66,11 @@ public:
 	bool copyFile(std::string oldFile, std::string newFile);
 
 	bool renameFileGivenPath(std::string oldFile, std::string newFile);
+
+	std::string ignoreLast(const std::string &path) const;
+	std::string getLast(const std::string &path) const;
+
+	std::string getDiskAllocations();
 };
 
 #endif // FILESYSTEM_H

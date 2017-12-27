@@ -24,6 +24,11 @@ private:
 	std::string* getPathAndFileName(std::string path);
 	bool renameFileGivenName(std::string oldFile, std::string newFile);
 	
+	/*get last dir or file in given path*/
+	std::string getLast(std::string path);
+
+	/*ignore last dir or file in given path*/
+	std::string ignoreLast(const std::string &path) const;
 
 public:
 	
@@ -62,11 +67,6 @@ public:
 	/*find file in this node*/
 	int findBlockId(std::string fileName);
 
-	/*get last dir or file in given path*/
-	std::string getLast(std::string path);
-
-	/*ignore last dir or file in given path*/
-	std::string ignoreLast(const std::string &path) const;
 
 	std::string listDir();
 

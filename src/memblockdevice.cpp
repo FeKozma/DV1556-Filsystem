@@ -73,20 +73,25 @@ int MemBlockDevice::writeBlock(const std::vector<char>& vec)
 	return retVal;
 }
 
-int MemBlockDevice::writeBlock(const std::string & strBlock)
+int MemBlockDevice::writeBlock(const std::string & strBlock, int nrBlocks)
 {
 	//Problem: -2 is returned!!
 
-	int retVal = findFree(1);
+	int retVal = findFree(nrBlocks);
 	if (retVal != -1)
 	{
-		if (writeBlock(retVal, strBlock) != 1) {
-			retVal = -1;
-		}
-		else
+		for (int i = 0; i < nrBlocks; ++i)
 		{
-			this->availableBlocks[retVal] = false;
+			if (writeBlock(retVal+i, strBlock.substr((i)*512, 512)) != 1) {   //TODO: not use 512 use var
+				retVal = -1;
+				i = nrBlocks;
+			}
+			else
+			{
+				this->availableBlocks[retVal+i] = false;
+			}
 		}
+		
 	}
 	return retVal;
 }
@@ -107,12 +112,15 @@ int MemBlockDevice::writeBlock(const char cArr[])
 	return retVal;
 }
 
-void MemBlockDevice::rmBlock(int blockNr)
+bool MemBlockDevice::rmBlock(int blockNr)
 {
+	bool retVal = false;
 	if (blockNr >= 0)
 	{
 		availableBlocks[blockNr] = true;
+		retVal = true;
 	}
+	return retVal;
 }
 
 int MemBlockDevice::writeBlock(int blockNr, const std::vector<char> &vec) {
@@ -256,4 +264,40 @@ int MemBlockDevice::copyBlock(int pos)
 
 	writeBlock(newPos, this->readBlock(pos).toString());
 	return newPos;
+}
+
+std::string MemBlockDevice::getDiskAllocations()
+{
+	std::string retString = "";
+	for (int i = 0; i < this->blocksCap - 4; i = i + 4)
+	{
+		retString += std::to_string(i) + ": ";
+		if (availableBlocks[i])
+			retString += "empty	";
+		else
+			retString += "full	";
+		
+		retString += std::to_string(i+1) + ": ";
+		if (availableBlocks[i+1])
+			retString += "empty	";
+		else
+			retString += "full	";
+
+		retString += std::to_string(i+2) + ": ";
+		if (availableBlocks[i+2])
+			retString += "empty	";
+		else
+			retString += "full	";
+
+		retString += std::to_string(i+3) + ": ";
+		if (availableBlocks[i+3])
+			retString += "empty	";
+		else
+			retString += "full	";
+
+		retString += "\n";
+
+		
+	}
+	return retString;
 }

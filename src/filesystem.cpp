@@ -102,11 +102,15 @@ bool FileSystem::loadImage(std::string filename)
 int FileSystem::createFileOn(std::string storeString) {
 	int lengthOfBlock = fileSize;
 	
-	for (int i = storeString.length(); i < lengthOfBlock; i++) {
-		storeString += "0";
+
+	for (int i = storeString.length(); 0 != (i % lengthOfBlock); i++) {
+		storeString += " ";
 	}
+
+	int nrOfBlocks = storeString.size() / lengthOfBlock;
+
 	//std::cout << std::to_string(storeString.length()) + "\n";
-	int retVal = this->mMemblockDevice->writeBlock(storeString);
+	int retVal = this->mMemblockDevice->writeBlock(storeString, nrOfBlocks);
 	return retVal;
 }
 
@@ -144,6 +148,7 @@ void FileSystem::stringTrim(std::string &s) {
 // This function will create and add a new file to the system.
 // Returns: A boolean wether the folder were created or not.
 bool FileSystem::createFile(std::string content, std::string name, std::string path) {
+
 	std::size_t found = name.find_first_of("/\\");
 	if (found < name.size() || name == "")
 	{
@@ -187,16 +192,22 @@ std::string FileSystem::createFolderi(std::string name, std::string path) {
 }
 
 // This folder will remove a file from the system.
-void FileSystem::removeFile(std::string path) {
+bool FileSystem::removeFile(std::string path) {
 	
-	inode* folder = curFolder->goToFolder(curFolder->ignoreLast(path));
+	bool retVal = false;
+	inode* folder = curFolder->goToFolder(ignoreLast(path));
+	if (folder != nullptr)
+	{
+		std::string fileName = getLast(path);
+		int blockId = folder->findBlockId(path);
 
-	std::string fileName =  folder->getLast(path);
-	int blockId = folder->findBlockId(path);
-	
-	this->mMemblockDevice->rmBlock(blockId);
-	folder->removeFile(fileName);
-	
+		if (this->mMemblockDevice->rmBlock(blockId))
+		{
+			folder->removeFile(fileName);
+			retVal = true;
+		}
+	}
+	return retVal;
 }
 
 // This function will go to a folder in the system.
@@ -265,12 +276,12 @@ bool FileSystem::copyFile(std::string oldFile, std::string newFile)
 	int pos = this->curFolder->findBlockIdPath(oldFile);
 	if (pos != -1)
 	{
-		inode* addFileHere = this->curFolder->goToFolder(this->curFolder->ignoreLast(newFile));
+		inode* addFileHere = this->curFolder->goToFolder(ignoreLast(newFile));
 		if (addFileHere != nullptr)
 		{
 			int newPos = this->mMemblockDevice->copyBlock(pos);
 			succes = true;
-			if (!addFileHere->addFile(this->curFolder->getLast(newFile), newPos, ""))
+			if (!addFileHere->addFile(this->getLast(newFile), newPos, ""))
 			{
 				this->mMemblockDevice->rmBlock(newPos);
 				succes = false;
@@ -285,6 +296,27 @@ bool FileSystem::copyFile(std::string oldFile, std::string newFile)
 bool FileSystem::renameFileGivenPath(std::string oldFile, std::string newFile)
 {
 	return this->curFolder->renameFileGivenPath(oldFile, newFile);
+}
+
+std::string FileSystem::ignoreLast(const std::string & path) const
+{
+	std::size_t found = path.find_last_of("/");
+	if (found > path.size())
+	{
+		found = -1;
+	}
+	return path.substr(0, found + 1);
+}
+
+std::string FileSystem::getLast(const std::string & path) const
+{
+	std::size_t found = path.find_last_of("/\\");
+	return path.substr(found + 1);
+}
+
+std::string FileSystem::getDiskAllocations()
+{
+	return this->mMemblockDevice->getDiskAllocations();
 }
 
 

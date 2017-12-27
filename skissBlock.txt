@@ -5,3 +5,8 @@ med karaktärer (512 st för att vara exakt); och att denna sedan skickas
 Svergie, Karlskrona, Blekinge Tekniska Högskola, tyst avdelning.
 
 DU filnamn!! de ska finnas!! 
+
+
+rm i mapp
+
+

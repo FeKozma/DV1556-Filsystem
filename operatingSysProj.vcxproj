@@ -31,9 +31,7 @@
     <ClCompile Include="src/filesystem.cpp" />
     <ClCompile Include="src/inode.cpp" />
     <ClCompile Include="src/memblockdevice.cpp" />
-    <ClCompile Include="src/shell.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
-    </ClCompile>
+    <ClCompile Include="src\shell.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="skissBlock.txt" />

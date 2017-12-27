@@ -30,11 +30,11 @@ public:
 
 	/* Writes a block given no blocknr*/
 	int writeBlock(const std::vector<char> &vec);
-	int writeBlock(const std::string &strBlock);
+	int writeBlock(const std::string &strBlock, int nrBlocks);
 	int writeBlock(const char cArr[]);     // Use with care, make sure that cArr has at least the same dimension as block
 	
 	/*remove a block*/
-	void rmBlock(int blockNe);
+	bool rmBlock(int blockNe);
 
 	/* Reads a block */
 	Block readBlock(int blockNr) const;
@@ -55,6 +55,8 @@ public:
 
 	/*kopie the block on the given pos to a new pos that is returned*/
 	int copyBlock(int pos);
+
+	std::string getDiskAllocations();
 };
 
 #endif // MEMBLOCKDEVICE_H
