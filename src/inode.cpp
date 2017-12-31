@@ -244,7 +244,7 @@ std::vector<std::string> inode::getFolders() const {
 
 // Returns the files.
 std::vector<std::string> inode::getFiles() const {
-	return filesName;
+	return this->filesName;
 }
 
 std::vector<int> inode::getFilePos() const

@@ -71,6 +71,8 @@ public:
 	std::string getLast(const std::string &path) const;
 
 	std::string getDiskAllocations();
+
+	bool appendFile(std::string file1, std::string file2);
 };
 
 #endif // FILESYSTEM_H

@@ -72,6 +72,8 @@ public:
 
 	/*rename file given old filename and new filename*/
 	bool renameFileGivenPath(std::string oldFile, std::string newFile);
+
+
 };
 
 #endif // INODE_H

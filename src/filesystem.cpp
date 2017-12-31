@@ -236,12 +236,33 @@ std::string FileSystem::getCurrentPath() {
 // This function will return the current list of a directory.
 std::string FileSystem::listDir(std::string path)
 {
+	
 	inode* folder = this->curFolder->goToFolder(path);
 	if (folder == nullptr)
 	{
 		folder = this->curFolder;
 	}
+	/*
 	return folder->listDir();
+	*/
+	std::vector<std::string> folderNames = folder->getFolders();
+	std::vector<std::string> filesName = folder->getFiles();
+	std::vector<int> filesPos = folder->getFilePos();
+
+	std::string retStr = "Listing directory\nType\t\tName\t\tPermission\tSize\n";
+
+	for (int i = 0; i < folderNames.size(); ++i)
+	{
+		retStr += "DIR\t\t" + folderNames[i] + (folderNames[i].length() <= 8 ? "\t" : "") + "\trw\n";
+	}
+	for (int i = 0; i < filesName.size(); ++i)
+	{
+		retStr += "FILE\t\t" + filesName[i] + (filesName[i].length() <= 8 ? "\t" : "") + "\trw\t\t" + std::to_string(this->fileSize * this->mMemblockDevice->lengthOfFile(filesPos[i])) + " byte\n";
+
+	}
+
+
+	return  retStr;
 	
 }
 
@@ -320,6 +341,15 @@ std::string FileSystem::getLast(const std::string & path) const
 std::string FileSystem::getDiskAllocations()
 {
 	return this->mMemblockDevice->getDiskAllocations();
+}
+
+bool FileSystem::appendFile(std::string file1, std::string file2)
+{
+	//TODO check if files exists
+	//TODO: check if space exists
+	//TODO: remove file2
+	//TODO: recreate file2
+	return false;
 }
 
 
