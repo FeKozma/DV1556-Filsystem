@@ -58,7 +58,7 @@ public:
 	/*add folder*/
 	bool addFolder(std::string name = "", std::string path = "");
 	
-	/*go to decired folder*/
+	/*go to decired folder, if no input return this*/
 	inode* goToFolder(std::string path);
 
 	/*find a block given its path, including filename*/

@@ -345,10 +345,25 @@ std::string FileSystem::getDiskAllocations()
 
 bool FileSystem::appendFile(std::string file1, std::string file2)
 {
+	bool retVal = false;
+	inode* folder1 = this->curFolder->goToFolder(this->ignoreLast(file1));
+	inode* folder2 = this->curFolder->goToFolder(this->ignoreLast(file2));
 	//TODO check if files exists
-	//TODO: check if space exists
-	//TODO: remove file2
-	//TODO: recreate file2
+	if (folder1 != nullptr && folder2 != nullptr)
+	{
+		int posFile1 = folder1->findFile(this->getLast(file1));
+		int posFile2 = folder2->findFile(this->getLast(file2));
+		if (posFile1 != -1 && posFile2 != -1)
+		{
+
+			//TODO: get amount of text and se how many block is needed
+			//TODO: temporarly remove file2
+			//TODO: check if space exists
+			//TODO: remove file2
+			//TODO: recreate file2
+		}
+	}
+
 	return false;
 }
 
