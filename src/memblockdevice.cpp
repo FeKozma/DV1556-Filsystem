@@ -306,10 +306,19 @@ int MemBlockDevice::formatSys()
 }
 
 int MemBlockDevice::copyBlock(int pos)
-{
-	int newPos = this->findFree(1);
-
-	writeBlock(newPos, this->readBlock(pos).toString());
+{	
+	int newPos = -1;
+	int length = this->lengthOfFile(pos);
+	if (length > 0)
+	{
+		newPos = this->findFree(length);
+		for (int i = 0; i < length; ++i)
+		{
+			writeBlock(newPos + i, this->readBlock(pos + i).toString());
+			this->availableBlocks[newPos + i] = false;
+		}
+		//writeBlock(newPos, this->readBlock(pos).toString());
+	}
 	return newPos;
 }
 
@@ -347,4 +356,19 @@ std::string MemBlockDevice::getDiskAllocations()
 		
 	}
 	return retString;
+}
+
+int MemBlockDevice::lengthOfFile(const int startPos) const
+{
+	int spaces = 0;
+	if (startPos < this->blocksCap)
+	{
+		std::cout << this->memBlocks[startPos].getIfMore() ? "treu\n" : "False\n";
+		while ((startPos + spaces) < this->blocksCap && this->memBlocks[startPos + spaces].getIfMore())
+		{
+			spaces++;
+		}
+		spaces++;
+	}
+	return spaces;
 }

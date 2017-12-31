@@ -273,7 +273,7 @@ int FileSystem::formatSystem() {
 
 bool FileSystem::copyFile(std::string oldFile, std::string newFile)
 {
-	//TODO check if newFile exists
+	// check if newFile exists
 	bool succes = false;
 
 	int pos = this->curFolder->findBlockIdPath(oldFile);

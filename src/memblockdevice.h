@@ -63,6 +63,8 @@ public:
 	int copyBlock(int pos);
 
 	std::string getDiskAllocations();
+
+	int lengthOfFile(const int startPos) const;
 };
 
 #endif // MEMBLOCKDEVICE_H
