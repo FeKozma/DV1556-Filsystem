@@ -445,3 +445,19 @@ bool inode::renameFileGivenPath(std::string oldFile, std::string newFile)
 
 	return folder->renameFileGivenName(folder->getLast(oldFile), newFile);
 }
+
+bool inode::updatePos(const std::string & file, const int newPos)
+{
+	bool updated = false;
+	for (int i = 0; i < filesName.size(); ++i) 
+	{
+		if (filesName[i] == file)
+		{
+			this->files[i] = newPos;
+			i = filesName.size();
+			updated = true;
+		}
+	}
+
+	return updated;
+}

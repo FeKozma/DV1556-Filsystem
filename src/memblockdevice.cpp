@@ -150,6 +150,28 @@ bool MemBlockDevice::rmBlock(int blockNr)
 	return retVal;
 }
 
+bool MemBlockDevice::adBlock(int blockNr)
+{
+	bool retVal = false;
+	if (blockNr >= 0)
+	{
+		if (this->memBlocks[blockNr].getIfMore())
+		{
+			if (rmBlock(blockNr + 1))
+			{
+				availableBlocks[blockNr] = false;
+				retVal = true;
+			}
+		}
+		else
+		{
+			availableBlocks[blockNr] = false;
+			retVal = true;
+		}
+	}
+	return retVal;
+}
+
 int MemBlockDevice::writeBlock(int blockNr, const std::vector<char> &vec) {
 	int output = -1;    // Assume blockNr out-of-range
 

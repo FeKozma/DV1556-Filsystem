@@ -146,6 +146,7 @@ int main(void) {
 					}
 					break;
 				case 11: // append
+					fileSys.appendFile(commandArr[1], commandArr[2]);
 					break;
 				case 12: // mv
 					if (fileSys.renameFileGivenPath(commandArr[1], commandArr[2]))

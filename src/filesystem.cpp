@@ -118,18 +118,27 @@ int FileSystem::createFileOn(std::string storeString) {
  **************** END TEST FUNCTIONS ****************
  ***************************************************/
 
-// This function will return a string with the content of the fileName.
+// This function will return a string with the content of the fileName in path.
 std::string FileSystem::viewFileOn(std::string fileName) {
 	//std::string path = curFolder->getFolderPath();
 
-	int blockId = curFolder->findBlockIdPath(fileName) - 1;
+	int blockId = curFolder->findBlockIdPath(fileName); //-1
 	
+	
+	return viewFileOn(blockId);
+}
+
+// This function will return a string with the content of the file on pos.
+std::string FileSystem::viewFileOn(int pos) const {
+	//std::string path = curFolder->getFolderPath();
+
+	pos--;
 	std::string content = "";
 	Block block;
-	if (blockId != -2) {
+	if (pos != -2) {
 		do {
-			blockId++;
-			block = mMemblockDevice->readBlock(blockId);
+			pos++;
+			block = mMemblockDevice->readBlock(pos);
 
 			for (int i = 1; i < block.size(); ++i) {
 				content += block[i];
@@ -140,12 +149,15 @@ std::string FileSystem::viewFileOn(std::string fileName) {
 	return content;
 }
 
+
 // This method removes spaces at the end of a string.
 // Is using the includes <algorithm>.
-void FileSystem::stringTrim(std::string &s) {
+std::string FileSystem::stringTrim(std::string &k) const {
+	std::string s = k;
 	s.erase(std::find_if(s.rbegin(), s.rend(), [](int ch) {
 		return !std::isspace(ch);
 	}).base(), s.end());
+	return s;
 }
 
 // This function will create and add a new file to the system.
@@ -268,19 +280,8 @@ std::string FileSystem::listDir(std::string path)
 
 // This function will return the current list of this dir.
 std::string FileSystem::listDir() {
-	std::vector<std::string> folders = curFolder->getFolders();
-	std::vector<std::string> files = curFolder->getFiles();
-	std::string retString = "Listing directory\nType\t\tName\t\tPermission\tSize\n";
-
-	// TODO: complete the string.
-	for (int i = 0; i < folders.size(); ++i) {
-		retString += "DIR\t\t" + folders[i] + (folders[i].length() <= 8 ? "\t" : "") + "\trw\t\t? byte\n";
-	}
-	for (int i = 0; i < files.size(); ++i) {
-		retString += "FILE\t\t" + files[i] + (files[i].length() <= 8 ? "\t" : "") + "\trw\t\t? byte\n";
-	}
-
-	return retString;
+	
+	return listDir("");
 }
 
 // This function will format the system (our current filesystem).
@@ -355,16 +356,32 @@ bool FileSystem::appendFile(std::string file1, std::string file2)
 		int posFile2 = folder2->findFile(this->getLast(file2));
 		if (posFile1 != -1 && posFile2 != -1)
 		{
+			//get amount of text
+			std::string content = this->viewFileOn(posFile2);
+			content = this->stringTrim(content);
+			content += this->viewFileOn(posFile1);
+			content = this->stringTrim(content);
 
-			//TODO: get amount of text and se how many block is needed
-			//TODO: temporarly remove file2
+			//temporarly remove file2
+			this->mMemblockDevice->rmBlock(posFile2);
+
 			//TODO: check if space exists
-			//TODO: remove file2
+			if (this->mMemblockDevice->findFree(1 + (content.size() / (fileSize - 1))) != -1)
+			{
+				int newPos = this->createFileOn(content);
+				folder2->updatePos(this->ignoreLast(file2), newPos);
+				retVal = true;
+			}
+			else
+			{
+				this->mMemblockDevice->adBlock(posFile2);
+			}
+
 			//TODO: recreate file2
 		}
 	}
 
-	return false;
+	return retVal;
 }
 
 

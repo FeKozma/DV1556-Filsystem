@@ -33,8 +33,9 @@ public:
 
 	/* This function will list the content of a file */
 	std::string viewFileOn(std::string fileName);
+	std::string viewFileOn(int pos) const;
 
-	void stringTrim(std::string &s);
+	std::string stringTrim(std::string &s) const;
 
 	/* This function creates a file in the filesystem */
 	bool createFile(std::string content ,std::string name, std::string path = "");

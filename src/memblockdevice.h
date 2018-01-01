@@ -19,8 +19,11 @@ private:
 	int writeBlock(int blockNr, const std::string &strBlock);
 	int writeBlock(int blockNr, const char cArr[]);     // Use with care, make sure that cArr has at least the same dimension as block
 
-	int findFree(int size = 1);
 public:
+
+	int findFree(int size = 1);
+
+
 	MemBlockDevice(int nrOfBlocks = 250);
 	MemBlockDevice(const MemBlockDevice &other);
 
@@ -40,7 +43,9 @@ public:
 	int writeBlock(const char cArr[]);     // Use with care, make sure that cArr has at least the same dimension as block
 	
 	/*remove a block*/
-	bool rmBlock(int blockNe);
+	bool rmBlock(int blockNr);
+	/*restore a block*/
+	bool adBlock(int blockNr);
 
 	/* Reads a block */
 	Block readBlock(int blockNr) const;
@@ -65,6 +70,8 @@ public:
 	std::string getDiskAllocations();
 
 	int lengthOfFile(const int startPos) const;
+
+
 };
 
 #endif // MEMBLOCKDEVICE_H

@@ -73,6 +73,9 @@ public:
 	/*rename file given old filename and new filename*/
 	bool renameFileGivenPath(std::string oldFile, std::string newFile);
 
+	/*update pos of file in this node*/
+	bool updatePos(const std::string &filename, const int newPos);
+
 
 };
 
