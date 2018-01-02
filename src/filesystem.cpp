@@ -252,7 +252,7 @@ std::string FileSystem::listDir(std::string path)
 	inode* folder = this->curFolder->goToFolder(path);
 	if (folder == nullptr)
 	{
-		folder = this->curFolder;
+		return "no path\n";
 	}
 	/*
 	return folder->listDir();
