@@ -139,15 +139,12 @@ int inode::findFile(const std::string& name) const {
 // Used to add a folder to the system.
 // Return: A boolean whether the folder were added or not.
 bool inode::addFolder(std::string path) {
-   
+
 	bool folderAdded = false;
     //path = name;
     std::vector<std::string> pathSplit = this->pathSplitter(path);
-
-    
-   
-    
-    if(pathSplit.capacity() > 1)
+	
+	if(pathSplit.capacity() > 1)
     {
         inode* addHere = this->findFolderRecursive(pathSplit, 0, pathSplit.capacity()-1);
         if (addHere != nullptr)
@@ -168,7 +165,7 @@ bool inode::addFolder(std::string path) {
 			path += "(" + std::to_string(i) + ")";
 		}
 		folderAdded = true;
-        
+
         inode iNode = inode();
         iNode.name = path;
         iNode.parent = this;
@@ -176,28 +173,24 @@ bool inode::addFolder(std::string path) {
 	}
 	else if (findFolder(path) == -1) {
 		folderAdded = true;
-        
+
         inode iNode = inode();
         iNode.name = path;
         iNode.parent = this;
         folder.push_back(iNode);
 	}
 
-	
-
 	return folderAdded;
 }
 
 // Used to go to a folder with a path.
 // Return: An inode containing the path-folder.
-inode* inode::goToFolder(const std::string &path)  {
+inode* inode::goToFolder(const std::string &path) {
 	std::vector<std::string> pathList = pathSplitter(path);
-	if (path == "")
-	{
+	if (path == "") {
 		return this;
 	}
-	else
-	{
+	else {
 		return findFolderRecursive(pathList, 0, pathList.size());
 	}
 }
@@ -288,14 +281,14 @@ std::vector<std::string> inode::pathSplitter(const std::string path) const {
 // TODO: memory leak somewhere in this method. vilken Felix inte kan hitta
 // This method will find a path recursive to ant path, and return the path.
 inode* inode::findFolderRecursive(const std::vector<std::string> & path, const int pos, const int cap, const bool useWithKnowledge)   {
-	
+
 	inode* retINode = nullptr;
 
 	if (useWithKnowledge)
 	{
 		retINode = this;
 	}
-	
+
 
 	if (cap > pos) {
 		std::string findFoldername = path.at(pos); 
@@ -318,8 +311,7 @@ inode* inode::findFolderRecursive(const std::vector<std::string> & path, const i
 			if (folderPos != -1) {
 				retINode = &(folder[folderPos]); 
 				inode* test = &*(folder.at(folderPos)).findFolderRecursive(path, pos + 1, cap);
-				if (test != nullptr)
-				{
+				if (test != nullptr) {
 					retINode = test;
 				}
 

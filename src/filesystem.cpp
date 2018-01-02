@@ -5,7 +5,7 @@ void FileSystem::createImageRecusive(inode *root, std::string & output)
 {
 	//TODO: this folderName
 	output += "1." + root->getFolderName() + "\n";
-	
+
 	//TODO: get filenames
 	std::vector<std::string> files = root->getFiles();
 	for (int i = 0; i < files.size(); ++i)
@@ -23,12 +23,12 @@ void FileSystem::createImageRecusive(inode *root, std::string & output)
 	//TODO: get nr of folders
 	std::vector<std::string> folder = root->getFolders();
 
-	
+
 	output += "4." + std::to_string(root->getNrOfFolders()) + "\n";
-	
+
 
 	output += "\n";
-	
+
 	//TODO: go to  folder and recusive
 	for (int i = 0; i < folder.size(); ++i)
 	{
@@ -54,6 +54,11 @@ FileSystem::~FileSystem() {
 
 bool FileSystem::createImage(std::string filename, std::string path)
 {
+	// If no filename is entered, set it to the default filename.
+	if (filename == "") {
+		filename = "image";
+	}
+
 	std::string stringToFile = "";
 	//TODO: go to root
 	inode* rootFolder = this->curFolder->goToFolder("/");
@@ -71,25 +76,31 @@ bool FileSystem::createImage(std::string filename, std::string path)
 
 bool FileSystem::loadImage(std::string filename)
 {
-	bool added = false;
-	// open file
+	bool loaded = false;
+
+	// If no filename is entered, set it to the default filename.
+	if (filename == "") {
+		filename = "image";
+	}
+
+	// Open file
 	std::ifstream input;
 	input.open(filename + ".txt");
 
 	if (input.is_open()) {
-		// create new inode with suitible constructur
+		// Create new inode with suitible constructur.
 		delete this->curFolder;
 		this->curFolder = new inode(input);
-		
-		//load mMemblockDevice
+
+		// Load mMemblockDevice
 		this->mMemblockDevice->readFilesImage(input);
-		
+
 		input.close();
 
-		added = true;
+		loaded = true;
 	}
 
-	return added;
+	return loaded;
 }
 
 
@@ -247,11 +258,10 @@ std::string FileSystem::getCurrentPath() {
 // This function will return the current list of a directory.
 std::string FileSystem::listDir(std::string path)
 {
-	
 	inode* folder = this->curFolder->goToFolder(path);
 	if (folder == nullptr)
 	{
-		return "no path\n";
+		return "No path.\n";
 	}
 	/*
 	return folder->listDir();
@@ -269,17 +279,13 @@ std::string FileSystem::listDir(std::string path)
 	for (int i = 0; i < filesName.size(); ++i)
 	{
 		retStr += "FILE\t\t" + filesName[i] + (filesName[i].length() <= 8 ? "\t" : "") + "\trw\t\t" + std::to_string(this->fileSize * this->mMemblockDevice->lengthOfFile(filesPos[i])) + " byte\n";
-
 	}
 
-
 	return  retStr;
-	
 }
 
-// This function will return the current list of this dir.
+// This function will return the current list of this directory.
 std::string FileSystem::listDir() {
-	
 	return listDir("");
 }
 
@@ -295,7 +301,7 @@ int FileSystem::formatSystem() {
 bool FileSystem::copyFile(std::string oldFile, std::string newFile)
 {
 	// check if newFile exists
-	bool succes = false;
+	bool success = false;
 
 	int pos = this->curFolder->findBlockIdPath(oldFile);
 	if (pos != -1)
@@ -304,16 +310,16 @@ bool FileSystem::copyFile(std::string oldFile, std::string newFile)
 		if (addFileHere != nullptr)
 		{
 			int newPos = this->mMemblockDevice->copyBlock(pos);
-			succes = true;
+			success = true;
 			if (!addFileHere->addFile(this->getLast(newFile), newPos, ""))
 			{
 				this->mMemblockDevice->rmBlock(newPos);
-				succes = false;
+				success = false;
 			}
 
 		}
 	}
-	return succes;
+	return success;
 
 }
 

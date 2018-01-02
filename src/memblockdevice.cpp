@@ -375,7 +375,6 @@ std::string MemBlockDevice::getDiskAllocations()
 
 		retString += "\n";
 
-		
 	}
 	return retString;
 }
@@ -385,7 +384,7 @@ int MemBlockDevice::lengthOfFile(const int startPos) const
 	int spaces = 0;
 	if (startPos < this->blocksCap)
 	{
-		std::cout << this->memBlocks[startPos].getIfMore() ? "treu\n" : "False\n";
+		// std::cout << this->memBlocks[startPos].getIfMore() ? "true\n" : "False\n";
 		while ((startPos + spaces) < this->blocksCap && this->memBlocks[startPos + spaces].getIfMore())
 		{
 			spaces++;

@@ -35,20 +35,16 @@ int main(void) {
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 
 
-
-
-
 	FileSystem fileSys(250, 512);
 
 	std::string userCommand, commandArr[MAXCOMMANDS];
 	std::string user = "user@DV1492";  // Change this if you want another user to be displayed
 	std::string currentDir = "/";  // Current directory, used for output
 
-	int printInt;
 	bool bRun = true;
-	
 
-	/*tests*/
+
+	/* Tests */
 	//createFile
 	if (!fileSys.createFile("file1\nroot folder\n", "file1", "/"))
 	{
@@ -58,13 +54,12 @@ int main(void) {
 	{
 		print("err2\n", colorRed);
 	}
-	if (fileSys.createFile("not rigt\nroot folder\n", "file2", "/"))
+	if (fileSys.createFile("not right\nroot folder\n", "file2", "/"))
 	{
 		print("err3\n", colorRed);
 	}
 
 	//mkdir
-
 	std::cout << fileSys.createFolderi("/dir1") << std::endl;
 	std::cout << fileSys.createFolderi("/dir2") << std::endl;
 	std::cout << fileSys.createFolderi("dir3") << std::endl;
@@ -72,13 +67,12 @@ int main(void) {
 	if (!fileSys.createFile("file1\ndir2\n", "file1", "/dir2"))
 	{
 		print("err4\n", colorRed);
-
 	}
 	std::cout << fileSys.createFolderi("/dir2") << std::endl;
 	//fileSys.removeFile("dir2/file1");
 
 
-	/*end of test*/
+	/* End of test */
 
 
 	do {
@@ -98,69 +92,65 @@ int main(void) {
 					bRun = quit();
 					break;
 				case 3: // format
-					std::cout << "blocks deleted: " << fileSys.formatSystem() << std::endl;
+					std::cout << "Blocks deleted: " << fileSys.formatSystem() << std::endl;
 					break;
 				case 4: // ls
 					std::cout << fileSys.listDir(commandArr[1]);
 					break;
 				case 5: // create
-					if (fileSys.createFile(getInput("Enter content"), getInput("Enter title"), commandArr[1]))
-					{
-						print("File created\n", colorGreen);
+					if (fileSys.createFile(getInput("Enter content"), getInput("Enter title"), commandArr[1])) {
+						print("File created.\n", colorGreen);
 					}
 					else {
-						print("File not created\n", colorRed);
+						print("File not created.\n", colorRed);
 					}
 					break;
 				case 6: // cat
 					print(fileSys.viewFileOn(commandArr[1]));
 					break;
 				case 7: // createImage
-					fileSys.createImage(commandArr[1]);
+					if (fileSys.createImage(commandArr[1])) {
+						print("Image created.\n", colorGreen);
+					}
 					break;
 				case 8: // restoreImage
 					if (fileSys.loadImage(commandArr[1])) {
-						print("filesystem succesfully restored\n", colorGreen);
+						print("Filesystem successfully restored.\n", colorGreen);
 					}
 					else {
-						print("could not find image\n", colorRed);
+						print("Could not find image.\n", colorRed);
 					}
 					break;
 				case 9: // rm
-					if (fileSys.removeFile(commandArr[1]))
-					{
-						print("file removed\n", colorGreen);
+					if (fileSys.removeFile(commandArr[1])) {
+						print("File removed.\n", colorGreen);
 					}
 					else {
-						print("file not found\n", colorRed);
+						print("File not found.\n", colorRed);
 					}
 					break;
 				case 10: // cp
-					if (fileSys.copyFile(commandArr[1], commandArr[2]))
-					{
-						print("file copied\n", colorGreen);
+					if (fileSys.copyFile(commandArr[1], commandArr[2])) {
+						print("File copied.\n", colorGreen);
 					}
-					else
-					{
-						print("error\n", colorRed);
+					else {
+						print("Error: file already exists.\n", colorRed);
 					}
 					break;
 				case 11: // append
-					if (fileSys.appendFile(commandArr[1], commandArr[2]))
-					{
-						print("succes\n", colorGreen);
+					if (fileSys.appendFile(commandArr[1], commandArr[2])) {
+						print("Success.\n", colorGreen);
 					}
 					else {
-						print("error\n", colorRed);
+						print("Error.\n", colorRed);
 					}
 					break;
 				case 12: // mv
-					if (fileSys.renameFileGivenPath(commandArr[1], commandArr[2]))
-					{
-						print("file renamed\n", colorGreen);
+					if (fileSys.renameFileGivenPath(commandArr[1], commandArr[2])) {
+						print("File renamed.\n", colorGreen);
 					}
 					else {
-						print("file not found\n", colorRed);
+						print("File not found.\n", colorRed);
 					}
 					break;
 				case 13: // mkdir
@@ -178,7 +168,7 @@ int main(void) {
 				case 16: // help
 					std::cout << help() << std::endl;
 					break;
-				case 17: //disk
+				case 17: // disk
 					std::cout << fileSys.getDiskAllocations() << std::endl;
 					break;
 				default:
@@ -206,7 +196,7 @@ void print(std::string text)
 {
 	if (text == "")
 	{
-		print("no data\n", colorRed);
+		print("No data.\n", colorRed);
 	}
 	else
 	{
