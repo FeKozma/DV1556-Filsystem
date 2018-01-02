@@ -41,7 +41,7 @@ public:
 	bool createFile(std::string content ,std::string name, std::string path = "");
 
 	/* Creates a folder in the filesystem */
-	std::string createFolderi(std::string name = "", std::string path = "");
+	std::string createFolderi(std::string path = "");
 
 	/* Removes a file in the filesystem */
 	bool removeFile(std::string fileName);

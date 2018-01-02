@@ -17,12 +17,12 @@ private:
 	int findFolder(std::string name = "") const;
 	
 	std::vector<std::string> pathSplitter(const std::string path) const;
-	inode* findFolderRecursive(std::vector<std::string> path, int pos, int cap /*cap -> sluta vid cap ex kan finnas filnamn i slutet av path*/, bool useWithKnowledge = false) ;
-	inode* findFolderContainingFileRecursive( std::string path) ;
+	inode* findFolderRecursive(const std::vector<std::string> & path, const int pos, const int cap /*cap -> sluta vid cap ex kan finnas filnamn i slutet av path*/, const bool useWithKnowledge = false) ;
+	inode* findFolderContainingFileRecursive(const std::string & path) ;
 	inode* getRoot(inode& curent);
 	//pos = 1 filename pos = 0 pathname
-	std::string* getPathAndFileName(std::string path);
-	bool renameFileGivenName(std::string oldFile, std::string newFile);
+	std::string* getPathAndFileName(const std::string & path) const;
+	bool renameFileGivenName(const std::string & oldFile, const std::string& newFile);
 	
 	/*get last dir or file in given path*/
 	std::string getLast(std::string path);
@@ -47,23 +47,23 @@ public:
 	int getNrOfFolders() const;
 
 	/*add file*/
-	bool addFile(std::string name, int freeBlock, std::string path);
-	bool addFile(std::string path, int freeBlock);
+	bool addFile(const std::string& name,const int freeBlock,const std::string &path);
+	bool addFile(const std::string & path, const int freeBlock);
 
 	/*remove file*/
-	void removeFile(std::string name, std::string path = "");
+	void removeFile(const std::string& name,const std::string& path = "");
 	
 	/*find file in this node*/
-	int findFile(std::string name) const;
+	int findFile(const std::string &name) const;
 	
 	/*add folder*/
-	bool addFolder(std::string name = "", std::string path = "");
+	bool addFolder(std::string name = "");
 	
 	/*go to decired folder, if no input return this*/
-	inode* goToFolder(std::string path);
+	inode* goToFolder(const std::string &path);
 
 	/*find a block given its path, including filename*/
-	int findBlockIdPath(std::string pathName) ;
+	int findBlockIdPath(const std::string & pathName) ;
 	
 	/*find file in this node*/
 	int findBlockId(std::string fileName);

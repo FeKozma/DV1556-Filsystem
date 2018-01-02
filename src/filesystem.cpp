@@ -81,7 +81,7 @@ bool FileSystem::loadImage(std::string filename)
 		delete this->curFolder;
 		this->curFolder = new inode(input);
 		
-		//TODO: load mMemblockDevice
+		//load mMemblockDevice
 		this->mMemblockDevice->readFilesImage(input);
 		
 		input.close();
@@ -198,12 +198,11 @@ bool FileSystem::createFile(std::string content, std::string name, std::string p
 
 // This function will create a folder.
 // Returns: current folder's path + name.
-std::string FileSystem::createFolderi(std::string name, std::string path) {
-	if (name == "") return "Error: No name entered.";
+std::string FileSystem::createFolderi(std::string path) {
 	if (path == "") path = curFolder->getFolderPath();
 
-	curFolder->addFolder(name, path);
-	return path + name;
+	curFolder->addFolder(path);
+	return path;
 }
 
 // This folder will remove a file from the system.
