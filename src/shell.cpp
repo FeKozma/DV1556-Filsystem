@@ -146,7 +146,13 @@ int main(void) {
 					}
 					break;
 				case 11: // append
-					fileSys.appendFile(commandArr[1], commandArr[2]);
+					if (fileSys.appendFile(commandArr[1], commandArr[2]))
+					{
+						print("succes\n", colorGreen);
+					}
+					else {
+						print("error\n", colorRed);
+					}
 					break;
 				case 12: // mv
 					if (fileSys.renameFileGivenPath(commandArr[1], commandArr[2]))

@@ -252,6 +252,11 @@ std::vector<int> inode::getFilePos() const
 	return this->files;
 }
 
+int inode::getMemPosGivenPosInArr(const int & pos) const
+{
+	return this->files[pos];
+}
+
 int inode::getNrOfFolders() const
 {
 	return this->folder.size();

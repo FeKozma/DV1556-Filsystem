@@ -43,6 +43,7 @@ public:
 	std::vector<std::string> getFolders() const;
 	std::vector<std::string> getFiles() const;
 	std::vector<int> getFilePos() const;
+	int getMemPosGivenPosInArr(const int &pos) const;
 	int getNrOfFolders() const;
 
 	/*add file*/

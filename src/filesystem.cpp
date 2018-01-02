@@ -352,8 +352,8 @@ bool FileSystem::appendFile(std::string file1, std::string file2)
 	//TODO check if files exists
 	if (folder1 != nullptr && folder2 != nullptr)
 	{
-		int posFile1 = folder1->findFile(this->getLast(file1));
-		int posFile2 = folder2->findFile(this->getLast(file2));
+		int posFile1 = folder1->getMemPosGivenPosInArr(folder1->findFile(this->getLast(file1)));
+		int posFile2 = folder2->getMemPosGivenPosInArr(folder2->findFile(this->getLast(file2)));
 		if (posFile1 != -1 && posFile2 != -1)
 		{
 			//get amount of text

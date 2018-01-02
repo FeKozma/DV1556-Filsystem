@@ -157,7 +157,7 @@ bool MemBlockDevice::adBlock(int blockNr)
 	{
 		if (this->memBlocks[blockNr].getIfMore())
 		{
-			if (rmBlock(blockNr + 1))
+			if (adBlock(blockNr + 1))
 			{
 				availableBlocks[blockNr] = false;
 				retVal = true;
