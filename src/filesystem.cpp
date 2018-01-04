@@ -36,7 +36,7 @@ void FileSystem::createImageRecusive(inode *root, std::string & output)
 	}
 }
 
-FileSystem::FileSystem(int blockSize, int fileSize) {
+FileSystem::FileSystem(const int &blockSize, const int & fileSize) {
 	mMemblockDevice = new MemBlockDevice(blockSize);
 	//availableBlocks = new bool[blockSize];
 	//for (int i = 0; i < blockSize; ++i)
@@ -52,7 +52,7 @@ FileSystem::~FileSystem() {
 	//delete[] availableBlocks;
 }
 
-bool FileSystem::createImage(std::string filename)
+bool FileSystem::createImage(std::string  filename)
 {
 	// If no filename is entered, set it to the default filename.
 	if (filename == "") {
@@ -130,7 +130,7 @@ int FileSystem::createFileOn(std::string storeString) {
  ***************************************************/
 
 // This function will return a string with the content of the fileName in path.
-std::string FileSystem::viewFileOn(std::string fileName) {
+std::string FileSystem::viewFileOn(const std::string & fileName) {
 	//std::string path = curFolder->getFolderPath();
 
 	int blockId = curFolder->findBlockIdPath(fileName); //-1
@@ -173,10 +173,10 @@ std::string FileSystem::stringTrim(std::string &k) const {
 
 // This function will create and add a new file to the system.
 // Returns: A boolean wether the folder were created or not.
-bool FileSystem::createFile(std::string content, std::string name, std::string path) {
+bool FileSystem::createFile( std::string  content, std::string path) {
 
-	std::size_t found = name.find_first_of("/\\");
-	if (found < name.size() || name == "")
+	std::string name = this->getLast(path);
+	if (name == "")
 	{
 		return false;
 	}
@@ -192,7 +192,7 @@ bool FileSystem::createFile(std::string content, std::string name, std::string p
     {
  		int pos = createFileOn(content);
 
-		if (curFolder->addFile(name, pos, path))
+		if (curFolder->addFile(name, pos, this->ignoreLast(path)))
 		{
 			fileCreated = true;
 		}

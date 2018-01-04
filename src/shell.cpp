@@ -46,15 +46,15 @@ int main(void) {
 
 	/* Tests */
 	//createFile
-	if (!fileSys.createFile("file1\nroot folder\n", "file1", "/"))
+	if (!fileSys.createFile("file1\nroot folder\n", "file1"))
 	{
 		print("err1\n", colorRed);
 	}
-	if (!fileSys.createFile("file2\nroot folder\n", "file2", "/"))
+	if (!fileSys.createFile("file2\nroot folder\n", "file2"))
 	{
 		print("err2\n", colorRed);
 	}
-	if (fileSys.createFile("not right\nroot folder\n", "file2", "/"))
+	if (fileSys.createFile("not right\nroot folder\n", "file2"))
 	{
 		print("err3\n", colorRed);
 	}
@@ -64,7 +64,7 @@ int main(void) {
 	std::cout << fileSys.createFolderi("/dir2") << std::endl;
 	std::cout << fileSys.createFolderi("dir3") << std::endl;
 
-	if (!fileSys.createFile("file1\ndir2\n", "file1", "/dir2"))
+	if (!fileSys.createFile("file1\ndir2\n", "/dir2/file1"))
 	{
 		print("err4\n", colorRed);
 	}
@@ -98,7 +98,7 @@ int main(void) {
 					std::cout << fileSys.listDir(commandArr[1]);
 					break;
 				case 5: // create
-					if (fileSys.createFile(getInput("Enter content"), getInput("Enter title"), commandArr[1])) {
+					if (fileSys.createFile(getInput("Enter content"), commandArr[1])) {
 						print("File created.\n", colorGreen);
 					}
 					else {
