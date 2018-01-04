@@ -309,12 +309,16 @@ inode* inode::findFolderRecursive(const std::vector<std::string> & path, const i
 			// If findFolder is a folder name
 			int folderPos = findFolder(findFoldername);
 			if (folderPos != -1) {
-				retINode = &(folder[folderPos]); 
-				inode* test = &*(folder.at(folderPos)).findFolderRecursive(path, pos + 1, cap);
-				if (test != nullptr) {
+				if (cap > pos + 1)
+				{
+					inode* test = &*(folder.at(folderPos)).findFolderRecursive(path, pos + 1, cap);
 					retINode = test;
 				}
+				else  {
+					retINode = &(folder[folderPos]);
 
+				}
+			
 			}
 		}
 	}
@@ -438,11 +442,21 @@ std::string inode::listDir()
 
 bool inode::renameFileGivenPath(std::string oldFile, std::string newFile)
 {
+	bool retVal = false;
 	inode* folder = this->findFolderContainingFileRecursive(oldFile);
 	
-	
+	if (folder->findBlockId(newFile) == -1)
+	{
+		if (newFile != "")
+		{
+			if (newFile.find_first_of('/') == std::string::npos)
+			{
+				retVal = folder->renameFileGivenName(folder->getLast(oldFile), newFile);
+			}
+		}
+	}
 
-	return folder->renameFileGivenName(folder->getLast(oldFile), newFile);
+	return retVal;
 }
 
 bool inode::updatePos(const std::string & file, const int newPos)
