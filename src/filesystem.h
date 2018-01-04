@@ -23,7 +23,7 @@ public:
 	FileSystem(int blockSize = 250, int fileSize = 512);
 	~FileSystem();
 
-	bool createImage(std::string filename = "data", std::string path = "");
+	bool createImage(std::string filename);
 
 	bool loadImage(std::string filename = "data");
 

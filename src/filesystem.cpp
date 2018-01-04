@@ -52,7 +52,7 @@ FileSystem::~FileSystem() {
 	//delete[] availableBlocks;
 }
 
-bool FileSystem::createImage(std::string filename, std::string path)
+bool FileSystem::createImage(std::string filename)
 {
 	// If no filename is entered, set it to the default filename.
 	if (filename == "") {
@@ -60,7 +60,7 @@ bool FileSystem::createImage(std::string filename, std::string path)
 	}
 
 	std::string stringToFile = "";
-	//TODO: go to root
+	//go to root
 	inode* rootFolder = this->curFolder->goToFolder("/");
 	createImageRecusive(rootFolder, stringToFile);
 
@@ -302,6 +302,11 @@ bool FileSystem::copyFile(std::string oldFile, std::string newFile)
 {
 	// check if newFile exists
 	bool success = false;
+
+	if (newFile[newFile.size() - 1] == '/')
+	{
+		newFile += this->getLast(oldFile);
+	}
 
 	int pos = this->curFolder->findBlockIdPath(oldFile);
 	if (pos != -1)
