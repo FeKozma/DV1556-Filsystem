@@ -73,7 +73,7 @@ int MemBlockDevice::writeBlock(const std::vector<char>& vec)
 	return retVal;
 }
 
-int MemBlockDevice::writeBlock(const std::string & strBlock, int nrBlocks {
+int MemBlockDevice::writeBlock(const std::string & strBlock, int nrBlocks) {
 	int retVal = findFree(nrBlocks);
 	if (retVal != -1) {
 		for (int i = 0; i < nrBlocks; ++i) {
@@ -88,6 +88,7 @@ int MemBlockDevice::writeBlock(const std::string & strBlock, int nrBlocks {
 	}
 	return retVal;
 }
+
 
 int MemBlockDevice::writeBlock(const std::string & strBlock)
 {
