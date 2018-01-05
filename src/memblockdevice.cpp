@@ -75,7 +75,7 @@ int MemBlockDevice::writeBlock(const std::vector<char>& vec)
 
 int MemBlockDevice::writeBlock(const std::string & strBlock, int nrBlocks)
 {
-	//Problem: -2 is returned!!
+	//TODO:! Problem: -2 is returned!!
 
 	int retVal = findFree(nrBlocks);
 	if (retVal != -1)
@@ -91,7 +91,6 @@ int MemBlockDevice::writeBlock(const std::string & strBlock, int nrBlocks)
 				this->availableBlocks[retVal+i] = false;
 			}
 		}
-		
 	}
 	return retVal;
 }

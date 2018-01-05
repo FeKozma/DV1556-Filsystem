@@ -4,6 +4,7 @@ x64/
 x32/
 /ipch/
 /TestResults/
+/*.txt
 
 *.obj
 *.exe

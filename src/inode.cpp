@@ -257,7 +257,7 @@ int inode::getNrOfFolders() const
 	return this->folder.size();
 }
 
-// This function will split any path and returns ? TODO... fix/change?
+// This function will split any path and returns TODO:?... fix/change?
 std::vector<std::string> inode::pathSplitter(const std::string path) const {
 	std::vector<std::string> retPath;
 
@@ -350,7 +350,7 @@ inode* inode::getRoot(inode &current) {
 	return retInode;
 }
 
-std::string* inode::getPathAndFileName(const std::string & path) const
+std::string* inode::getPathAndFileName(const std::string &path) const
 {
 	std::string arr[2];
 	int start = 0;

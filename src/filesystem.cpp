@@ -1,41 +1,5 @@
 #include "filesystem.h"
 
-//maby not the best thing to use ptr
-void FileSystem::createImageRecusive(inode *root, std::string & output)
-{
-	//TODO: this folderName
-	output += "1." + root->getFolderName() + "\n";
-
-	//TODO: get filenames
-	std::vector<std::string> files = root->getFiles();
-	for (int i = 0; i < files.size(); ++i)
-	{
-		output += "2." + files[i] + "\n";
-	}
-
-	//TODO: get position in memory
-	std::vector<int> pos = root->getFilePos();
-	for (int i = 0; i < pos.size(); ++i)
-	{
-		output += "3." + std::to_string(pos[i]) + "\n"; 
-	}
-
-	//TODO: get nr of folders
-	std::vector<std::string> folder = root->getFolders();
-
-
-	output += "4." + std::to_string(root->getNrOfFolders()) + "\n";
-
-
-	output += "\n";
-
-	//TODO: go to  folder and recusive
-	for (int i = 0; i < folder.size(); ++i)
-	{
-		createImageRecusive(root->goToFolder(folder[i]), output);
-	}
-}
-
 FileSystem::FileSystem(const int &blockSize, const int & fileSize) {
 	mMemblockDevice = new MemBlockDevice(blockSize);
 	//availableBlocks = new bool[blockSize];
@@ -52,6 +16,42 @@ FileSystem::~FileSystem() {
 	//delete[] availableBlocks;
 }
 
+// TODO:? Mabye not the best thing to use ptr.
+void FileSystem::createImageRecursive(inode *root, std::string &output)
+{
+	//TODO: this folderName
+	output += "1." + root->getFolderName() + "\n";
+
+	//TODO: get filenames
+	std::vector<std::string> files = root->getFiles();
+	for (int i = 0; i < files.size(); ++i)
+	{
+		output += "2." + files[i] + "\n";
+	}
+
+	//TODO: get position in memory
+	std::vector<int> pos = root->getFilePos();
+	for (int i = 0; i < pos.size(); ++i)
+	{
+		output += "3." + std::to_string(pos[i]) + "\n";
+	}
+
+	//TODO: get nr of folders
+	std::vector<std::string> folder = root->getFolders();
+
+
+	output += "4." + std::to_string(root->getNrOfFolders()) + "\n";
+
+
+	output += "\n";
+
+	//TODO: go to folder and recusive
+	for (int i = 0; i < folder.size(); ++i)
+	{
+		createImageRecursive(root->goToFolder(folder[i]), output);
+	}
+}
+
 bool FileSystem::createImage(std::string  filename)
 {
 	// If no filename is entered, set it to the default filename.
@@ -60,9 +60,9 @@ bool FileSystem::createImage(std::string  filename)
 	}
 
 	std::string stringToFile = "";
-	//go to root
+	// Go to root
 	inode* rootFolder = this->curFolder->goToFolder("/");
-	createImageRecusive(rootFolder, stringToFile);
+	createImageRecursive(rootFolder, stringToFile);
 
 	stringToFile += mMemblockDevice->filesImage();
 	//TODO: save string to file
@@ -103,10 +103,8 @@ bool FileSystem::loadImage(std::string filename)
 	return loaded;
 }
 
-
-
 /****************************************************
- ***************** Begin Test? Functions ******************
+ *************** BEGIN TEST FUNCTIONS ***************
  ****************** WARNING TODO ********************
  ***************************************************/
 
@@ -161,8 +159,10 @@ std::string FileSystem::viewFileOn(int pos) const {
 }
 
 
-// This method removes spaces at the end of a string.
-// Is using the includes <algorithm>.
+/**
+ * This method removes spaces at the end of a string.
+ * Is using the includes <algorithm>.
+ */
 std::string FileSystem::stringTrim(std::string &k) const {
 	std::string s = k;
 	s.erase(std::find_if(s.rbegin(), s.rend(), [](int ch) {
@@ -171,8 +171,9 @@ std::string FileSystem::stringTrim(std::string &k) const {
 	return s;
 }
 
-// This function will create and add a new file to the system.
-// Returns: A boolean wether the folder were created or not.
+/** This function will create and add a new file to the system.
+ * Returns: A boolean wether the folder were created or not.
+ */
 bool FileSystem::createFile( std::string  content, std::string path) {
 
 	std::string name = this->getLast(path);
@@ -186,10 +187,10 @@ bool FileSystem::createFile( std::string  content, std::string path) {
 	
 	int space = this->mMemblockDevice->spaceLeft();
 
-    
-    //check if path exists and if so, mark the memory pos as taken
-    if (space != 0)
-    {
+
+	// Check if path exists, if so, mark the memory position as taken.
+	if (space != 0)
+	{
  		int pos = createFileOn(content);
 
 		if (curFolder->addFile(name, pos, this->ignoreLast(path)))
@@ -201,14 +202,14 @@ bool FileSystem::createFile( std::string  content, std::string path) {
 			this->mMemblockDevice->rmBlock(pos);
 		}
 		
-    }
-    
-    
+	}
+
 	return fileCreated;
 }
 
-// This function will create a folder.
-// Returns: current folder's path + name.
+/** This function will create a folder.
+ * Returns: current folder's path + name.
+ */
 std::string FileSystem::createFolderi(std::string path) {
 	if (path == "") path = curFolder->getFolderPath();
 
@@ -242,7 +243,7 @@ std::string FileSystem::goToFolder(std::string path) {
 	if (path != "") {
 		inode *folder = curFolder->goToFolder(path);
 		if (folder != nullptr)
-		{ 
+		{
 			curFolder = folder;
 		}
 	}
@@ -300,7 +301,7 @@ int FileSystem::formatSystem() {
 
 bool FileSystem::copyFile(std::string oldFile, std::string newFile)
 {
-	// check if newFile exists
+	// Check if newFile exists.
 	bool success = false;
 
 	if (newFile[newFile.size() - 1] == '/')
@@ -321,7 +322,6 @@ bool FileSystem::copyFile(std::string oldFile, std::string newFile)
 				this->mMemblockDevice->rmBlock(newPos);
 				success = false;
 			}
-
 		}
 	}
 	return success;
@@ -359,7 +359,7 @@ bool FileSystem::appendFile(std::string file1, std::string file2)
 	bool retVal = false;
 	inode* folder1 = this->curFolder->goToFolder(this->ignoreLast(file1));
 	inode* folder2 = this->curFolder->goToFolder(this->ignoreLast(file2));
-	//TODO check if files exists
+	//TODO: check if files exists
 	if (folder1 != nullptr && folder2 != nullptr)
 	{
 		int posFile1 = folder1->getMemPosGivenPosInArr(folder1->findFile(this->getLast(file1)));
@@ -393,5 +393,3 @@ bool FileSystem::appendFile(std::string file1, std::string file2)
 
 	return retVal;
 }
-
-

@@ -8,17 +8,15 @@
 #include <iostream>
 #include <fstream>
 
-
-
 class FileSystem {
 private:
 	MemBlockDevice *mMemblockDevice;
 	inode *curFolder;
-	//TODO:? fileSize borde kanske flyttas till mmemblockdevice
+	// TODO:? fileSize borde kanske flyttas till memblockdevice.
 	int fileSize;
 
-	//returnerar sträng som ska sparas
-	void createImageRecusive(inode *root, std::string & uoutput);
+	// Returnerar sträng som ska sparas.
+	void createImageRecursive(inode *root, std::string & uoutput);
 public:
 	FileSystem(const int & blockSize = 250,const int & fileSize = 512);
 	~FileSystem();
