@@ -73,21 +73,15 @@ int MemBlockDevice::writeBlock(const std::vector<char>& vec)
 	return retVal;
 }
 
-int MemBlockDevice::writeBlock(const std::string & strBlock, int nrBlocks)
-{
-	//TODO:! Problem: -2 is returned!!
-
+int MemBlockDevice::writeBlock(const std::string & strBlock, int nrBlocks {
 	int retVal = findFree(nrBlocks);
-	if (retVal != -1)
-	{
-		for (int i = 0; i < nrBlocks; ++i)
-		{
-			if (writeBlock(retVal+i, strBlock.substr((i)*511, 511), nrBlocks -i -1) != 1) {   //TODO: not use 512 use var
+	if (retVal != -1) {
+		for (int i = 0; i < nrBlocks; ++i) {
+			if (writeBlock(retVal+i, strBlock.substr((i)*511, 511), nrBlocks -i -1) != 1) {
 				retVal = -1;
 				i = nrBlocks;
 			}
-			else
-			{
+			else {
 				this->availableBlocks[retVal+i] = false;
 			}
 		}

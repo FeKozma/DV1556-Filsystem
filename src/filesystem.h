@@ -12,11 +12,13 @@ class FileSystem {
 private:
 	MemBlockDevice *mMemblockDevice;
 	inode *curFolder;
-	// TODO:? fileSize borde kanske flyttas till memblockdevice.
 	int fileSize;
 
 	// Returnerar sträng som ska sparas.
 	void createImageRecursive(inode *root, std::string & uoutput);
+
+	int createFileOn(std::string testString);
+
 public:
 	FileSystem(const int & blockSize = 250,const int & fileSize = 512);
 	~FileSystem();
@@ -24,10 +26,6 @@ public:
 	bool createImage(std::string filename);
 
 	bool loadImage(std::string filename = "data");
-
-
-	// These are test functions, WARNING, TODO
-	int createFileOn(std::string testString);
 
 	/* This function will list the content of a file */
 	std::string viewFileOn(const std::string & fileName);

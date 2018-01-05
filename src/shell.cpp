@@ -134,7 +134,7 @@ int main(void) {
 						print("File copied.\n", colorGreen);
 					}
 					else {
-						print("Error: file already exists.\n", colorRed);
+						print("Error.\n", colorRed);
 					}
 					break;
 				case 11: // append

@@ -16,38 +16,34 @@ FileSystem::~FileSystem() {
 	//delete[] availableBlocks;
 }
 
-// TODO:? Mabye not the best thing to use ptr.
 void FileSystem::createImageRecursive(inode *root, std::string &output)
 {
-	//TODO: this folderName
+	// This folder name
 	output += "1." + root->getFolderName() + "\n";
 
-	//TODO: get filenames
+	// Get filenames
 	std::vector<std::string> files = root->getFiles();
 	for (int i = 0; i < files.size(); ++i)
 	{
 		output += "2." + files[i] + "\n";
 	}
 
-	//TODO: get position in memory
+	// Get position in memory
 	std::vector<int> pos = root->getFilePos();
 	for (int i = 0; i < pos.size(); ++i)
 	{
 		output += "3." + std::to_string(pos[i]) + "\n";
 	}
 
-	//TODO: get nr of folders
+	// Get nr of folders
 	std::vector<std::string> folder = root->getFolders();
-
 
 	output += "4." + std::to_string(root->getNrOfFolders()) + "\n";
 
-
 	output += "\n";
 
-	//TODO: go to folder and recusive
-	for (int i = 0; i < folder.size(); ++i)
-	{
+	// Go to folder and go recusively.
+	for (int i = 0; i < folder.size(); ++i) {
 		createImageRecursive(root->goToFolder(folder[i]), output);
 	}
 }
@@ -65,7 +61,7 @@ bool FileSystem::createImage(std::string  filename)
 	createImageRecursive(rootFolder, stringToFile);
 
 	stringToFile += mMemblockDevice->filesImage();
-	//TODO: save string to file
+	// Save string to file.
 	std::cout << std::endl << stringToFile << std::endl;
 	std::ofstream out(filename + ".txt");
 	out << stringToFile;
@@ -102,12 +98,6 @@ bool FileSystem::loadImage(std::string filename)
 
 	return loaded;
 }
-
-/****************************************************
- *************** BEGIN TEST FUNCTIONS ***************
- ****************** WARNING TODO ********************
- ***************************************************/
-
 int FileSystem::createFileOn(std::string storeString) {
 	int lengthOfBlock = fileSize -1;
 	
@@ -122,10 +112,6 @@ int FileSystem::createFileOn(std::string storeString) {
 	int retVal = this->mMemblockDevice->writeBlock(storeString, nrOfBlocks);
 	return retVal;
 }
-
-/****************************************************
- **************** END TEST FUNCTIONS ****************
- ***************************************************/
 
 // This function will return a string with the content of the fileName in path.
 std::string FileSystem::viewFileOn(const std::string & fileName) {
@@ -239,11 +225,9 @@ bool FileSystem::removeFile(std::string path) {
 // This function will go to a folder in the system.
 // Returns: It will return the folder it got to.
 std::string FileSystem::goToFolder(std::string path) {
-	// TODO: return an error message saying the folder doesn't exist.
 	if (path != "") {
 		inode *folder = curFolder->goToFolder(path);
-		if (folder != nullptr)
-		{
+		if (folder != nullptr) {
 			curFolder = folder;
 		}
 	}
@@ -359,23 +343,23 @@ bool FileSystem::appendFile(std::string file1, std::string file2)
 	bool retVal = false;
 	inode* folder1 = this->curFolder->goToFolder(this->ignoreLast(file1));
 	inode* folder2 = this->curFolder->goToFolder(this->ignoreLast(file2));
-	//TODO: check if files exists
+	// Check if files exists.
 	if (folder1 != nullptr && folder2 != nullptr)
 	{
 		int posFile1 = folder1->getMemPosGivenPosInArr(folder1->findFile(this->getLast(file1)));
 		int posFile2 = folder2->getMemPosGivenPosInArr(folder2->findFile(this->getLast(file2)));
 		if (posFile1 != -1 && posFile2 != -1)
 		{
-			//get amount of text
+			// Get amount of text
 			std::string content = this->viewFileOn(posFile2);
 			content = this->stringTrim(content);
 			content += this->viewFileOn(posFile1);
 			content = this->stringTrim(content);
 
-			//temporarly remove file2
+			// Temporarliy remove posFile2
 			this->mMemblockDevice->rmBlock(posFile2);
 
-			//TODO: check if space exists
+			// Check if space exists
 			if (this->mMemblockDevice->findFree(1 + (content.size() / (fileSize - 1))) != -1)
 			{
 				int newPos = this->createFileOn(content);
@@ -386,8 +370,6 @@ bool FileSystem::appendFile(std::string file1, std::string file2)
 			{
 				this->mMemblockDevice->adBlock(posFile2);
 			}
-
-			//TODO: recreate file2
 		}
 	}
 
