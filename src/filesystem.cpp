@@ -288,6 +288,9 @@ bool FileSystem::copyFile(std::string oldFile, std::string newFile)
 	{
 		newFile += this->getLast(oldFile);
 	}
+	else {
+		newFile += '/' + this->getLast(oldFile);
+	}
 
 	int pos = this->curFolder->findBlockIdPath(oldFile);
 	if (pos != -1)
