@@ -4,8 +4,7 @@
 MemBlockDevice::MemBlockDevice(int nrOfBlocks): BlockDevice(nrOfBlocks) {
 	this->availableBlocks = new bool[nrOfBlocks];
 	this->blocksCap = nrOfBlocks;
-	for (int i = 0; i < nrOfBlocks; i++)
-	{
+	for (int i = 0; i < nrOfBlocks; i++) {
 		availableBlocks[i] = true;
 	}
 }
@@ -13,15 +12,14 @@ MemBlockDevice::MemBlockDevice(int nrOfBlocks): BlockDevice(nrOfBlocks) {
 MemBlockDevice::MemBlockDevice(const MemBlockDevice &other) : BlockDevice(other) {
 	this->availableBlocks = new bool[nrOfBlocks];
 	this->blocksCap = nrOfBlocks;
-	for (int i = 0; i < nrOfBlocks; i++)
-	{
+	for (int i = 0; i < nrOfBlocks; i++) {
 		availableBlocks[i] = true;
 	}
 }
 
 MemBlockDevice::~MemBlockDevice() {
 	/* Implicit call to base-class destructor */
-	delete[] 	availableBlocks;
+	delete[] availableBlocks;
 }
 
 MemBlockDevice& MemBlockDevice::operator=(const MemBlockDevice &other) {
@@ -47,10 +45,8 @@ Block& MemBlockDevice::operator[](int index) const {
 
 int MemBlockDevice::spaceLeft() const {
 	int freeNr = 0;
-	for (int i = 0; i < blocksCap; ++i)
-	{
-		if (availableBlocks[i] == true)
-		{
+	for (int i = 0; i < blocksCap; ++i) {
+		if (availableBlocks[i] == true) {
 			freeNr += 1;
 		}
 	}
@@ -59,13 +55,11 @@ int MemBlockDevice::spaceLeft() const {
 
 int MemBlockDevice::writeBlock(const std::vector<char>& vec) {
 	int retVal = findFree(1);
-	if (retVal != -1)
-	{
+	if (retVal != -1) {
 		if (writeBlock(retVal, vec) != 1) {
 			retVal = -1;
 		}
-		else
-		{
+		else {
 			this->availableBlocks[retVal] = false;
 		}
 	}
@@ -87,7 +81,6 @@ int MemBlockDevice::writeBlock(const std::string & strBlock, int nrBlocks) {
 	}
 	return retVal;
 }
-
 
 int MemBlockDevice::writeBlock(const std::string & strBlock) {
 	int retVal = findFree(1);
@@ -132,11 +125,11 @@ bool MemBlockDevice::rmBlock(int blockNr) {
 	return retVal;
 }
 
-bool MemBlockDevice::adBlock(int blockNr) {
+bool MemBlockDevice::addBlock(int blockNr) {
 	bool retVal = false;
 	if (blockNr >= 0) {
 		if (this->memBlocks[blockNr].getIfMore()) {
-			if (adBlock(blockNr + 1)) {
+			if (addBlock(blockNr + 1)) {
 				availableBlocks[blockNr] = false;
 				retVal = true;
 			}
@@ -178,7 +171,7 @@ int MemBlockDevice::writeBlock(int blockNr, const std::string &strBlock, const b
 
 int MemBlockDevice::writeBlock(int blockNr, const std::string & strBlock)
 {
-	int output = -1;    // Assume blockNr out-of-range
+	int output = -1; // Assume blockNr out-of-range
 
 	if (blockNr < this->nrOfBlocks && blockNr >= 0) {
 		/* -2 = str-length and block dont have same dimensions */
@@ -251,7 +244,7 @@ std::string MemBlockDevice::filesImage() {
 	return retString;
 }
 
-bool MemBlockDevice::readFilesImage(std::ifstream& input) {
+bool MemBlockDevice::readFilesImage(std::ifstream &input) {
 	int pos;
 	std::string save;
 	bool success = false;
@@ -299,7 +292,7 @@ int MemBlockDevice::copyBlock(int pos) {
 	return newPos;
 }
 
-std::string MemBlockDevice::getDiskAllocations() {
+std::string MemBlockDevice::getDiskAllLocations() const {
 	std::string retString = "";
 	for (int i = 0; i < this->blocksCap - 4; i = i + 4) {
 		retString += std::to_string(i) + ": ";

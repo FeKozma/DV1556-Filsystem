@@ -15,12 +15,12 @@ private:
 	int fileSize;
 
 	// Returnerar sträng som ska sparas.
-	void createImageRecursive(inode *root, std::string & uoutput);
+	void createImageRecursive(inode *root, std::string &output);
 
 	int createFileOn(std::string testString);
 
 public:
-	FileSystem(const int & blockSize = 250,const int & fileSize = 512);
+	FileSystem(const int &blockSize = 250,const int &fileSize = 512);
 	~FileSystem();
 
 	bool createImage(std::string filename);
@@ -28,28 +28,28 @@ public:
 	bool loadImage(std::string filename = "data");
 
 	/* This function will list the content of a file */
-	std::string viewFileOn(const std::string & fileName);
+	std::string viewFileOn(const std::string &fileName) const;
 	std::string viewFileOn(int pos) const;
 
 	std::string stringTrim(std::string &s) const;
 
 	/* This function creates a file in the filesystem */
-	bool createFile(std::string content , std::string path = "");
+	bool createFile(const std::string &content , const std::string &path = "");
 
 	/* Creates a folder in the filesystem */
 	std::string createFolderi(std::string path = "");
 
 	/* Removes a file in the filesystem */
-	bool removeFile(std::string fileName);
+	bool removeFile(const std::string &fileName);
 
 	/* Removes a folder in the filesystem */
 	// removeFolder(...);
 
 	/* Function will move the current location to a specified location in the filesystem */
-	std::string goToFolder(std::string path);
+	std::string goToFolder(const std::string &path);
 
 	/* This function will return the current directly */
-	std::string getCurrentPath();
+	std::string getCurrentPath() const;
 
 	/* This function will get all the files and folders in the specified folder */
 	std::string listDir(std::string path);
@@ -60,16 +60,16 @@ public:
 	int formatSystem();
 
 	/**/
-	bool copyFile(std::string oldFile, std::string newFile);
+	bool copyFile(const std::string &oldFile, std::string newFile);
 
-	bool renameFileGivenPath(std::string oldFile, std::string newFile);
+	bool renameFileGivenPath(const std::string &oldFile, const std::string &newFile);
 
 	std::string ignoreLast(const std::string &path) const;
 	std::string getLast(const std::string &path) const;
 
-	std::string getDiskAllocations();
+	std::string getDiskAllocations() const;
 
-	bool appendFile(std::string file1, std::string file2);
+	bool appendFile(const std::string &file1, const std::string &file2);
 };
 
 #endif // FILESYSTEM_H

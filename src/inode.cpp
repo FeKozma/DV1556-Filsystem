@@ -14,7 +14,7 @@ inode::inode(inode* &parent) {
 	this->parent = parent;
 }
 
-inode::inode(std::ifstream&  input, inode* parent) {
+inode::inode(std::ifstream &input, inode *parent) {
 	bool endOfFolderInfo = false;
 	std::string output;
 	int nrFolders = 0;
@@ -57,6 +57,7 @@ inode::inode(std::ifstream&  input, inode* parent) {
 			}
 		}
 	}
+
 	// Go in to first folder recusivly.
 	for (int i = 0; i < nrFolders; ++i) {
 		inode toPush = inode(input, this);
@@ -65,9 +66,9 @@ inode::inode(std::ifstream&  input, inode* parent) {
 }
 
 /** Used when adding a file to the system
-	* Returns whether it could add a file not not.
-	*/
-bool inode::addFile(const std::string & name,const int freeBlock,const std::string& path) {
+  * Returns whether it could add a file not not.
+  */
+bool inode::addFile(const std::string &name, const int freeBlock, const std::string &path) {
 	bool fileAdded = false;
 	if(path != "") {
 		inode* addHere = this->goToFolder(path);
@@ -87,13 +88,13 @@ bool inode::addFile(const std::string & name,const int freeBlock,const std::stri
 	return fileAdded;
 }
 
-bool inode::addFile(const std::string & path,const int freeBlock) {
+bool inode::addFile(const std::string &path, const int freeBlock) {
 	std::string* arr = this->getPathAndFileName(path);
 	return addFile(arr[0], freeBlock, arr[1]);
 }
 
 // Used when removing a file from the system.
-void inode::removeFile(const std::string& fileName, const std::string& path) {
+void inode::removeFile(const std::string &fileName, const std::string &path) {
 	int id = findFile(fileName);
 
 	if (id != -1) {
@@ -105,7 +106,7 @@ void inode::removeFile(const std::string& fileName, const std::string& path) {
 /** Used to find the ID of a file on the system.
  * Return: -1 for not existing. Otherwise returns the value it found.
  */
-int inode::findFile(const std::string& name) const {
+int inode::findFile(const std::string &name) const {
 	int filePos = -1;
 	for (int i = 0; i <  filesName.size(); ++i) {
 		if (filesName[i] == name)
@@ -180,7 +181,7 @@ inode* inode::goToFolder(const std::string &path) {
 /** Used to find a folder in the system.
 /* Return: An integer containing the folder position.
 */
-int inode::findFolder(std::string name) const {
+int inode::findFolder(const std::string &name) const {
 	int folderPos = -1;
 	for (std::vector<inode>::size_type i = 0; i != folder.size(); i++) {
 		if (this->folder[i].getFolderName() == name) {
@@ -303,7 +304,7 @@ inode* inode::findFolderRecursive(const std::vector<std::string> & path, const i
 	return retINode;
 }
 
-inode * inode::findFolderContainingFileRecursive(const std::string &path) {
+inode* inode::findFolderContainingFileRecursive(const std::string &path) {
 	std::vector<std::string> pathList = this->pathSplitter(path);
 	if (pathList.size() == 1) {
 		return this;
@@ -347,7 +348,6 @@ bool inode::renameFileGivenName(const std::string &oldFile, const std::string &n
 	return retVal;
 }
 
-
 // This function will return a block id of a filename if it finds it.
 int inode::findBlockIdPath(const std::string& pathName)   {
 	inode* path = this->findFolderContainingFileRecursive(pathName);
@@ -362,19 +362,19 @@ int inode::findBlockIdPath(const std::string& pathName)   {
 	
 }
 
-int inode::findBlockId(std::string pathName) {
+int inode::findBlockId(const std::string &pathName) const {
 	int id = findFile(getLast(pathName));
 	if (id != -1)
 		return files[id];
 	return -1;
 }
 
-std::string inode::getLast(std::string path) {
+std::string inode::getLast(const std::string &path) const {
 	std::size_t found = path.find_last_of("/\\");
 	return path.substr(found + 1);
 }
 
-std::string inode::ignoreLast(const std::string & path) const {
+std::string inode::ignoreLast(const std::string &path) const {
 	std::size_t found = path.find_last_of("/");
 	if (found > path.size())
 	{
@@ -397,7 +397,7 @@ std::string inode::listDir() {
 	return retStr;
 }
 
-bool inode::renameFileGivenPath(std::string oldFile, std::string newFile) {
+bool inode::renameFileGivenPath(const std::string &oldFile, const std::string &newFile) {
 	bool retVal = false;
 	inode* folder = this->findFolderContainingFileRecursive(oldFile);
 
@@ -412,7 +412,7 @@ bool inode::renameFileGivenPath(std::string oldFile, std::string newFile) {
 	return retVal;
 }
 
-bool inode::updatePos(const std::string & file, const int newPos) {
+bool inode::updatePos(const std::string &file, const int newPos) {
 	bool updated = false;
 	for (int i = 0; i < filesName.size(); ++i)  {
 		if (filesName[i] == file) {

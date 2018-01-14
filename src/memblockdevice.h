@@ -12,17 +12,16 @@ private:
 	/* Writes a block */
 	int writeBlock(int blockNr, const std::vector<char> &vec);
 	
-	//makes it posible to save big files over multiple blocks
+	// Makes it posible to save big files over multiple blocks.
 	int writeBlock(int blockNr, const std::string &strBlock, const bool notLastBlock);
 	
-	//adds the string as is to memmory. neds to start correctly (0 or 1).
+	// Adds the string as is to memmory. Needs to start correctly (0 or 1).
 	int writeBlock(int blockNr, const std::string &strBlock);
 	int writeBlock(int blockNr, const char cArr[]);     // Use with care, make sure that cArr has at least the same dimension as block
 
 public:
 
 	int findFree(int size = 1);
-
 
 	MemBlockDevice(int nrOfBlocks = 250);
 	MemBlockDevice(const MemBlockDevice &other);
@@ -36,16 +35,16 @@ public:
 	/* Returns amount of free blocks */
 	int spaceLeft() const;
 
-	/* Writes a block given no blocknr*/
+	/* Writes a block given no blocknr */
 	int writeBlock(const std::vector<char> &vec);
 	int writeBlock(const std::string &strBlock, int nrBlocks);
 	int writeBlock(const std::string &strBlock);
 	int writeBlock(const char cArr[]);     // Use with care, make sure that cArr has at least the same dimension as block
 	
-	/*remove a block*/
+	/* Remove a block */
 	bool rmBlock(int blockNr);
-	/*restore a block*/
-	bool adBlock(int blockNr);
+	/* Restore a block */
+	bool addBlock(int blockNr);
 
 	/* Reads a block */
 	Block readBlock(int blockNr) const;
@@ -56,22 +55,20 @@ public:
 	/* Return the size */
 	int size() const;
 
-	/*return image of files*/
+	/* Return image of files */
 	std::string filesImage();
 
-	bool readFilesImage(std::ifstream& in);
+	bool readFilesImage(std::ifstream &in);
 
-	/*formats the stystem. returns nr deleted files*/
+	/* Formats the stystem. Returns nr of deleted files */
 	int formatSys();
 
-	/*kopie the block on the given pos to a new pos that is returned*/
+	/* Copy the block on the given pos to a new pos that is returned */
 	int copyBlock(int pos);
 
-	std::string getDiskAllocations();
+	std::string getDiskAllLocations() const;
 
 	int lengthOfFile(const int startPos) const;
-
-
 };
 
 #endif // MEMBLOCKDEVICE_H
