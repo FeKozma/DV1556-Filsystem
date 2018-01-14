@@ -325,9 +325,7 @@ inode* inode::getRoot(inode &current) {
 	return retInode;
 }
 
-std::string* inode::getPathAndFileName(const std::string &path) const
-{
-	std::string arr[2];
+std::string* inode::getPathAndFileName(const std::string &path) const {
 	int start = 0;
 	for (int i = path.size() - 1; i >= 0; --i) {
 		if (path[i] == '/') {
@@ -335,9 +333,8 @@ std::string* inode::getPathAndFileName(const std::string &path) const
 			i = 0;
 		}
 	}
-	arr[1] = path.substr(start);
-	arr[0] = path.substr(0, start);
-	return arr;
+
+	return new std::string[2] { path.substr(0, start), path.substr(start) };
 }
 
 bool inode::renameFileGivenName(const std::string &oldFile, const std::string &newFile) {
