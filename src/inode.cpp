@@ -125,14 +125,14 @@ bool inode::addFolder(std::string path) {
 	//path = name;
 	std::vector<std::string> pathSplit = this->pathSplitter(path);
 	
-	if(pathSplit.capacity() > 1) {
-		inode* addHere = this->findFolderRecursive(pathSplit, 0, pathSplit.capacity()-1);
+	if (pathSplit.capacity() > 1) {
+		inode* addHere = this->findFolderRecursive(pathSplit, 0, pathSplit.capacity() - 1);
 		if (addHere != nullptr) {
-			addHere->addFolder(pathSplit.at(pathSplit.capacity()-1));
-			folderAdded = true;
+			folderAdded = addHere->addFolder(pathSplit.at(pathSplit.capacity() - 1));
 		}
 	}
 	// If no name is entered, name the folder to what the variable NAMELESS_FOLDER is plus the variable i.
+	/*
 	else if (path == "") {
 		path = NAMELESS_FOLDER;
 		int sizeName = path.size();
@@ -150,6 +150,7 @@ bool inode::addFolder(std::string path) {
 		iNode.parent = this;
 		folder.push_back(iNode);
 	}
+	*/
 	else if (findFolder(path) == -1) {
 		folderAdded = true;
 
@@ -183,6 +184,7 @@ int inode::findFolder(const std::string &name) const {
 	for (std::vector<inode>::size_type i = 0; i != folder.size(); i++) {
 		if (this->folder[i].getFolderName() == name) {
 			folderPos = i;
+			break;
 		}
 	}
 	return folderPos;
@@ -278,6 +280,7 @@ inode* inode::findFolderRecursive(const std::vector<std::string> & path, const i
 			//delete retINode; <--USE?
 			retINode = (*getRoot(*this)).findFolderRecursive(path, pos + 1, cap, true);
 		}
+
 		else {
 			// If findFolder is a folder name
 			int folderPos = findFolder(findFoldername);

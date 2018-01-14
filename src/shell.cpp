@@ -15,18 +15,19 @@ std::string availableCommands[NUMAVAILABLECOMMANDS] = {
 
 /* Takes usercommand from input and returns number of commands, commands are stored in strArr[] */
 int parseCommandString(const std::string &userCommand, std::string strArr[]);
-int findCommand(std::string &command);
+int findCommand(const std::string &command);
 bool quit();
 
 std::string help();
-std::string getInput(std::string Question);
-void print(std::string, int);
+std::string getInput(const std::string question);
+void print(const std::string, const int color);
+void print(const std::string text);
+void printLine(const std::string text, const int color = -1);
 void emptyCommands(std::string *arr);
 void SignalHandler(int signal);
-void print(std::string text);
 
 // Add color to text
-const int colorPromt = 3;
+const int colorPrompt = 3;
 const int colorGreen = 2;
 const int colorRed = 4;
 
@@ -43,41 +44,34 @@ int main(void) {
 
 	bool bRun = true;
 
+	/*********************
+	*** Start of tests ***
+	*********************/
 
-	/* Tests */
 	// createFile
-	if (!fileSys.createFile("file1\nroot folder\n", "file1"))
-	{
-		print("err1\n", colorRed);
-	}
-	if (!fileSys.createFile("file2\nroot folder\n", "file2"))
-	{
-		print("err2\n", colorRed);
-	}
-	if (fileSys.createFile("not right\nroot folder\n", "file2"))
-	{
-		print("err3\n", colorRed);
-	}
+	if (!fileSys.createFile("file1\nroot folder\n", "file1")) printLine("err1", colorRed);
+	if (!fileSys.createFile("file2\nroot folder\n", "file2")) printLine("err2", colorRed);
+	if (fileSys.createFile("not right\nroot folder\n", "file2")) printLine("err3", colorRed);
 
 	// mkdir
-	std::cout << fileSys.createFolderi("/dir1") << std::endl;
-	std::cout << fileSys.createFolderi("/dir2") << std::endl;
-	std::cout << fileSys.createFolderi("dir3") << std::endl;
+	if (!fileSys.createFolderi("/dir1")) printLine("err4", colorRed);
+	if (!fileSys.createFolderi("/dir2")) printLine("err5", colorRed);
+	if (!fileSys.createFolderi("dir3")) printLine("err6", colorRed);
 
-	if (!fileSys.createFile("file1\ndir2\n", "/dir2/file1"))
-	{
-		print("err4\n", colorRed);
-	}
-	std::cout << fileSys.createFolderi("/dir2") << std::endl;
-	//fileSys.removeFile("dir2/file1");
+	if (!fileSys.createFile("file1\ndir2\n", "/dir2/file1")) printLine("err7", colorRed);
 
+	if (fileSys.createFolderi("/dir2")) printLine("err8", colorRed);
 
-	/* End of test */
+	printLine("Current directory: " + fileSys.getCurrentPath());
+	print(fileSys.listDir(""));
+
+	/*********************
+	**** End of tests ****
+	*********************/
 
 
 	do {
-
-		print(user + ":" + currentDir + "$ ", colorPromt);
+		print(user + ":" + currentDir + "$ ", colorPrompt);
 
 		getline(std::cin, userCommand);
 
@@ -95,84 +89,91 @@ int main(void) {
 					std::cout << "Blocks deleted: " << fileSys.formatSystem() << std::endl;
 					break;
 				case 4: // ls
-					std::cout << fileSys.listDir(commandArr[1]);
+					print(fileSys.listDir(commandArr[1]));
 					break;
 				case 5: // create
 					if (fileSys.createFile(getInput("Enter content"), commandArr[1])) {
-						print("File created.\n", colorGreen);
+						printLine("File created.", colorGreen);
 					}
 					else {
-						print("File not created.\n", colorRed);
+						printLine("File not created.", colorRed);
 					}
 					break;
 				case 6: // cat
-					print(fileSys.viewFileOn(commandArr[1]));
+					printLine(fileSys.viewFileOn(commandArr[1]));
 					break;
 				case 7: // createImage
 					if (fileSys.createImage(commandArr[1])) {
-						print("Image created.\n", colorGreen);
+						printLine("Image created.", colorGreen);
+					}
+					else {
+						printLine("Image could not be created.", colorRed);
 					}
 					break;
 				case 8: // restoreImage
 					if (fileSys.loadImage(commandArr[1])) {
-						print("Filesystem successfully restored.\n", colorGreen);
+						printLine("Filesystem successfully restored.", colorGreen);
 					}
 					else {
-						print("Could not find image.\n", colorRed);
+						printLine("Could not find image.", colorRed);
 					}
 					break;
 				case 9: // rm
 					if (fileSys.removeFile(commandArr[1])) {
-						print("File removed.\n", colorGreen);
+						printLine("File removed.", colorGreen);
 					}
 					else {
-						print("File not found.\n", colorRed);
+						printLine("File not found.", colorRed);
 					}
 					break;
 				case 10: // cp
 					if (fileSys.copyFile(commandArr[1], commandArr[2])) {
-						print("File copied.\n", colorGreen);
+						printLine("File copied.", colorGreen);
 					}
 					else {
-						print("Error.\n", colorRed);
+						printLine("Error.", colorRed);
 					}
 					break;
 				case 11: // append
 					if (fileSys.appendFile(commandArr[1], commandArr[2])) {
-						print("Success.\n", colorGreen);
+						printLine("Success.", colorGreen);
 					}
 					else {
-						print("Error.\n", colorRed);
+						printLine("Error.", colorRed);
 					}
 					break;
 				case 12: // mv
 					if (fileSys.renameFileGivenPath(commandArr[1], commandArr[2])) {
-						print("File moved.\n", colorGreen);
+						printLine("File moved.", colorGreen);
 					}
 					else {
-						print("Error, could not move file.\n", colorRed);
+						printLine("Error, could not move file.", colorRed);
 					}
 					break;
 				case 13: // mkdir
 					for (int i = 1; i < nrOfCommands; ++i) {
-						fileSys.createFolderi(commandArr[i]);
-						commandArr[i] = "";
+						if (fileSys.createFolderi(commandArr[i])) {
+							printLine("Folder created: " + commandArr[i], colorGreen);
+						}
+						else {
+							printLine("Folder could not be created: " + commandArr[i], colorRed);
+						}
 					}
 					break;
 				case 14: // cd
 					fileSys.goToFolder(commandArr[1]);
 					break;
 				case 15: // pwd
-					std::cout << fileSys.getCurrentPath() << std::endl;
+					printLine(fileSys.getCurrentPath());
 					break;
 				case 16: // help
-					std::cout << help() << std::endl;
+					print(help());
 					break;
 				case 17: // disk
-					std::cout << fileSys.getDiskAllocations() << std::endl;
+					print(fileSys.getDiskAllocations());
 					break;
 				default:
-					std::cout << "Unknown command: " << commandArr[0] << std::endl;
+					printLine("Unknown command: " + commandArr[0]);
 			}
 
 			// Empty command.
@@ -186,14 +187,14 @@ int main(void) {
 
 
 // Set text color and print text.
-void print(std::string toPrint, int color) {
+void print(const std::string toPrint, const int color) {
 	SetConsoleTextAttribute(hConsole, color);
 	std::cout << toPrint;
 	SetConsoleTextAttribute(hConsole, 7);
 }
 
 // Used to print text to the screen.
-void print(std::string text) {
+void print(const std::string text) {
 	if (text == "") {
 		print("No data.\n", colorRed);
 	}
@@ -207,12 +208,20 @@ void print(std::string text) {
 				}
 			}
 		}
-		std::cout << text.substr(prevPrint, text.size() - prevPrint) << std::endl;
+		std::cout << text.substr(prevPrint, text.size() - prevPrint);
+	}
+}
+
+void printLine(const std::string text, const int color) {
+	if (color == -1) {
+		print(text + "\n");
+	} else {
+		print(text + "\n", color);
 	}
 }
 
 // Write a question/string, then return the input when the user press enter.
-std::string getInput(std::string question) {
+std::string getInput(const std::string question) {
 	std::string retString;
 	std::cout << (question + ": ");
 	std::getline(std::cin, retString);
@@ -234,7 +243,7 @@ int parseCommandString(const std::string &userCommand, std::string strArr[]) {
 }
 
 // Find the current command that is used.
-int findCommand(std::string &command) {
+int findCommand(const std::string &command) {
 	int index = -1;
 	for (int i = 0; i < NUMAVAILABLECOMMANDS && index == -1; ++i) {
 		if (command == availableCommands[i]) {

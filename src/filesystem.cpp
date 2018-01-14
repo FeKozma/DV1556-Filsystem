@@ -179,11 +179,10 @@ bool FileSystem::createFile(const std::string &content, const std::string &path)
 /** This function will create a folder.
  * Returns: current folder's path + name.
  */
-std::string FileSystem::createFolderi(std::string path) {
+bool FileSystem::createFolderi(std::string path) {
 	if (path == "") path = curFolder->getFolderPath();
 
-	curFolder->addFolder(path);
-	return path;
+	return curFolder->addFolder(path);
 }
 
 // This folder will remove a file from the system.
@@ -303,7 +302,7 @@ std::string FileSystem::getAfterLastSlash(const std::string &path) const {
 }
 
 std::string FileSystem::getDiskAllocations() const {
-	return this->mMemblockDevice->getDiskAllLocations();
+	return this->mMemblockDevice->getDiskAllocations();
 }
 
 bool FileSystem::appendFile(const std::string &file1, const std::string &file2) {

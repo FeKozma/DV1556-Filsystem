@@ -65,7 +65,7 @@ public:
 	/* Copy the block on the given pos to a new pos that is returned */
 	int copyBlock(int pos);
 
-	std::string getDiskAllLocations() const;
+	std::string getDiskAllocations() const;
 
 	int lengthOfFile(const int startPos) const;
 };

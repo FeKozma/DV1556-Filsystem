@@ -37,7 +37,7 @@ public:
 	bool createFile(const std::string &content , const std::string &path = "");
 
 	// Creates a folder in the filesystem.
-	std::string createFolderi(std::string path = "");
+	bool createFolderi(std::string path = "");
 
 	// Removes a file in the filesystem.
 	bool removeFile(const std::string &fileName);
@@ -55,7 +55,7 @@ public:
 	std::string listDir(std::string path);
 	std::string listDir();
 
-	// This function will format the system. Return the nr of blocks removed.
+	// This function will format the system. Returns the nr of blocks removed.
 	int formatSystem();
 
 	// Will copy a file from one location to another.

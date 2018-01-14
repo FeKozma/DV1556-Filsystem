@@ -292,7 +292,7 @@ int MemBlockDevice::copyBlock(int pos) {
 	return newPos;
 }
 
-std::string MemBlockDevice::getDiskAllLocations() const {
+std::string MemBlockDevice::getDiskAllocations() const {
 	std::string retString = "";
 	for (int i = 0; i < this->blocksCap - 4; i = i + 4) {
 		retString += std::to_string(i) + ": ";
