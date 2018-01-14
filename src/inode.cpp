@@ -70,7 +70,7 @@ inode::inode(std::ifstream &input, inode *parent) {
   */
 bool inode::addFile(const std::string &name, const int freeBlock, const std::string &path) {
 	bool fileAdded = false;
-	if(path != "") {
+	if (path != "") {
 		inode* addHere = this->goToFolder(path);
 		if (addHere != nullptr) {
 			fileAdded = addHere->addFile(name, freeBlock, "");
@@ -90,11 +90,11 @@ bool inode::addFile(const std::string &name, const int freeBlock, const std::str
 
 bool inode::addFile(const std::string &path, const int freeBlock) {
 	std::string* arr = this->getPathAndFileName(path);
-	return addFile(arr[0], freeBlock, arr[1]);
+	return addFile(arr[1], freeBlock, arr[0]);
 }
 
 // Used when removing a file from the system.
-void inode::removeFile(const std::string &fileName, const std::string &path) {
+void inode::removeFile(const std::string &fileName) {
 	int id = findFile(fileName);
 
 	if (id != -1) {
@@ -109,8 +109,7 @@ void inode::removeFile(const std::string &fileName, const std::string &path) {
 int inode::findFile(const std::string &name) const {
 	int filePos = -1;
 	for (int i = 0; i <  filesName.size(); ++i) {
-		if (filesName[i] == name)
-		{
+		if (filesName[i] == name) {
 			filePos = i;
 			break;
 		}
@@ -126,11 +125,9 @@ bool inode::addFolder(std::string path) {
 	//path = name;
 	std::vector<std::string> pathSplit = this->pathSplitter(path);
 	
-	if(pathSplit.capacity() > 1)
-	{
+	if(pathSplit.capacity() > 1) {
 		inode* addHere = this->findFolderRecursive(pathSplit, 0, pathSplit.capacity()-1);
-		if (addHere != nullptr)
-		{
+		if (addHere != nullptr) {
 			addHere->addFolder(pathSplit.at(pathSplit.capacity()-1));
 			folderAdded = true;
 		}
@@ -267,7 +264,6 @@ inode* inode::findFolderRecursive(const std::vector<std::string> & path, const i
 		retINode = this;
 	}
 
-
 	if (cap > pos) {
 		std::string findFoldername = path.at(pos); 
 
@@ -283,20 +279,16 @@ inode* inode::findFolderRecursive(const std::vector<std::string> & path, const i
 			retINode = (*getRoot(*this)).findFolderRecursive(path, pos + 1, cap, true);
 		}
 		else {
-
 			// If findFolder is a folder name
 			int folderPos = findFolder(findFoldername);
 			if (folderPos != -1) {
-				if (cap > pos + 1)
-				{
+				if (cap > pos + 1) {
 					inode* test = &*(folder.at(folderPos)).findFolderRecursive(path, pos + 1, cap);
 					retINode = test;
 				}
-				else  {
+				else {
 					retINode = &(folder[folderPos]);
-
 				}
-			
 			}
 		}
 	}
@@ -306,9 +298,16 @@ inode* inode::findFolderRecursive(const std::vector<std::string> & path, const i
 
 inode* inode::findFolderContainingFileRecursive(const std::string &path) {
 	std::vector<std::string> pathList = this->pathSplitter(path);
-	if (pathList.size() == 1) {
+	
+	// Only folders in path.
+	if (path.size() > 0 && path[path.size() - 1] == '/') {
+		return findFolderRecursive(pathList, 0, pathList.size());
+	}
+	// Is a single file.
+	else if (pathList.size() == 1) {
 		return this;
 	}
+	// Both folders and a file in path.
 	else {
 		return findFolderRecursive(pathList, 0, pathList.size() - 1);
 	}
@@ -330,7 +329,7 @@ std::string* inode::getPathAndFileName(const std::string &path) const {
 	for (int i = path.size() - 1; i >= 0; --i) {
 		if (path[i] == '/') {
 			start = i + 1;
-			i = 0;
+			break;
 		}
 	}
 
@@ -350,30 +349,30 @@ bool inode::renameFileGivenName(const std::string &oldFile, const std::string &n
 }
 
 // This function will return a block id of a filename if it finds it.
-int inode::findBlockIdPath(const std::string& pathName)   {
+int inode::findBlockIdPath(const std::string& pathName) {
 	inode* path = this->findFolderContainingFileRecursive(pathName);
 
 	if (path == nullptr || path == this) {
 		return findBlockId(pathName);
 	}
 	else {
-		return path->findBlockId(getLast(pathName));
+		return path->findBlockId(getAfterLastSlash(pathName));
 	}
 }
 
 int inode::findBlockId(const std::string &pathName) const {
-	int id = findFile(getLast(pathName));
+	int id = findFile(getAfterLastSlash(pathName));
 	if (id != -1)
 		return files[id];
 	return -1;
 }
 
-std::string inode::getLast(const std::string &path) const {
+std::string inode::getAfterLastSlash(const std::string &path) const {
 	std::size_t found = path.find_last_of("/\\");
 	return path.substr(found + 1);
 }
 
-std::string inode::ignoreLast(const std::string &path) const {
+std::string inode::ignoreLastSlash(const std::string &path) const {
 	std::size_t found = path.find_last_of("/");
 	if (found > path.size())
 	{
@@ -397,16 +396,43 @@ std::string inode::listDir() {
 }
 
 bool inode::renameFileGivenPath(const std::string &oldFile, const std::string &newFile) {
-	bool retVal = false;
-	inode* folder = this->findFolderContainingFileRecursive(oldFile);
+	bool isRenamed = false;
 
-	if (newFile != "" && folder->findBlockId(newFile) == -1) { // If file does not exist.
+	//Check if the new filename is empty or not.
+	if (newFile != "") {
+		inode* oldFolder = this->findFolderContainingFileRecursive(oldFile);
+
+		// Check if the user entered a path to the new file or not.
 		if (newFile.find_first_of('/') == std::string::npos) {
-			retVal = folder->renameFileGivenName(folder->getLast(oldFile), newFile);
+			// Check so that the file doesn't exist in the current folder.
+			if (oldFolder->findBlockId(newFile) == -1) {
+				isRenamed = oldFolder->renameFileGivenName(getAfterLastSlash(oldFile), newFile);
+			}
+		}
+		else {
+			inode* newFolder = this->findFolderContainingFileRecursive(newFile);
+
+			// Get old folder's data.
+			int fileId = oldFolder->findFile(getAfterLastSlash(oldFile));
+			int freeBlock = oldFolder->getFilePos()[fileId];
+			std::string oldName = oldFolder->getFiles()[fileId];
+			std::string newName = getAfterLastSlash(newFile);
+			if (newName == "") {
+				newName = oldName;
+			}
+
+			// Check if the file already exists.
+			if (newFolder->findFile(newName) == -1) {
+				// Move file.
+				oldFolder->removeFile(oldName); // Remove old file.
+				newFolder->addFile(newName, freeBlock, ""); // Add new file.
+
+				isRenamed = true;
+			}
 		}
 	}
 
-	return retVal;
+	return isRenamed;
 }
 
 bool inode::updatePos(const std::string &file, const int newPos) {

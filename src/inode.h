@@ -20,15 +20,16 @@ private:
 	inode* findFolderRecursive(const std::vector<std::string> &path, const int pos, const int cap /*cap -> sluta vid cap ex kan finnas filnamn i slutet av path*/, const bool useWithKnowledge = false);
 	inode* findFolderContainingFileRecursive(const std::string &path);
 	inode* getRoot(inode& curent) const;
-	// pos = 1 filename pos = 0 pathname
+
+	// pos = 1 filename, pos = 0 path to file
 	std::string* getPathAndFileName(const std::string &path) const;
 	bool renameFileGivenName(const std::string &oldFile, const std::string &newFile);
 
 	// Get last dir or file in given path.
-	std::string getLast(const std::string &path) const;
+	std::string getAfterLastSlash(const std::string &path) const;
 
 	// Ignore last dir or file in given path.
-	std::string ignoreLast(const std::string &path) const;
+	std::string ignoreLastSlash(const std::string &path) const;
 
 public:
 	inode();
@@ -50,7 +51,7 @@ public:
 	bool addFile(const std::string &path, const int freeBlock);
 
 	// Remove file.
-	void removeFile(const std::string &name,const std::string &path = "");
+	void removeFile(const std::string &name);
 
 	// Find file within this node.
 	int findFile(const std::string &name) const;

@@ -147,10 +147,10 @@ int main(void) {
 					break;
 				case 12: // mv
 					if (fileSys.renameFileGivenPath(commandArr[1], commandArr[2])) {
-						print("File renamed.\n", colorGreen);
+						print("File moved.\n", colorGreen);
 					}
 					else {
-						print("File not found.\n", colorRed);
+						print("Error, could not move file.\n", colorRed);
 					}
 					break;
 				case 13: // mkdir

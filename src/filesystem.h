@@ -63,7 +63,7 @@ public:
 
 	bool renameFileGivenPath(const std::string &oldFile, const std::string &newFile);
 
-	// Will ignore the last forward slash.
+	// Will ignore what's after the last forward slash.
 	std::string ignoreLastSlash(const std::string &path) const;
 
 	// Will return what's after the last forward slash.
