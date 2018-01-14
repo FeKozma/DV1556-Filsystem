@@ -20,7 +20,6 @@ private:
 	int writeBlock(int blockNr, const char cArr[]);     // Use with care, make sure that cArr has at least the same dimension as block
 
 public:
-
 	int findFree(int size = 1);
 
 	MemBlockDevice(int nrOfBlocks = 250);

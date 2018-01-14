@@ -315,7 +315,7 @@ inode* inode::findFolderContainingFileRecursive(const std::string &path) {
 }
 
 // This method will return the root of this folder (all folders)
-inode* inode::getRoot(inode &current) {
+inode* inode::getRoot(inode &current) const {
 	inode *retInode = &current;
 
 	if (current.parent != &current) {
@@ -345,6 +345,7 @@ bool inode::renameFileGivenName(const std::string &oldFile, const std::string &n
 			retVal = true;
 		}
 	}
+
 	return retVal;
 }
 
@@ -358,8 +359,6 @@ int inode::findBlockIdPath(const std::string& pathName)   {
 	else {
 		return path->findBlockId(getLast(pathName));
 	}
-
-	
 }
 
 int inode::findBlockId(const std::string &pathName) const {
@@ -401,11 +400,9 @@ bool inode::renameFileGivenPath(const std::string &oldFile, const std::string &n
 	bool retVal = false;
 	inode* folder = this->findFolderContainingFileRecursive(oldFile);
 
-	if (folder->findBlockId(newFile) == -1) {
-		if (newFile != "") {
-			if (newFile.find_first_of('/') == std::string::npos) {
-				retVal = folder->renameFileGivenName(folder->getLast(oldFile), newFile);
-			}
+	if (newFile != "" && folder->findBlockId(newFile) == -1) { // If file does not exist.
+		if (newFile.find_first_of('/') == std::string::npos) {
+			retVal = folder->renameFileGivenName(folder->getLast(oldFile), newFile);
 		}
 	}
 

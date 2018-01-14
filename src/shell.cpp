@@ -185,13 +185,14 @@ int main(void) {
 }
 
 
-//set text color and print text
+// Set text color and print text.
 void print(std::string toPrint, int color) {
 	SetConsoleTextAttribute(hConsole, color);
 	std::cout << toPrint;
 	SetConsoleTextAttribute(hConsole, 7);
 }
 
+// Used to print text to the screen.
 void print(std::string text) {
 	if (text == "") {
 		print("No data.\n", colorRed);

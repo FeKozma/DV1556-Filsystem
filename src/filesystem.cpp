@@ -151,7 +151,7 @@ std::string FileSystem::stringTrim(std::string &k) const {
  * Returns: A boolean wether the folder were created or not.
  */
 bool FileSystem::createFile(const std::string &content, const std::string &path) {
-	std::string name = this->getLast(path);
+	std::string name = this->getAfterLastSlash(path);
 	if (name == "") {
 		return false;
 	}
@@ -165,7 +165,7 @@ bool FileSystem::createFile(const std::string &content, const std::string &path)
 	if (space != 0) {
  		int pos = createFileOn(content);
 
-		if (curFolder->addFile(name, pos, this->ignoreLast(path))) {
+		if (curFolder->addFile(name, pos, this->ignoreLastSlash(path))) {
 			fileCreated = true;
 		}
 		else {
@@ -189,9 +189,9 @@ std::string FileSystem::createFolderi(std::string path) {
 // This folder will remove a file from the system.
 bool FileSystem::removeFile(const std::string &path) {
 	bool retVal = false;
-	inode* folder = curFolder->goToFolder(ignoreLast(path));
+	inode* folder = curFolder->goToFolder(ignoreLastSlash(path));
 	if (folder != nullptr) {
-		std::string fileName = getLast(path);
+		std::string fileName = getAfterLastSlash(path);
 		int blockId = folder->findBlockId(path);
 
 		if (this->mMemblockDevice->rmBlock(blockId)) {
@@ -264,19 +264,19 @@ bool FileSystem::copyFile(const std::string &oldFile, std::string newFile) {
 	bool success = false;
 
 	if (newFile[newFile.size() - 1] == '/') {
-		newFile += this->getLast(oldFile);
+		newFile += this->getAfterLastSlash(oldFile);
 	}
 	else {
-		newFile += '/' + this->getLast(oldFile);
+		newFile += '/' + this->getAfterLastSlash(oldFile);
 	}
 
 	int pos = this->curFolder->findBlockIdPath(oldFile);
 	if (pos != -1) {
-		inode* addFileHere = this->curFolder->goToFolder(ignoreLast(newFile));
+		inode* addFileHere = this->curFolder->goToFolder(ignoreLastSlash(newFile));
 		if (addFileHere != nullptr) {
 			int newPos = this->mMemblockDevice->copyBlock(pos);
 			success = true;
-			if (!addFileHere->addFile(this->getLast(newFile), newPos, "")) {
+			if (!addFileHere->addFile(this->getAfterLastSlash(newFile), newPos, "")) {
 				this->mMemblockDevice->rmBlock(newPos);
 				success = false;
 			}
@@ -289,7 +289,7 @@ bool FileSystem::renameFileGivenPath(const std::string &oldFile, const std::stri
 	return this->curFolder->renameFileGivenPath(oldFile, newFile);
 }
 
-std::string FileSystem::ignoreLast(const std::string &path) const {
+std::string FileSystem::ignoreLastSlash(const std::string &path) const {
 	std::size_t found = path.find_last_of("/");
 	if (found > path.size()) {
 		found = -1;
@@ -297,7 +297,7 @@ std::string FileSystem::ignoreLast(const std::string &path) const {
 	return path.substr(0, found + 1);
 }
 
-std::string FileSystem::getLast(const std::string &path) const {
+std::string FileSystem::getAfterLastSlash(const std::string &path) const {
 	std::size_t found = path.find_last_of("/\\");
 	return path.substr(found + 1);
 }
@@ -308,14 +308,15 @@ std::string FileSystem::getDiskAllocations() const {
 
 bool FileSystem::appendFile(const std::string &file1, const std::string &file2) {
 	bool retVal = false;
-	inode* folder1 = this->curFolder->goToFolder(this->ignoreLast(file1));
-	inode* folder2 = this->curFolder->goToFolder(this->ignoreLast(file2));
+	inode* folder1 = this->curFolder->goToFolder(this->ignoreLastSlash(file1));
+	inode* folder2 = this->curFolder->goToFolder(this->ignoreLastSlash(file2));
 
 	// Check if files exists.
 	if (folder1 != nullptr && folder2 != nullptr) {
-		int posFile1 = folder1->getMemPosGivenPosInArr(folder1->findFile(this->getLast(file1)));
-		int posFile2 = folder2->getMemPosGivenPosInArr(folder2->findFile(this->getLast(file2)));
+		int posFile1 = folder1->getMemPosGivenPosInArr(folder1->findFile(this->getAfterLastSlash(file1)));
+		int posFile2 = folder2->getMemPosGivenPosInArr(folder2->findFile(this->getAfterLastSlash(file2)));
 		if (posFile1 != -1 && posFile2 != -1) {
+
 			// Get amount of text
 			std::string content = this->viewFileOn(posFile2);
 			content = this->stringTrim(content);
@@ -328,7 +329,7 @@ bool FileSystem::appendFile(const std::string &file1, const std::string &file2) 
 			// Check if space exists
 			if (this->mMemblockDevice->findFree(1 + (content.size() / (fileSize - 1))) != -1) {
 				int newPos = this->createFileOn(content);
-				folder2->updatePos(this->ignoreLast(file2), newPos);
+				folder2->updatePos(this->ignoreLastSlash(file2), newPos);
 				retVal = true;
 			}
 			else {

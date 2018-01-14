@@ -14,7 +14,7 @@ private:
 	inode *curFolder;
 	int fileSize;
 
-	// Returnerar sträng som ska sparas.
+	// Returns a string that is going to be saved.
 	void createImageRecursive(inode *root, std::string &output);
 
 	int createFileOn(std::string testString);
@@ -27,45 +27,47 @@ public:
 
 	bool loadImage(std::string filename = "data");
 
-	/* This function will list the content of a file */
+	// This function will list the content of a file.
 	std::string viewFileOn(const std::string &fileName) const;
 	std::string viewFileOn(int pos) const;
 
 	std::string stringTrim(std::string &s) const;
 
-	/* This function creates a file in the filesystem */
+	// This function creates a file in the filesystem.
 	bool createFile(const std::string &content , const std::string &path = "");
 
-	/* Creates a folder in the filesystem */
+	// Creates a folder in the filesystem.
 	std::string createFolderi(std::string path = "");
 
-	/* Removes a file in the filesystem */
+	// Removes a file in the filesystem.
 	bool removeFile(const std::string &fileName);
 
-	/* Removes a folder in the filesystem */
+	// Removes a folder in the filesystem.
 	// removeFolder(...);
 
-	/* Function will move the current location to a specified location in the filesystem */
+	// Function will move the current location to a specified location in the filesystem.
 	std::string goToFolder(const std::string &path);
 
-	/* This function will return the current directly */
+	// This function will return the current directly.
 	std::string getCurrentPath() const;
 
-	/* This function will get all the files and folders in the specified folder */
+	// This function will get all the files and folders in the specified folder.
 	std::string listDir(std::string path);
 	std::string listDir();
 
-
-	/* This function will format the system. return nr of blocks removed */
+	// This function will format the system. Return the nr of blocks removed.
 	int formatSystem();
 
-	/**/
+	// Will copy a file from one location to another.
 	bool copyFile(const std::string &oldFile, std::string newFile);
 
 	bool renameFileGivenPath(const std::string &oldFile, const std::string &newFile);
 
-	std::string ignoreLast(const std::string &path) const;
-	std::string getLast(const std::string &path) const;
+	// Will ignore the last forward slash.
+	std::string ignoreLastSlash(const std::string &path) const;
+
+	// Will return what's after the last forward slash.
+	std::string getAfterLastSlash(const std::string &path) const;
 
 	std::string getDiskAllocations() const;
 
