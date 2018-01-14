@@ -25,7 +25,7 @@ void emptyCommands(std::string *arr);
 void SignalHandler(int signal);
 void print(std::string text);
 
-// add color to text
+// Add color to text
 const int colorPromt = 3;
 const int colorGreen = 2;
 const int colorRed = 4;
@@ -38,14 +38,14 @@ int main(void) {
 	FileSystem fileSys(250, 512);
 
 	std::string userCommand, commandArr[MAXCOMMANDS];
-	std::string user = "user@DV1492";  // Change this if you want another user to be displayed
-	std::string currentDir = "/";  // Current directory, used for output
+	std::string user = "user@DV1492"; // Change this if you want another user to be displayed
+	std::string currentDir = "/"; // Current directory, used for output
 
 	bool bRun = true;
 
 
 	/* Tests */
-	//createFile
+	// createFile
 	if (!fileSys.createFile("file1\nroot folder\n", "file1"))
 	{
 		print("err1\n", colorRed);
@@ -59,7 +59,7 @@ int main(void) {
 		print("err3\n", colorRed);
 	}
 
-	//mkdir
+	// mkdir
 	std::cout << fileSys.createFolderi("/dir1") << std::endl;
 	std::cout << fileSys.createFolderi("/dir2") << std::endl;
 	std::cout << fileSys.createFolderi("dir3") << std::endl;
@@ -78,7 +78,7 @@ int main(void) {
 	do {
 
 		print(user + ":" + currentDir + "$ ", colorPromt);
-		
+
 		getline(std::cin, userCommand);
 
 		int nrOfCommands = parseCommandString(userCommand, commandArr);
@@ -177,7 +177,7 @@ int main(void) {
 
 			// Empty command.
 			emptyCommands(commandArr);
-			
+
 		}
 	} while (bRun == true);
 
@@ -192,21 +192,15 @@ void print(std::string toPrint, int color) {
 	SetConsoleTextAttribute(hConsole, 7);
 }
 
-void print(std::string text)
-{
-	if (text == "")
-	{
+void print(std::string text) {
+	if (text == "") {
 		print("No data.\n", colorRed);
 	}
-	else
-	{
+	else {
 		int prevPrint = 0;
-		for (int i = 0; i < text.size() - 1; ++i)
-		{
-			if (text[i] == '\\')
-			{
-				if (text[i + 1] == 'n')
-				{
+		for (int i = 0; i < text.size() - 1; ++i) {
+			if (text[i] == '\\') {
+				if (text[i + 1] == 'n') {
 					std::cout << text.substr(prevPrint, i - prevPrint) << std::endl;
 					prevPrint = i + 2;
 				}

@@ -57,8 +57,7 @@ int MemBlockDevice::spaceLeft() const {
 	return freeNr;
 }
 
-int MemBlockDevice::writeBlock(const std::vector<char>& vec)
-{
+int MemBlockDevice::writeBlock(const std::vector<char>& vec) {
 	int retVal = findFree(1);
 	if (retVal != -1)
 	{
@@ -90,53 +89,42 @@ int MemBlockDevice::writeBlock(const std::string & strBlock, int nrBlocks) {
 }
 
 
-int MemBlockDevice::writeBlock(const std::string & strBlock)
-{
+int MemBlockDevice::writeBlock(const std::string & strBlock) {
 	int retVal = findFree(1);
-	if (retVal != -1)
-	{
+	if (retVal != -1) {
 		if (writeBlock(retVal, strBlock) != 1) {
 			retVal = -1;
 		}
-		else
-		{
+		else {
 			this->availableBlocks[retVal] = false;
 		}
 	}
 	return retVal;
 }
 
-int MemBlockDevice::writeBlock(const char cArr[])
-{
+int MemBlockDevice::writeBlock(const char cArr[]) {
 	int retVal = findFree(1);
-	if (retVal != -1)
-	{
+	if (retVal != -1) {
 		if (writeBlock(retVal, cArr) != 1) {
 			retVal = -1;
 		}
-		else
-		{
+		else {
 			this->availableBlocks[retVal] = false;
 		}
 	}
 	return retVal;
 }
 
-bool MemBlockDevice::rmBlock(int blockNr)
-{
+bool MemBlockDevice::rmBlock(int blockNr) {
 	bool retVal = false;
-	if (blockNr >= 0)
-	{
-		if (this->memBlocks[blockNr].getIfMore())
-		{
-			if (rmBlock(blockNr + 1))
-			{
+	if (blockNr >= 0) {
+		if (this->memBlocks[blockNr].getIfMore()) {
+			if (rmBlock(blockNr + 1)) {
 				availableBlocks[blockNr] = true;
 				retVal = true;
 			}
 		}
-		else
-		{
+		else {
 			availableBlocks[blockNr] = true;
 			retVal = true;
 		}
@@ -144,21 +132,16 @@ bool MemBlockDevice::rmBlock(int blockNr)
 	return retVal;
 }
 
-bool MemBlockDevice::adBlock(int blockNr)
-{
+bool MemBlockDevice::adBlock(int blockNr) {
 	bool retVal = false;
-	if (blockNr >= 0)
-	{
-		if (this->memBlocks[blockNr].getIfMore())
-		{
-			if (adBlock(blockNr + 1))
-			{
+	if (blockNr >= 0) {
+		if (this->memBlocks[blockNr].getIfMore()) {
+			if (adBlock(blockNr + 1)) {
 				availableBlocks[blockNr] = false;
 				retVal = true;
 			}
 		}
-		else
-		{
+		else {
 			availableBlocks[blockNr] = false;
 			retVal = true;
 		}
@@ -183,14 +166,11 @@ int MemBlockDevice::writeBlock(int blockNr, const std::string &strBlock, const b
 	if (blockNr < this->nrOfBlocks && blockNr >= 0) {
 		/* -2 = str-length and block dont have same dimensions */
 		/* 1 = success */
-		if (notLastBlock)
-		{
+		if (notLastBlock) {
 			output = this->memBlocks[blockNr].writeBlock('0' + strBlock);
 		}
-		else
-		{
+		else {
 			output = this->memBlocks[blockNr].writeBlock('1' + strBlock);
-
 		}
 	}
 	return output;
@@ -218,24 +198,18 @@ int MemBlockDevice::writeBlock(int blockNr, const char cArr[]) {
 	return output;
 }
 
-int MemBlockDevice::findFree(int size)
-{
+int MemBlockDevice::findFree(int size) {
 	int count = 0;
 	int freeSpace = -1;
-	for (int i = 0; i < blocksCap; ++i)
-	{
-		if (availableBlocks[i] == true)
-		{
+	for (int i = 0; i < blocksCap; ++i) {
+		if (availableBlocks[i] == true) {
 			count++;
-			for (int k = 1; k < size; ++k)
-			{
-				if (availableBlocks[i + k] == true)
-				{
+			for (int k = 1; k < size; ++k) {
+				if (availableBlocks[i + k] == true) {
 					count++;
 				}
 			}
-			if (count >= size)
-			{
+			if (count >= size) {
 				freeSpace = i;
 				i = blocksCap;
 			}
@@ -265,13 +239,10 @@ int MemBlockDevice::size() const {
 	return this->nrOfBlocks;
 }
 
-std::string MemBlockDevice::filesImage()
-{
+std::string MemBlockDevice::filesImage() {
 	std::string retString = "";
-	for (int i = 0; i < this->blocksCap; ++i)
-	{
-		if (!availableBlocks[i])
-		{
+	for (int i = 0; i < this->blocksCap; ++i) {
+		if (!availableBlocks[i]) {
 			retString += std::to_string(i) + ":";
 			retString += readBlock(i).toString() + "\n";
 		}
@@ -280,22 +251,18 @@ std::string MemBlockDevice::filesImage()
 	return retString;
 }
 
-bool MemBlockDevice::readFilesImage(std::ifstream& input)
-{
+bool MemBlockDevice::readFilesImage(std::ifstream& input) {
 	int pos;
 	std::string save;
 	bool success = false;
-	//remove old data
+	// Remove old data
 	formatSys();
 	
-	if (input.is_open())
-	{
-		while(!input.eof())
-		{
+	if (input.is_open()) {
+		while(!input.eof()) {
 			input >> save;
 			std::size_t found = save.find(":");
-			if (found != std::string::npos)
-			{
+			if (found != std::string::npos) {
 				pos = std::stoi(save.substr(0, found));
 				this->availableBlocks[pos] = false;
 				save.erase(0, found+1);
@@ -307,13 +274,10 @@ bool MemBlockDevice::readFilesImage(std::ifstream& input)
 	return success;
 }
 
-int MemBlockDevice::formatSys()
-{
+int MemBlockDevice::formatSys() {
 	int retVal = 0;
-	for (int i = 0; i < this->blocksCap; ++i)
-	{
-		if (this->availableBlocks[i] == false)
-		{
+	for (int i = 0; i < this->blocksCap; ++i) {
+		if (this->availableBlocks[i] == false) {
 			retVal++;
 			this->availableBlocks[i] = true;
 		}
@@ -321,15 +285,12 @@ int MemBlockDevice::formatSys()
 	return retVal;
 }
 
-int MemBlockDevice::copyBlock(int pos)
-{	
+int MemBlockDevice::copyBlock(int pos) {
 	int newPos = -1;
 	int length = this->lengthOfFile(pos);
-	if (length > 0)
-	{
+	if (length > 0) {
 		newPos = this->findFree(length);
-		for (int i = 0; i < length; ++i)
-		{
+		for (int i = 0; i < length; ++i) {
 			writeBlock(newPos + i, this->readBlock(pos + i).toString());
 			this->availableBlocks[newPos + i] = false;
 		}
@@ -338,11 +299,9 @@ int MemBlockDevice::copyBlock(int pos)
 	return newPos;
 }
 
-std::string MemBlockDevice::getDiskAllocations()
-{
+std::string MemBlockDevice::getDiskAllocations() {
 	std::string retString = "";
-	for (int i = 0; i < this->blocksCap - 4; i = i + 4)
-	{
+	for (int i = 0; i < this->blocksCap - 4; i = i + 4) {
 		retString += std::to_string(i) + ": ";
 		if (availableBlocks[i])
 			retString += "empty	";
@@ -373,14 +332,11 @@ std::string MemBlockDevice::getDiskAllocations()
 	return retString;
 }
 
-int MemBlockDevice::lengthOfFile(const int startPos) const
-{
+int MemBlockDevice::lengthOfFile(const int startPos) const {
 	int spaces = 0;
-	if (startPos < this->blocksCap)
-	{
+	if (startPos < this->blocksCap) {
 		// std::cout << this->memBlocks[startPos].getIfMore() ? "true\n" : "False\n";
-		while ((startPos + spaces) < this->blocksCap && this->memBlocks[startPos + spaces].getIfMore())
-		{
+		while ((startPos + spaces) < this->blocksCap && this->memBlocks[startPos + spaces].getIfMore()) {
 			spaces++;
 		}
 		spaces++;

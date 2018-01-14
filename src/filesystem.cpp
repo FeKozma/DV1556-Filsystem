@@ -16,22 +16,19 @@ FileSystem::~FileSystem() {
 	//delete[] availableBlocks;
 }
 
-void FileSystem::createImageRecursive(inode *root, std::string &output)
-{
+void FileSystem::createImageRecursive(inode *root, std::string &output) {
 	// This folder name
 	output += "1." + root->getFolderName() + "\n";
 
 	// Get filenames
 	std::vector<std::string> files = root->getFiles();
-	for (int i = 0; i < files.size(); ++i)
-	{
+	for (int i = 0; i < files.size(); ++i) {
 		output += "2." + files[i] + "\n";
 	}
 
 	// Get position in memory
 	std::vector<int> pos = root->getFilePos();
-	for (int i = 0; i < pos.size(); ++i)
-	{
+	for (int i = 0; i < pos.size(); ++i) {
 		output += "3." + std::to_string(pos[i]) + "\n";
 	}
 
@@ -48,19 +45,20 @@ void FileSystem::createImageRecursive(inode *root, std::string &output)
 	}
 }
 
-bool FileSystem::createImage(std::string  filename)
-{
+bool FileSystem::createImage(std::string  filename) {
 	// If no filename is entered, set it to the default filename.
 	if (filename == "") {
 		filename = "image";
 	}
 
 	std::string stringToFile = "";
+
 	// Go to root
 	inode* rootFolder = this->curFolder->goToFolder("/");
 	createImageRecursive(rootFolder, stringToFile);
 
 	stringToFile += mMemblockDevice->filesImage();
+
 	// Save string to file.
 	std::cout << std::endl << stringToFile << std::endl;
 	std::ofstream out(filename + ".txt");
@@ -70,8 +68,7 @@ bool FileSystem::createImage(std::string  filename)
 	return true;
 }
 
-bool FileSystem::loadImage(std::string filename)
-{
+bool FileSystem::loadImage(std::string filename) {
 	bool loaded = false;
 
 	// If no filename is entered, set it to the default filename.
@@ -143,7 +140,6 @@ std::string FileSystem::viewFileOn(int pos) const {
 	stringTrim(content);
 	return content;
 }
-
 
 /**
  * This method removes spaces at the end of a string.
@@ -338,18 +334,15 @@ std::string FileSystem::getDiskAllocations()
 	return this->mMemblockDevice->getDiskAllocations();
 }
 
-bool FileSystem::appendFile(std::string file1, std::string file2)
-{
+bool FileSystem::appendFile(std::string file1, std::string file2) {
 	bool retVal = false;
 	inode* folder1 = this->curFolder->goToFolder(this->ignoreLast(file1));
 	inode* folder2 = this->curFolder->goToFolder(this->ignoreLast(file2));
 	// Check if files exists.
-	if (folder1 != nullptr && folder2 != nullptr)
-	{
+	if (folder1 != nullptr && folder2 != nullptr) {
 		int posFile1 = folder1->getMemPosGivenPosInArr(folder1->findFile(this->getLast(file1)));
 		int posFile2 = folder2->getMemPosGivenPosInArr(folder2->findFile(this->getLast(file2)));
-		if (posFile1 != -1 && posFile2 != -1)
-		{
+		if (posFile1 != -1 && posFile2 != -1) {
 			// Get amount of text
 			std::string content = this->viewFileOn(posFile2);
 			content = this->stringTrim(content);
@@ -360,14 +353,12 @@ bool FileSystem::appendFile(std::string file1, std::string file2)
 			this->mMemblockDevice->rmBlock(posFile2);
 
 			// Check if space exists
-			if (this->mMemblockDevice->findFree(1 + (content.size() / (fileSize - 1))) != -1)
-			{
+			if (this->mMemblockDevice->findFree(1 + (content.size() / (fileSize - 1))) != -1) {
 				int newPos = this->createFileOn(content);
 				folder2->updatePos(this->ignoreLast(file2), newPos);
 				retVal = true;
 			}
-			else
-			{
+			else {
 				this->mMemblockDevice->adBlock(posFile2);
 			}
 		}

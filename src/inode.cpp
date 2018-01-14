@@ -258,7 +258,7 @@ std::vector<std::string> inode::pathSplitter(const std::string path) const {
 }
 
 // This method will find a path recursive to ant path, and return the path.
-inode* inode::findFolderRecursive(const std::vector<std::string> & path, const int pos, const int cap, const bool useWithKnowledge)   {
+inode* inode::findFolderRecursive(const std::vector<std::string> & path, const int pos, const int cap, const bool useWithKnowledge) {
 
 	inode* retINode = nullptr;
 
@@ -303,8 +303,7 @@ inode* inode::findFolderRecursive(const std::vector<std::string> & path, const i
 	return retINode;
 }
 
-inode * inode::findFolderContainingFileRecursive(const std::string &path) 
-{
+inode * inode::findFolderContainingFileRecursive(const std::string &path) {
 	std::vector<std::string> pathList = this->pathSplitter(path);
 	if (pathList.size() == 1) {
 		return this;
