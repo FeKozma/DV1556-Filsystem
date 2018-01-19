@@ -20,7 +20,7 @@ private:
 	int createFileOn(std::string testString);
 
 public:
-	FileSystem(const int &blockSize = 250,const int &fileSize = 512);
+	FileSystem(const int &blockSize = 250, const int &fileSize = 512);
 	~FileSystem();
 
 	bool createImage(std::string filename);

@@ -29,7 +29,7 @@ inode::inode(std::ifstream &input, inode *parent) {
 	if (input.is_open()) {
 		while (!input.eof() && !endOfFolderInfo) {
 			input >> output;
-			
+
 			if (output[0] == *"1") {
 				//1 = this is the current folders name
 				output.erase(0, 2);
@@ -58,7 +58,7 @@ inode::inode(std::ifstream &input, inode *parent) {
 		}
 	}
 
-	// Go in to first folder recusivly.
+	// Go in to first folder recusively.
 	for (int i = 0; i < nrFolders; ++i) {
 		inode toPush = inode(input, this);
 		this->folder.push_back(toPush);
@@ -66,7 +66,7 @@ inode::inode(std::ifstream &input, inode *parent) {
 }
 
 /** Used when adding a file to the system
-  * Returns whether it could add a file not not.
+  * Returns whether it could add a file or not.
   */
 bool inode::addFile(const std::string &name, const int freeBlock, const std::string &path) {
 	bool fileAdded = false;
@@ -257,8 +257,8 @@ std::vector<std::string> inode::pathSplitter(const std::string path) const {
 	return retPath;
 }
 
-// This method will find a path recursive to ant path, and return the path.
-inode* inode::findFolderRecursive(const std::vector<std::string> & path, const int pos, const int cap, const bool useWithKnowledge) {
+// This method will find a path recursive to any path, and return the path.
+inode* inode::findFolderRecursive(const std::vector<std::string> &path, const int pos, const int cap, const bool useWithKnowledge) {
 
 	inode* retINode = nullptr;
 
@@ -316,7 +316,7 @@ inode* inode::findFolderContainingFileRecursive(const std::string &path) {
 	}
 }
 
-// This method will return the root of this folder (all folders)
+// This method will return the root of this folder (all folders).
 inode* inode::getRoot(inode &current) const {
 	inode *retInode = &current;
 

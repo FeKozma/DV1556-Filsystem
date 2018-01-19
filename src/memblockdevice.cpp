@@ -248,6 +248,7 @@ bool MemBlockDevice::readFilesImage(std::ifstream &input) {
 	int pos;
 	std::string save;
 	bool success = false;
+
 	// Remove old data
 	formatSys();
 	

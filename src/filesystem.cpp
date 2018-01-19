@@ -34,7 +34,7 @@ void FileSystem::createImageRecursive(inode *root, std::string &output) {
 
 	output += "\n";
 
-	// Go to folder and go recusively.
+	// Go to folder and go recursively.
 	for (int i = 0; i < folder.size(); ++i) {
 		createImageRecursive(root->goToFolder(folder[i]), output);
 	}
@@ -76,7 +76,7 @@ bool FileSystem::loadImage(std::string filename) {
 	input.open(filename + ".txt");
 
 	if (input.is_open()) {
-		// Create new inode with suitible constructur.
+		// Create new inode with suitable constructur.
 		delete this->curFolder;
 		this->curFolder = new inode(input);
 
@@ -93,7 +93,7 @@ bool FileSystem::loadImage(std::string filename) {
 int FileSystem::createFileOn(std::string storeString) {
 	int lengthOfBlock = fileSize -1;
 	
-	// "+ 1" beacuse i store if the block is continuing inside the block
+	// "+ 1" beacuse it store if the block is continuing inside the block
 	for (int i = storeString.length(); 0 != (i % lengthOfBlock); i++) {
 		storeString += " ";
 	}

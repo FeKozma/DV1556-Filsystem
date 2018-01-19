@@ -49,16 +49,16 @@ int main(void) {
 	*********************/
 
 	// createFile
-	if (!fileSys.createFile("file1\nroot folder\n", "file1")) printLine("err1", colorRed);
-	if (!fileSys.createFile("file2\nroot folder\n", "file2")) printLine("err2", colorRed);
-	if (fileSys.createFile("not right\nroot folder\n", "file2")) printLine("err3", colorRed);
+	if (!fileSys.createFile("file1\\nroot\\n", "file1")) printLine("err1", colorRed);
+	if (!fileSys.createFile("file2\\nroot\\n", "file2")) printLine("err2", colorRed);
+	if (fileSys.createFile("not right\\nroot folder\\n", "file2")) printLine("err3", colorRed);
 
 	// mkdir
 	if (!fileSys.createFolderi("/dir1")) printLine("err4", colorRed);
 	if (!fileSys.createFolderi("/dir2")) printLine("err5", colorRed);
 	if (!fileSys.createFolderi("dir3")) printLine("err6", colorRed);
 
-	if (!fileSys.createFile("file1\ndir2\n", "/dir2/file1")) printLine("err7", colorRed);
+	if (!fileSys.createFile("file1\ndir2\\n", "/dir2/file1")) printLine("err7", colorRed);
 
 	if (fileSys.createFolderi("/dir2")) printLine("err8", colorRed);
 
