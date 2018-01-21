@@ -74,7 +74,11 @@ public:
 
 	std::string getDiskAllocations() const;
 
+	// This method will append the text from one file to another.
 	bool appendFile(const std::string &file1, const std::string &file2);
+
+	// This method will change the permission of a file.
+	bool changePermission(const std::string &accessrights, const std::string &filename);
 };
 
 #endif // FILESYSTEM_H

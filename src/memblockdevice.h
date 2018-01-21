@@ -8,6 +8,7 @@ class MemBlockDevice: public BlockDevice
 {
 private:
 	bool *availableBlocks;
+	int *permissionBlocks;
 	int blocksCap;
 	/* Writes a block */
 	int writeBlock(int blockNr, const std::vector<char> &vec);
@@ -64,10 +65,17 @@ public:
 
 	/* Copy the block on the given pos to a new pos that is returned */
 	int copyBlock(int pos);
-
+	
+	/* Will return the disk allocation on the disk */
 	std::string getDiskAllocations() const;
 
 	int lengthOfFile(const int startPos) const;
+
+	/* Will return r, w or rw depending on the type the block has */
+	std::string getPermissionType(const int blockId) const;
+
+	/* This will change the permission type of a file if the type is 2, 4 or 6. */
+	bool MemBlockDevice::changePermissionType(const int blockId, const int newType);
 };
 
 #endif // MEMBLOCKDEVICE_H

@@ -296,7 +296,7 @@ std::string FileSystem::listDir(std::string path) {
 		retStr += "DIR\t\t" + folderNames[i] + (folderNames[i].length() <= 8 ? "\t" : "") + "\trw\n";
 	}
 	for (int i = 0; i < filesName.size(); ++i) {
-		retStr += "FILE\t\t" + filesName[i] + (filesName[i].length() <= 8 ? "\t" : "") + "\trw\t\t" + std::to_string(this->fileSize * this->mMemblockDevice->lengthOfFile(filesPos[i])) + " byte\n";
+		retStr += "FILE\t\t" + filesName[i] + (filesName[i].length() <= 8 ? "\t" : "") + "\t" + this->mMemblockDevice->getPermissionType(filesPos[i]) + "\t\t" + std::to_string(this->fileSize * this->mMemblockDevice->lengthOfFile(filesPos[i])) + " byte\n";
 	}
 
 	return  retStr;
@@ -398,4 +398,15 @@ bool FileSystem::appendFile(const std::string &file1, const std::string &file2) 
 	}
 
 	return retVal;
+}
+
+bool FileSystem::changePermission(const std::string &accessrights, const std::string &filename) {
+	int blockId = curFolder->findBlockIdPath(filename);
+
+	if (blockId >= 0) {
+		return mMemblockDevice->changePermissionType(blockId, std::stoi(accessrights));
+	}
+	else {
+		return false;
+	}
 }

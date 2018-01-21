@@ -5,12 +5,12 @@
 
 
 const int MAXCOMMANDS = 8;
-const int NUMAVAILABLECOMMANDS = 18;
+const int NUMAVAILABLECOMMANDS = 19;
 const HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 
 std::string availableCommands[NUMAVAILABLECOMMANDS] = {
 	"q","quit","exit","format","ls","create","cat","createImage","restoreImage",
-	"rm","cp","append","mv","mkdir","cd","pwd","help", "disk"
+	"rm","cp","append","mv","mkdir","cd","pwd","help", "disk", "chmod"
 };
 
 /* Takes usercommand from input and returns number of commands, commands are stored in strArr[] */
@@ -172,6 +172,14 @@ int main(void) {
 				case 17: // disk
 					print(fileSys.getDiskAllocations());
 					break;
+				case 18: // chmod
+					if (fileSys.changePermission(commandArr[1], commandArr[2])) {
+						printLine("Permission of the file " + commandArr[2] + " has been changed.", colorGreen);
+					}
+					else {
+						printLine("Could not change permission. The permission type has to be 2, 4 or 6.", colorRed);
+					}
+;					break;
 				default:
 					printLine("Unknown command: " + commandArr[0]);
 			}
@@ -280,6 +288,10 @@ std::string help() {
 	helpStr += "* pwd                               Get current working directory\n";
 	helpStr += "* help                              Prints this help screen\n";
 	helpStr += "* disk                              Displays the allocation state of all blocks.\n";
+	helpStr += "* chmod  <accessrights> <filepath>  Change permission of a file.\n";
+	helpStr += "                                      2 = w = Write\n";
+	helpStr += "                                      4 = r = Read\n";
+	helpStr += "                                      6 = rw = Read/Write\n";
 	return helpStr;
 }
 

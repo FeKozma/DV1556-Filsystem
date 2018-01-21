@@ -3,23 +3,32 @@
 
 MemBlockDevice::MemBlockDevice(int nrOfBlocks): BlockDevice(nrOfBlocks) {
 	this->availableBlocks = new bool[nrOfBlocks];
+	this->permissionBlocks = new int[nrOfBlocks];
 	this->blocksCap = nrOfBlocks;
 	for (int i = 0; i < nrOfBlocks; i++) {
 		availableBlocks[i] = true;
+	}
+	for (int i = 0; i < nrOfBlocks; ++i) {
+		permissionBlocks[i] = 6;
 	}
 }
 
 MemBlockDevice::MemBlockDevice(const MemBlockDevice &other) : BlockDevice(other) {
 	this->availableBlocks = new bool[nrOfBlocks];
+	this->permissionBlocks = new int[nrOfBlocks];
 	this->blocksCap = nrOfBlocks;
 	for (int i = 0; i < nrOfBlocks; i++) {
 		availableBlocks[i] = true;
+	}
+	for (int i = 0; i < nrOfBlocks; ++i) {
+		permissionBlocks[i] = 6;
 	}
 }
 
 MemBlockDevice::~MemBlockDevice() {
 	/* Implicit call to base-class destructor */
 	delete[] availableBlocks;
+	delete[] permissionBlocks;
 }
 
 MemBlockDevice& MemBlockDevice::operator=(const MemBlockDevice &other) {
@@ -114,11 +123,13 @@ bool MemBlockDevice::rmBlock(int blockNr) {
 		if (this->memBlocks[blockNr].getIfMore()) {
 			if (rmBlock(blockNr + 1)) {
 				availableBlocks[blockNr] = true;
+				permissionBlocks[blockNr] = 6;
 				retVal = true;
 			}
 		}
 		else {
 			availableBlocks[blockNr] = true;
+			permissionBlocks[blockNr] = 6;
 			retVal = true;
 		}
 	}
@@ -336,4 +347,27 @@ int MemBlockDevice::lengthOfFile(const int startPos) const {
 		spaces++;
 	}
 	return spaces;
+}
+
+std::string MemBlockDevice::getPermissionType(const int blockId) const {
+	std::string type = "";
+	if (permissionBlocks[blockId] == 2) {
+		type = "w";
+	}
+	else if (permissionBlocks[blockId] == 4) {
+		type = "r";
+	}
+	else if (permissionBlocks[blockId] == 6) {
+		type = "rw";
+	}
+	return type;
+}
+
+bool MemBlockDevice::changePermissionType(const int blockId, const int newType) {
+	bool permissionChanged = false;
+	if (newType == 2 || newType == 4 || newType == 6) {
+		permissionBlocks[blockId] = newType;
+		permissionChanged = true;
+	}
+	return permissionChanged;
 }
