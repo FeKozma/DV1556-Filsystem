@@ -75,7 +75,11 @@ public:
 	std::string getPermissionType(const int blockId) const;
 
 	/* This will change the permission type of a file if the type is 2, 4 or 6. */
-	bool MemBlockDevice::changePermissionType(const int blockId, const int newType);
+	bool changePermissionType(const int blockId, const int newType);
+
+	bool hasPermissionWrite(const int blockId) const;
+	bool hasPermissionRead(const int blockId) const;
+	bool hasPermissionBoth(const int blockId) const;
 };
 
 #endif // MEMBLOCKDEVICE_H

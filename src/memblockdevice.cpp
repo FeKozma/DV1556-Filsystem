@@ -371,3 +371,15 @@ bool MemBlockDevice::changePermissionType(const int blockId, const int newType) 
 	}
 	return permissionChanged;
 }
+
+bool MemBlockDevice::hasPermissionWrite(const int blockId) const {
+	return permissionBlocks[blockId] == 2 || hasPermissionBoth(blockId);
+}
+
+bool MemBlockDevice::hasPermissionRead(const int blockId) const {
+	return permissionBlocks[blockId] == 4 || hasPermissionBoth(blockId);
+}
+
+bool MemBlockDevice::hasPermissionBoth(const int blockId) const {
+	return permissionBlocks[blockId] == 6;
+}

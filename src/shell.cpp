@@ -100,7 +100,13 @@ int main(void) {
 					}
 					break;
 				case 6: // cat
-					printLine(fileSys.viewFileOn(commandArr[1]));
+					commandArr[2] = fileSys.viewFileOn(commandArr[1]);
+					if (commandArr[2] == "") {
+						printLine("Could not find the file or you do not have permission to read it.", colorRed);
+					}
+					else {
+						printLine(commandArr[2]);
+					}
 					break;
 				case 7: // createImage
 					if (fileSys.createImage(commandArr[1])) {

@@ -165,31 +165,30 @@ int FileSystem::createFileOn(std::string storeString) {
 
 // This function will return a string with the content of the fileName in path.
 std::string FileSystem::viewFileOn(const std::string &fileName) const {
-	//std::string path = curFolder->getFolderPath();
-
 	int blockId = curFolder->findBlockIdPath(fileName); //-1
-	
+
 	return viewFileOn(blockId);
 }
 
 // This function will return a string with the content of the file on pos.
-std::string FileSystem::viewFileOn(int pos) const {
-	//std::string path = curFolder->getFolderPath();
-
-	pos--;
+std::string FileSystem::viewFileOn(int blockId) const {
 	std::string content = "";
-	Block block;
-	if (pos != -2) {
-		do {
-			pos++;
-			block = mMemblockDevice->readBlock(pos);
 
-			for (int i = 1; i < block.size(); ++i) {
-				content += block[i];
-			}
-		} while (block.getIfMore());
+	if (mMemblockDevice->hasPermissionRead(blockId)) {
+		blockId--;
+		Block block;
+		if (blockId != -2) {
+			do {
+				blockId++;
+				block = mMemblockDevice->readBlock(blockId);
+
+				for (int i = 1; i < block.size(); ++i) {
+					content += block[i];
+				}
+			} while (block.getIfMore());
+		}
+		stringTrim(content);
 	}
-	stringTrim(content);
 	return content;
 }
 
