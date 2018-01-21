@@ -23,9 +23,11 @@ public:
 	FileSystem(const int &blockSize = 250, const int &fileSize = 512);
 	~FileSystem();
 
-	bool createImage(std::string filename);
+	// Will save the file system to the disk. Default name is 'image'.
+	bool createImage(std::string filename = "image");
 
-	bool loadImage(std::string filename = "");
+	// Will format, read and create a new file system from the disk. Default name is 'image'.
+	bool loadImage(std::string filename = "image");
 	void loadImageNodes(std::ifstream &input);
 
 	// This function will list the content of a file.

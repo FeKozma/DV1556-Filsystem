@@ -39,7 +39,7 @@ int main(void) {
 	FileSystem fileSys(250, 512);
 
 	std::string userCommand, commandArr[MAXCOMMANDS];
-	std::string user = "user@DV1492"; // Change this if you want another user to be displayed
+	std::string user = "user@DV1556"; // Change this if you want another user to be displayed
 	std::string currentDir = "/"; // Current directory, used for output
 
 	bool bRun = true;
@@ -279,6 +279,7 @@ std::string help() {
 	helpStr += "* cd     <directory>                Changes current working directory to <directory>\n";
 	helpStr += "* pwd                               Get current working directory\n";
 	helpStr += "* help                              Prints this help screen\n";
+	helpStr += "* disk                              Displays the allocation state of all blocks.\n";
 	return helpStr;
 }
 

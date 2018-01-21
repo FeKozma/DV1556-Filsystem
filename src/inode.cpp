@@ -220,22 +220,27 @@ inode* inode::findFolderRecursive(const std::vector<std::string> &path, const in
 	}
 
 	if (cap > pos) {
-		std::string findFoldername = path.at(pos); 
+		std::string findFolderName = path.at(pos); 
 
-		// If it's a special case (..)
-		if (findFoldername == "..") {
+		// If it's a special case ( . )
+		if (findFolderName == ".") {
+			retINode = this;
+		}
+
+		// If it's a special case ( .. )
+		else if (findFolderName == "..") {
 			retINode = (*parent).findFolderRecursive(path, pos + 1, cap, true);
 		}
 
-		// If it's a special case (/)
-		else if (findFoldername == "") {
+		// If it's a special case ( / )
+		else if (findFolderName == "") {
 			inode *a = this;
 			retINode = (*getRoot(a)).findFolderRecursive(path, pos + 1, cap, true);
 		}
 
 		else {
 			// If findFolder is a folder name
-			int folderPos = findFolder(findFoldername);
+			int folderPos = findFolder(findFolderName);
 			if (folderPos != -1) {
 				if (cap > pos + 1) {
 					inode* test = folder.at(folderPos)->findFolderRecursive(path, pos + 1, cap);
