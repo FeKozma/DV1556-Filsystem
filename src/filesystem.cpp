@@ -74,8 +74,7 @@ bool FileSystem::loadImage(std::string filename) {
 
 	if (input.is_open()) {
 		// Create new inode with suitable constructur.
-		delete this->curFolder;
-		this->curFolder = new inode();
+		formatSystem();
 
 		loadImageNodes(input); // Add all inodes.
 		goToFolder("/"); // Go to the root folder when finished.
@@ -312,6 +311,8 @@ std::string FileSystem::listDir() {
 int FileSystem::formatSystem() {
 	int deletedFiles = mMemblockDevice->formatSys();
 
+	// Go to root folder, so references gets deleted from the top.
+	goToFolder("/");
 	delete curFolder;
 	curFolder = new inode();
 	return deletedFiles;
