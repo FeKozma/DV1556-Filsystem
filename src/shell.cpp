@@ -47,7 +47,7 @@ int main(void) {
 	/*********************
 	*** Start of tests ***
 	*********************/
-
+	/*
 	// createFile
 	if (!fileSys.createFile("file1\\nroot\\n", "file1")) printLine("err1", colorRed);
 	if (!fileSys.createFile("file2\\nroot\\n", "file2")) printLine("err2", colorRed);
@@ -64,7 +64,7 @@ int main(void) {
 
 	printLine("Current directory: " + fileSys.getCurrentPath());
 	print(fileSys.listDir(""));
-
+	*/
 	/*********************
 	**** End of tests ****
 	*********************/
@@ -183,7 +183,7 @@ int main(void) {
 						printLine("Permission of the file " + commandArr[2] + " has been changed.", colorGreen);
 					}
 					else {
-						printLine("Could not change permission. The permission type has to be 2, 4 or 6.", colorRed);
+						printLine("Could not change permission. The permission type has to be 2 (w), 4 (r) or 6 (rw).", colorRed);
 					}
 ;					break;
 				default:

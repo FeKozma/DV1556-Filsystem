@@ -73,6 +73,7 @@ public:
 	// Will return what's after the last forward slash.
 	std::string getAfterLastSlash(const std::string &path) const;
 
+	// Displays the allocation state of all blocks.
 	std::string getDiskAllocations() const;
 
 	// This method will append the text from one file to another.
