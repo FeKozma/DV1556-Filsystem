@@ -265,7 +265,7 @@ bool MemBlockDevice::readFilesImage(std::ifstream &input) {
 	bool success = false;
 
 	// Remove old data
-	formatSys();
+	//formatSys();
 	
 	if (input.is_open()) {
 		while(!input.eof()) {
@@ -367,6 +367,10 @@ std::string MemBlockDevice::getPermissionType(const int blockId) const {
 		type = "rw";
 	}
 	return type;
+}
+
+int MemBlockDevice::getPermissionId(const int blockId) const {
+	return permissionBlocks[blockId];
 }
 
 bool MemBlockDevice::changePermissionType(const int blockId, const int newType) {

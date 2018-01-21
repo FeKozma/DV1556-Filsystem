@@ -21,7 +21,7 @@ void FileSystem::createImageRecursive(inode *root, std::string &output) {
 	// Get filenames
 	std::vector<std::string> files = root->getFiles();
 	for (int i = 0; i < files.size(); ++i) {
-		output += "2." + files[i] + ":" + std::to_string(pos[i])  + "\n";
+		output += "2." + files[i] + ":" + std::to_string(pos[i]) + ":" + std::to_string(this->mMemblockDevice->getPermissionId(pos[i]))  + "\n";
 	}
 
 	// Get nr of folders
@@ -115,17 +115,20 @@ void FileSystem::loadImageNodes(std::ifstream &input) {
 				//2 = file name and block id
 				output.erase(0, 2);
 
-				std::size_t i = output.find_last_of(':');
-				std::string filename = output.substr(0, i);
+				std::size_t permission = output.find_last_of(':');
+				std::size_t id = output.find_last_of(':', permission - 1);
+				std::string filename = output.substr(0, id);
 				if (filename != "") {
 					int blockid = -1;
 					try {
-						blockid = std::stoi(output.substr(i + 1));
+						blockid = std::stoi(output.substr(id + 1));
+						permission = std::stoi(output.substr(permission + 1));
 					}
 					catch ( ... ) { }
 
 					if (blockid >= 0) {
 						curFolder->addFile(filename, blockid, "");
+						mMemblockDevice->changePermissionType(blockid, permission);
 					}
 				}
 			}
