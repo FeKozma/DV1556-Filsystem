@@ -8,6 +8,7 @@ FileSystem::FileSystem(const int &blockSize, const int &fileSize) {
 
 FileSystem::~FileSystem() {
 	delete mMemblockDevice;
+	goToFolder("/");
 	delete curFolder;
 }
 
