@@ -180,14 +180,18 @@ int MemBlockDevice::writeBlock(int blockNr, const std::string &strBlock, const b
 	return output;
 }
 
-int MemBlockDevice::writeBlock(int blockNr, const std::string & strBlock)
-{
+int MemBlockDevice::writeBlock(int blockNr, const std::string &strBlock) {
 	int output = -1; // Assume blockNr out-of-range
 
 	if (blockNr < this->nrOfBlocks && blockNr >= 0) {
 		/* -2 = str-length and block dont have same dimensions */
 		/* 1 = success */
-		output = this->memBlocks[blockNr].writeBlock(strBlock);
+		std::string content = strBlock;
+		while (content.size() < 512) {
+			content += " ";
+		}
+
+		output = this->memBlocks[blockNr].writeBlock(content);
 	}
 	return output;
 }
@@ -266,6 +270,7 @@ bool MemBlockDevice::readFilesImage(std::ifstream &input) {
 	if (input.is_open()) {
 		while(!input.eof()) {
 			input >> save;
+			input.ignore();
 			std::size_t found = save.find(":");
 			if (found != std::string::npos) {
 				pos = std::stoi(save.substr(0, found));
@@ -286,6 +291,7 @@ int MemBlockDevice::formatSys() {
 			retVal++;
 			this->availableBlocks[i] = true;
 		}
+		this->permissionBlocks[i] = 6;
 	}
 	return retVal;
 }

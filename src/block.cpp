@@ -106,8 +106,3 @@ bool Block::getIfMore()
 	}
 	return retVal;
 }
-
-
-
-
-
