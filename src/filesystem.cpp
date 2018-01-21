@@ -250,7 +250,7 @@ bool FileSystem::removeFile(const std::string &path) {
 		std::string fileName = getAfterLastSlash(path);
 		int blockId = folder->findBlockId(path);
 
-		if (this->mMemblockDevice->rmBlock(blockId)) {
+		if (this->mMemblockDevice->hasPermissionWrite(blockId) && this->mMemblockDevice->rmBlock(blockId)) {
 			folder->removeFile(fileName);
 			retVal = true;
 		}
@@ -312,7 +312,7 @@ int FileSystem::formatSystem() {
 
 	// Go to root folder, so references gets deleted from the top.
 	goToFolder("/");
-	delete curFolder;
+	delete curFolder; // It will delete itself and all nodes recursively.
 	curFolder = new inode();
 	return deletedFiles;
 }
@@ -329,7 +329,7 @@ bool FileSystem::copyFile(const std::string &oldFile, std::string newFile) {
 	}
 
 	int pos = this->curFolder->findBlockIdPath(oldFile);
-	if (pos != -1) {
+	if (pos != -1 && mMemblockDevice->hasPermissionRead(pos)) {
 		inode* addFileHere = this->curFolder->goToFolder(ignoreLastSlash(newFile));
 		if (addFileHere != nullptr) {
 			int newPos = this->mMemblockDevice->copyBlock(pos);
@@ -343,8 +343,14 @@ bool FileSystem::copyFile(const std::string &oldFile, std::string newFile) {
 	return success;
 }
 
+// The mv command, this function will both rename and move the file.
 bool FileSystem::renameFileGivenPath(const std::string &oldFile, const std::string &newFile) {
-	return this->curFolder->renameFileGivenPath(oldFile, newFile);
+	bool renamed = false;
+	int blockId = this->curFolder->findBlockIdPath(oldFile);
+	if (mMemblockDevice->hasPermissionRead(blockId)) {
+		renamed = this->curFolder->renameFileGivenPath(oldFile, newFile);
+	}
+	return renamed;
 }
 
 std::string FileSystem::ignoreLastSlash(const std::string &path) const {
@@ -369,11 +375,13 @@ bool FileSystem::appendFile(const std::string &file1, const std::string &file2) 
 	inode* folder1 = this->curFolder->goToFolder(this->ignoreLastSlash(file1));
 	inode* folder2 = this->curFolder->goToFolder(this->ignoreLastSlash(file2));
 
-	// Check if files exists.
+	// Check if it exists.
 	if (folder1 != nullptr && folder2 != nullptr) {
 		int posFile1 = folder1->getMemPosGivenPosInArr(folder1->findFile(this->getAfterLastSlash(file1)));
 		int posFile2 = folder2->getMemPosGivenPosInArr(folder2->findFile(this->getAfterLastSlash(file2)));
-		if (posFile1 != -1 && posFile2 != -1) {
+		
+		// Check permissions for the files.
+		if (posFile1 != -1 && posFile2 != -1 && mMemblockDevice->hasPermissionRead(posFile1) && mMemblockDevice->hasPermissionWrite(posFile2)) {
 
 			// Get amount of text
 			std::string content = this->viewFileOn(posFile2);

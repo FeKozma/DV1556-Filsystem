@@ -64,6 +64,7 @@ public:
 	// Will copy a file from one location to another.
 	bool copyFile(const std::string &oldFile, std::string newFile);
 
+	// The mv command, this function will both rename and move the file.
 	bool renameFileGivenPath(const std::string &oldFile, const std::string &newFile);
 
 	// Will ignore what's after the last forward slash.

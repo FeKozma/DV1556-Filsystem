@@ -105,7 +105,7 @@ int main(void) {
 						printLine("Could not find the file or you do not have permission to read it.", colorRed);
 					}
 					else {
-						printLine(commandArr[2]);
+						printLine(fileSys.viewFileOn(commandArr[1]));
 					}
 					break;
 				case 7: // createImage
@@ -126,10 +126,10 @@ int main(void) {
 					break;
 				case 9: // rm
 					if (fileSys.removeFile(commandArr[1])) {
-						printLine("File removed.", colorGreen);
+						printLine("File successfully removed.", colorGreen);
 					}
 					else {
-						printLine("File not found.", colorRed);
+						printLine("File not found or you don't have write permission.", colorRed);
 					}
 					break;
 				case 10: // cp
@@ -137,7 +137,7 @@ int main(void) {
 						printLine("File copied.", colorGreen);
 					}
 					else {
-						printLine("Error.", colorRed);
+						printLine("File not found or you don't have read permission.", colorRed);
 					}
 					break;
 				case 11: // append
@@ -145,7 +145,7 @@ int main(void) {
 						printLine("Success.", colorGreen);
 					}
 					else {
-						printLine("Error.", colorRed);
+						printLine("File not found or you might not have the permissions you need.", colorRed);
 					}
 					break;
 				case 12: // mv
