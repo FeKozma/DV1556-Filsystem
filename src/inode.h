@@ -4,7 +4,6 @@
 #include <string>
 #include <vector>
 #include <iostream>
-#include <fstream>
 
 class inode {
 private:
@@ -12,14 +11,14 @@ private:
 	std::string name; // This folder name
 	std::vector<int> files; // Which block is busy by the file
 	std::vector<std::string> filesName; // 'filesName' correspond to 'files'. filesName.at(1) will be saved at the position files.at(1).
-	std::vector<inode> folder; // Links to folders in this folder
+	std::vector<inode*> folder; // Links to folders in this folder
 
 	int findFolder(const std::string &name = "") const;
 
 	std::vector<std::string> pathSplitter(const std::string path) const;
 	inode* findFolderRecursive(const std::vector<std::string> &path, const int pos, const int cap /*cap -> sluta vid cap ex kan finnas filnamn i slutet av path*/, const bool useWithKnowledge = false);
 	inode* findFolderContainingFileRecursive(const std::string &path);
-	inode* getRoot(inode& curent) const;
+	inode* getRoot(inode *&curent) const;
 
 	// pos = 1 filename, pos = 0 path to file
 	std::string* getPathAndFileName(const std::string &path) const;
@@ -34,7 +33,6 @@ private:
 public:
 	inode();
 	inode(inode* &parent);
-	inode(std::ifstream &in, inode* parent = nullptr);
 
 	~inode() {};
 

@@ -25,7 +25,8 @@ public:
 
 	bool createImage(std::string filename);
 
-	bool loadImage(std::string filename = "data");
+	bool loadImage(std::string filename = "");
+	void loadImageNodes(std::ifstream &input);
 
 	// This function will list the content of a file.
 	std::string viewFileOn(const std::string &fileName) const;

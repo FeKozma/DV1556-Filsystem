@@ -13,24 +13,21 @@ FileSystem::~FileSystem() {
 
 void FileSystem::createImageRecursive(inode *root, std::string &output) {
 	// This folder's name
-	output += "1." + root->getFolderName() + "\n";
+	output += "1." + root->getFolderPath() + "\n";
+
+	// Get position in memory
+	std::vector<int> pos = root->getFilePos();
 
 	// Get filenames
 	std::vector<std::string> files = root->getFiles();
 	for (int i = 0; i < files.size(); ++i) {
-		output += "2." + files[i] + "\n";
-	}
-
-	// Get position in memory
-	std::vector<int> pos = root->getFilePos();
-	for (int i = 0; i < pos.size(); ++i) {
-		output += "3." + std::to_string(pos[i]) + "\n";
+		output += "2." + files[i] + ":" + std::to_string(pos[i])  + "\n";
 	}
 
 	// Get nr of folders
 	std::vector<std::string> folder = root->getFolders();
 
-	output += "4." + std::to_string(root->getNrOfFolders()) + "\n";
+	output += "3." + std::to_string(root->getNrOfFolders()) + "\n";
 
 	output += "\n";
 
@@ -55,7 +52,7 @@ bool FileSystem::createImage(std::string filename) {
 	stringToFile += mMemblockDevice->filesImage();
 
 	// Save string to file.
-	std::cout << std::endl << stringToFile << std::endl;
+	//std::cout << std::endl << stringToFile << std::endl;
 	std::ofstream out(filename + ".txt");
 	out << stringToFile;
 	out.close();
@@ -78,7 +75,10 @@ bool FileSystem::loadImage(std::string filename) {
 	if (input.is_open()) {
 		// Create new inode with suitable constructur.
 		delete this->curFolder;
-		this->curFolder = new inode(input);
+		this->curFolder = new inode();
+
+		loadImageNodes(input); // Add all inodes.
+		goToFolder("/"); // Go to the root folder when finished.
 
 		// Load mMemblockDevice
 		this->mMemblockDevice->readFilesImage(input);
@@ -90,6 +90,65 @@ bool FileSystem::loadImage(std::string filename) {
 
 	return loaded;
 }
+
+void FileSystem::loadImageNodes(std::ifstream &input) {
+	bool endOfFolderInfo = false;
+	std::string output;
+	int nrFolders = 0;
+
+	if (input.is_open()) {
+		while (!input.eof() && !endOfFolderInfo) {
+			input >> output;
+
+			if (output[0] == *"1") {
+				//1 = this is the current folders name
+				output.erase(0, 2);
+
+				if (output != "/") {
+					createFolderi(output);
+					goToFolder(output == "" ? "/" : output);
+				}
+				else {
+					goToFolder("/");
+				}
+			}
+			else if (output[0] == *"2") {
+				//2 = file name and block id
+				output.erase(0, 2);
+
+				std::size_t i = output.find_last_of(':');
+				std::string filename = output.substr(0, i);
+				if (filename != "") {
+					int blockid = -1;
+					try {
+						blockid = std::stoi(output.substr(i + 1));
+					}
+					catch ( ... ) { }
+
+					if (blockid >= 0) {
+						curFolder->addFile(filename, blockid, "");
+					}
+				}
+			}
+			else if (output[0] == *"3") {
+				//4 = amount of folders in this dir
+				output.erase(0, 2);
+
+				nrFolders = std::stoi(output);
+				endOfFolderInfo = true;
+			}
+			else {
+				std::cout << "An unknown error was found!" << std::endl;
+			}
+		}
+	}
+
+	// Go in to first folder recusivly.
+	for (int i = 0; i < nrFolders; ++i) {
+		loadImageNodes(input);
+	}
+}
+
 int FileSystem::createFileOn(std::string storeString) {
 	int lengthOfBlock = fileSize -1;
 	

@@ -1,6 +1,4 @@
 #include "inode.h"
-#include <iostream>
-
 
 const std::string NAMELESS_FOLDER = "no-name"; // Used for folders without a name.
 
@@ -12,57 +10,6 @@ inode::inode() {
 // Used when initializing folders.
 inode::inode(inode* &parent) {
 	this->parent = parent;
-}
-
-inode::inode(std::ifstream &input, inode *parent) {
-	bool endOfFolderInfo = false;
-	std::string output;
-	int nrFolders = 0;
-
-	if (parent == nullptr) {
-		this->parent = this;
-	}
-	else {
-		this->parent = parent;
-	}
-
-	if (input.is_open()) {
-		while (!input.eof() && !endOfFolderInfo) {
-			input >> output;
-
-			if (output[0] == *"1") {
-				//1 = this is the current folders name
-				output.erase(0, 2);
-				this->name = output;
-			}
-			else if (output[0] == *"2") {
-				//2 = file name
-				output.erase(0, 2);
-				this->filesName.push_back(output);
-			}
-			else if (output[0] == *"3") {
-				//3 = files position in memory
-				output.erase(0, 2);
-				this->files.push_back(std::stoi(output));
-			}
-			else if (output[0] == *"4") {
-				//4 = folders in this dir
-				output.erase(0, 2);
-
-				nrFolders = std::stoi(output);
-				endOfFolderInfo = true;
-			}
-			else {
-				std::cout << "An unknown error was found!" << std::endl;
-			}
-		}
-	}
-
-	// Go in to first folder recusively.
-	for (int i = 0; i < nrFolders; ++i) {
-		inode toPush = inode(input, this);
-		this->folder.push_back(toPush);
-	}
 }
 
 /** Used when adding a file to the system
@@ -154,9 +101,9 @@ bool inode::addFolder(std::string path) {
 	else if (findFolder(path) == -1) {
 		folderAdded = true;
 
-		inode iNode = inode();
-		iNode.name = path;
-		iNode.parent = this;
+		inode *iNode = new inode();
+		iNode->name = path;
+		iNode->parent = this;
 		folder.push_back(iNode);
 	}
 
@@ -182,7 +129,7 @@ inode* inode::goToFolder(const std::string &path) {
 int inode::findFolder(const std::string &name) const {
 	int folderPos = -1;
 	for (std::vector<inode>::size_type i = 0; i != folder.size(); i++) {
-		if (this->folder[i].getFolderName() == name) {
+		if (this->folder[i]->getFolderName() == name) {
 			folderPos = i;
 			break;
 		}
@@ -211,7 +158,7 @@ std::string inode::getFolderPath() const {
 std::vector<std::string> inode::getFolders() const {
 	std::vector<std::string> folders;
 	for (int i = 0; i < folder.size(); ++i) {
-		folders.push_back(folder[i].getFolderName());
+		folders.push_back(folder[i]->getFolderName());
 	}
 	return folders;
 }
@@ -271,14 +218,13 @@ inode* inode::findFolderRecursive(const std::vector<std::string> &path, const in
 
 		// If it's a special case (..)
 		if (findFoldername == "..") {
-			//delete retINode; <--USE?
 			retINode = (*parent).findFolderRecursive(path, pos + 1, cap, true);
 		}
 
 		// If it's a special case (/)
 		else if (findFoldername == "") {
-			//delete retINode; <--USE?
-			retINode = (*getRoot(*this)).findFolderRecursive(path, pos + 1, cap, true);
+			inode *a = this;
+			retINode = (*getRoot(a)).findFolderRecursive(path, pos + 1, cap, true);
 		}
 
 		else {
@@ -286,11 +232,11 @@ inode* inode::findFolderRecursive(const std::vector<std::string> &path, const in
 			int folderPos = findFolder(findFoldername);
 			if (folderPos != -1) {
 				if (cap > pos + 1) {
-					inode* test = &*(folder.at(folderPos)).findFolderRecursive(path, pos + 1, cap);
+					inode* test = folder.at(folderPos)->findFolderRecursive(path, pos + 1, cap);
 					retINode = test;
 				}
 				else {
-					retINode = &(folder[folderPos]);
+					retINode = folder[folderPos];
 				}
 			}
 		}
@@ -317,11 +263,11 @@ inode* inode::findFolderContainingFileRecursive(const std::string &path) {
 }
 
 // This method will return the root of this folder (all folders).
-inode* inode::getRoot(inode &current) const {
-	inode *retInode = &current;
+inode* inode::getRoot(inode *&current) const {
+	inode *retInode = current;
 
-	if (current.parent != &current) {
-		retInode = getRoot(*current.parent);
+	if (current->parent != current) {
+		retInode = getRoot(current->parent);
 	}
 
 	return retInode;
