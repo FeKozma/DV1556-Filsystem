@@ -12,6 +12,12 @@ inode::inode(inode* &parent) {
 	this->parent = parent;
 }
 
+inode::~inode() {
+	for (inode *node : folder) {
+		delete node;
+	}
+}
+
 /** Used when adding a file to the system
   * Returns whether it could add a file or not.
   */

@@ -34,7 +34,7 @@ public:
 	inode();
 	inode(inode* &parent);
 
-	~inode() {};
+	~inode();
 
 	std::string getFolderName() const;
 	std::string getFolderPath() const;
